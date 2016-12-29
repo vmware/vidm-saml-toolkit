@@ -20,7 +20,7 @@ This product may include a number of subcomponents with separate copyright notic
 </head>
 <body>
 <%
-	String postHtmlContent = MySSO.getSSOFacade().getSSOHtmlPost(null);
+	String postHtmlContent = MySSO.getSSOService().getSSOHtmlPost(null);
 	if(postHtmlContent != null) {
 		out.write(postHtmlContent);
 	} else {

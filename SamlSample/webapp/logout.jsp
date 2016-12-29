@@ -29,7 +29,7 @@ This product may include a number of subcomponents with separate copyright notic
 			if(session.getAttribute("userName") != null) {
 				//TODO: these should be moved to some jsp after receving logout response from vidm
 		
-				String logoutURL = MySSO.getSSOFacade().getLogoutURLRedirect();
+				String logoutURL = MySSO.getSSOService().getLogoutURLRedirect();
 				session.removeAttribute("userName");
 				session.invalidate();
 				if(logoutURL != null) {

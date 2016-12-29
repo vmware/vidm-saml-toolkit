@@ -21,7 +21,7 @@ import com.vmware.eucenablement.saml.api.IdpSsoMetadata;
 import com.vmware.eucenablement.saml.service.IdpDiscoveryService;
 import com.vmware.eucenablement.saml.service.SAMLSsoService;
 
-public class SsoServiceFacade {
+public class SSOService {
 
 	private SAMLSsoService _service;
 
@@ -46,7 +46,7 @@ public class SsoServiceFacade {
 	 * @param conf
 	 * @throws Exception
 	 */
-	public SsoServiceFacade(SAMLToolkitConf conf) throws Exception {
+	public SSOService(SAMLToolkitConf conf) throws Exception {
 		this.config = conf;
 		if (config == null || !config.isReady()) {
 			throw new Exception("Config not correct!!!");
@@ -106,7 +106,7 @@ public class SsoServiceFacade {
 		return _service.getSAMLLogoutURLRedirect();
 	}
 
-	private static Logger log = LoggerFactory.getLogger(SsoServiceFacade.class);
+	private static Logger log = LoggerFactory.getLogger(SSOService.class);
 
 	/**
 	 *

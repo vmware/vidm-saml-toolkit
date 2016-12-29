@@ -13,7 +13,7 @@ This product may include a number of subcomponents with separate copyright notic
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="sample.MySSO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.vmware.samltoolkit.SsoServiceFacade"%>
+<%@ page import="com.vmware.samltoolkit.SSOService"%>
 <%@ page import="com.vmware.samltoolkit.SAMLToolkitConf"%>
 <%@ page import="java.util.Map" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,7 +31,7 @@ This product may include a number of subcomponents with separate copyright notic
 		String spConsumer = spIssuer + "/consume";
 		
 		boolean byPassCert = Boolean.valueOf(request.getParameter("byPassCert"));
-		SsoServiceFacade facade = MySSO.initSsoServiceFacade(idpDomainURI, spConsumer, byPassCert);
+		SSOService facade = MySSO.initSsoService(idpDomainURI, spConsumer, byPassCert);
 		SAMLToolkitConf conf = null;
 		if(facade != null) {
 			conf = facade.getSAMLToolkitConf();
@@ -44,24 +44,48 @@ This product may include a number of subcomponents with separate copyright notic
                 <div class="col-lg-8 col-lg-offset-2">
 					<%if((facade != null) && (conf != null)) {
 					%>         
-						<form action="configvidm.jsp" method="get" style="padding: 2rem;">
-							<p>Congratulations. Your SSO is ready.</p>
-							<p>Consumer URL is <%= spConsumer %></p>
-							<p>vIDM URL is <%= idpDomainURI %></p>
-							<div>
-								 <a href="#sp-detail" class="btn btn-circle page-scroll">
+						<div class="jumbotron" style="color:#000" style="padding: 2rem;">
+							<p>Congratulations. You are almost ready.</p>
+							<p>Please go to your vIDM administration console, and follow this web page to add a new web applciation.</p>
+							<p>Click the white arrow button for guidance.</p>
+							<p>Click "SINGLE SIGN ON" button if you are ready.</p>
+						</div>
+								<div class="row">
+								 <a href="#ConfigVIDM" class="btn btn-circle page-scroll">
 			                            <i class="fa fa-angle-double-down animated"></i>
 			                     </a>
 	                    	</div>
-	                    	<br/>
-	                    	<br/>
-	                    	<br/>
-							<br/>
-	                    	<br/>
-							<div><input type=submit value="Configure application on VIDM" class="btn btn-default btn-lg">
-							</div>
-							<br/>
+						
+						 <div class="row">
+	            <div class="col-xs-6 col-lg-6">	
+		          
+		              <p><a class="btn btn-default btn-lg" target="_new" href="http://pubs.vmware.com/vidm/topic/com.vmware.vidm_workspace-one.doc/GUID-C1A2F5E4-E117-4CD7-A672-C19040527C4B.html" role="button">vIDM Document >>></a></p>
+	          
+	            </div>
+	            <div class="col-xs-6 col-lg-6" >
+		             <form action="ssoLogin.jsp" method="post">
+						<p><input type=submit value="Single Sign On >>>" class="btn btn-default btn-lg"></p>
 						</form>
+	            </div>
+	            
+	            
+	                    	
+	           
+	          </div><!--/row-->
+
+	    	<div id="signcert" class="modal fade">
+		        <div class="modal-dialog" style="boder-color:#fff">
+		            <div class="modal-content">
+		                <div class="modal-header black-background green-font">
+		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		                    <h4 class="modal-title">Signing Certificate</h4>
+		                </div>
+		                <div class="modal-body black-background">
+		                    <div><%=conf.getCertificate()%></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
 						
 					<%} else {%>
 						<div class="jumbotron" style="color:#000">
@@ -79,82 +103,37 @@ This product may include a number of subcomponents with separate copyright notic
 				</div>
 			</div>
 		</section>
-		<%if((facade != null) && (conf != null)) {%>
-			<section id="sp-detail" class="content-section text-center" style="height:100%;width:100%;">
-		        <div class="sp-detail">
-		            <div class="container">
-		               <div class="row row-offcanvas">
+		
+		<section id="ConfigVIDM" class="content-section text-center" style="height:100%;width:100%;">
+				       <div class="row row-offcanvas">
 				        <div class="col-xs-12 col-sm-12">
-				          <div class="row">
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>Vidm URI</h2>
-				              <p><%= conf.getIdpURL() %> </p>
-				            </div><!--/.col-xs-6.col-lg-6-->
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>Sp Consumer</h2>
-				              <p><%= conf.getConsumerURL() %></p>
-				            </div><!--/.col-xs-6.col-lg-6-->
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>Sp Issuer</h2>
-				              <p><%=conf.getIssuerName() %> </p>
-				            </div><!--/.col-xs-6.col-lg-6-->
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>Idp Signing Certificate</h2>
-				              <div><%=conf.getCertificate().substring(0, 100) %></div>
-				              <p><a class="btn btn-default" href="#signcert" role="button" data-toggle="modal">View details »</a></p>
-				            </div>
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>SSO BINDING</h2>
-				              <%
-				              	Map<String, String> loginBindings = conf.getLoginBindings();
-				              	for(Map.Entry<String, String> entry : loginBindings.entrySet()) {
-				              %>
-				              	<div>Binding: <%=entry.getKey() %></div>
-				              	<div>Location: <%=entry.getValue() %></div>
-				              	<br/>
-				              <%
-				              	}
-				              %>
-				            </div><!--/.col-xs-6.col-lg-6-->
-				            <div class="col-xs-6 col-lg-6">
-				              <h2>Single logout BINDING</h2>
-				             <%
-				              	Map<String, String> logoutBindings = conf.getLogoutBindings();
-				              	for(Map.Entry<String, String> entry : logoutBindings.entrySet()) {
-				              %>
-				              	<div>Binding: <%=entry.getKey() %></div>
-				              	<div>Location: <%=entry.getValue() %></div>
-				              	<br/>
-				              <%
-				              	}
-				              %>
-				            </div><!--/.col-xs-6.col-lg-6-->
-				            
-					        <div class="col-xs-12 col-lg-12" style="padding-top:50px">
-						          <form action="configvidm.jsp" method="get"">
-										<div><input type=submit value="Configure application on VIDM" class="btn btn-default btn-lg"></div>
-								 </form>
-							 </div>
+				          <div class="row"> 
+				              <p>Step 1: Add A New Application in: <%= idpDomainURI %></p>
+				              <p><img src="img/step1.png" > </p>
+							
 				          </div><!--/row-->
+				          
+				          
+				          <div class="row">
+				              <p>Step 2: Give A Name</p>
+				              <p><img src="img/step2.png" > </p>
+				           
+				          </div>
+				          
+				          <div class="row">
+				              <p>Step 3: Select "Manual Configuration", Input Consumer: <%=conf.getConsumerURL() %> </p>
+				              <p><img src="img/step3.png" > </p>	            
+					       
+				          </div>
+				          
+				          
+				          <div class="row">
+				              <p>Step 4: Add Automatic Entitlements</p>
+				              <p><img src="img/step4.png" > </p>	            
+					       
+				          </div>
 				        </div><!--/.col-xs-12.col-sm-12-->
 				      </div>
-		            </div>
-		        </div>
-	    	</section>
-	    	
-	    	<div id="signcert" class="modal fade">
-		        <div class="modal-dialog" style="boder-color:#fff">
-		            <div class="modal-content">
-		                <div class="modal-header black-background green-font">
-		                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		                    <h4 class="modal-title">Signing Certificate</h4>
-		                </div>
-		                <div class="modal-body black-background">
-		                    <div><%=conf.getCertificate()%></div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-    	<%} %>
+		</section>
 	</body>
 </html>

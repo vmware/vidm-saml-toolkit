@@ -15,12 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vmware.samltoolkit.SAMLToolkitConf;
-import com.vmware.samltoolkit.SsoServiceFacade;
+import com.vmware.samltoolkit.SSOService;
 
 public class MySSO {
-	private static SsoServiceFacade facade;
+	private static SSOService service;
 	private static Logger log = LoggerFactory.getLogger(MySSO.class);
-	public static SsoServiceFacade initSsoServiceFacade(String vidmURL, String consumerURL, boolean byPassCert){
+	public static SSOService initSsoService(String vidmURL, String consumerURL, boolean byPassCert){
 		log.info("Start to init SSO Service "+ vidmURL + " consumer:"+consumerURL+" bypasscert:"+byPassCert);
 		try{
 			SAMLToolkitConf conf = new SAMLToolkitConf();
@@ -29,28 +29,28 @@ public class MySSO {
 			conf.setByPassSSLCertValidation(byPassCert);
 			log.info("Config initiated:"+conf.isReady());
 
-			facade = new SsoServiceFacade(conf);
+			service = new SSOService(conf);
 		}catch(Exception ex){
 			log.error(ex.getMessage(),ex);
-			facade =null;
+			service =null;
 		}
 
-		return facade;
+		return service;
 	}
 
 	public static String getvIDMURL(){
-		if (facade==null){
+		if (service==null){
 			return null;
 		}
-		return facade.getVIDMURL();
+		return service.getVIDMURL();
 	}
 
-	public static SsoServiceFacade getSSOFacade(){
-		if (facade==null){
+	public static SSOService getSSOService(){
+		if (service==null){
 			log.error("SSOFacade is null!! Please init it again!");
 		}
-		log.info("Start to return SSO Service:"+facade);
-		return facade;
+		log.info("Start to return SSO Service:"+service);
+		return service;
 	}
 
 

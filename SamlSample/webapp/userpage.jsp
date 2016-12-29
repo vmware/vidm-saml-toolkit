@@ -24,8 +24,8 @@ This product may include a number of subcomponents with separate copyright notic
 	            <div class="container">
 	                <div class="col-lg-8 col-lg-offset-2">
 	                	 <div class="jumbotron" style="color:#000">
-				            <h2>Welcome to use Saml Toolkit!</h2>
-				            <p>Login successfully, user name=<%=session.getAttribute("userName")%></p>
+				            <h2>Welcome, <%=session.getAttribute("userName")%>!</h2>
+				            
 				          </div>
 				          <div>
 		                	<form action="logout.jsp" method="post">

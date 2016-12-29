@@ -29,39 +29,17 @@ This product may include a number of subcomponents with separate copyright notic
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">SAML TOOLKIT</h1>
                         <p class="intro-text">A toolkit to facilitate the VIDM users to have their business application SAML enabled to play with VIDM.</p>
-                        <a href="#indexconf" class="btn btn-circle page-scroll">
-                            <i class="fa fa-angle-double-down animated"></i>
-                        </a>
+                        			<form action="idpDiscovery.jsp" method="get" style="padding: 2rem;">
+					<div align="middle">
+					<input type=submit value="CONFIGURE" class="btn btn-default btn-lg" title="Configure your vIDM (Identity Provider)">
+					</div>
+						</form>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-   <!-- Saml toolkit operation -->
-    <section id="indexconf" class="content-section text-center" style="height:100%;width:100%;">
-        <div class="container">
-            <div class="col-lg-8 col-lg-offset-2">
-                <h2>Welcome to use saml toolkit</h2>
-                <%
-					String vidm = MySSO.getvIDMURL();
-					if (vidm != null){
-				%>
-		                <form action="ssoLogin.jsp" method="get">
-							<input title="Get SSO session from <%=vidm %>." type=submit class="btn btn-default btn-lg" value="Single Sign-on" >
-						</form>
-				<%
-					}
-				%>
-				
-				<!-- Configure IDP -->
-				<form action="idpDiscovery.jsp" method="get" style="padding: 2rem;">
-					<div align="middle">
-					<input type=submit value="CONFIGURE" class="btn btn-default btn-lg" title="Configure your vIDM (Identity Provider)">
-					</div>
-				</form>
-             </div>
-            </div>
-    </section>
+   
 </body>
 </html>

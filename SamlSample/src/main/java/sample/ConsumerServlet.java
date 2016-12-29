@@ -30,13 +30,11 @@ public class ConsumerServlet implements Servlet{
 	private static Logger log = LoggerFactory.getLogger(ConsumerServlet.class);
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public ServletConfig getServletConfig() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -49,32 +47,27 @@ public class ConsumerServlet implements Servlet{
 		HttpSession session = request.getSession();
 		SAMLSsoResponse ssoResponse;
 		try {
-			ssoResponse = MySSO.getSSOFacade().decodeSSOResponse(s);
+			ssoResponse = MySSO.getSSOService().decodeSSOResponse(s);
 			if((ssoResponse != null) && (ssoResponse.isValid()) && (ssoResponse.ssoSucceed())) {
 			    session.setAttribute("userName", ssoResponse.getNameId());
 			    response.sendRedirect("userpage.jsp");
 			    return;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			log.error(e.getMessage(),e);
+			throw new ServletException(e);
 		}
-		java.io.PrintWriter writer = response.getWriter();
-	  	writer.write("Failed\n");
-	  	writer.flush();
+		throw new ServletException("Failed to login-Invalid SSO");
 
 	}
 
 	@Override
 	public String getServletInfo() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 
 	}
 

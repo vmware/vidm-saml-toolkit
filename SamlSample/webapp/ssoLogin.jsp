@@ -19,7 +19,7 @@ This product may include a number of subcomponents with separate copyright notic
 </head>
 <body>
 <%
-	String redirectURL = MySSO.getSSOFacade().getSSOURLRedirect("");
+	String redirectURL = MySSO.getSSOService().getSSOURLRedirect("");
 	response.sendRedirect(redirectURL);
 %>
 </body>
