@@ -29,15 +29,6 @@ Option 1: Build in Eclipse
 Option 2: Build with Maven command line tool
 Execute "mvn clean package" command in "vidmsaml" folder
 
-### Run
-We have a Sample web server which guide you to integrate with vIDM server easily. It can be started with one of the following options:
-
-Option 1: Use the startup script for Windows OS after your build is successful
-Go to "vidm-saml-toolkit\SamlSample\target" folder, double click "startup.bat"
-
-Option 2: Debug in Eclipse
-Execute "mvn clean package" command in "vidmsaml" folder
-
 Once your build is successful, you should get "SamlToolkit-jar-with-dependencies.jar" and "SamlToolkit.jar" in "vidm-saml-toolkit\SamlToolkit\target". 
 
 You also get a Sample web server which guide you to integrate with vIDM server easily in "vidm-saml-toolkit\SamlSample\target".
