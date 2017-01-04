@@ -72,7 +72,7 @@ public class SAMLToolkitConf {
 	}
 
 	/**
-	 * NO need to set this bindings. If not set, the bindings will be retrived
+	 * Optional. If not set, the bindings will be retrived
 	 * from IDP metadata
 	 *
 	 * @param binding
@@ -83,7 +83,7 @@ public class SAMLToolkitConf {
 	}
 
 	/**
-	 * NO need to set this bindings. If not set, the bindings will be retrived
+	 * Optional. If not set, the bindings will be retrived
 	 * from IDP metadata
 	 *
 	 * @param binding

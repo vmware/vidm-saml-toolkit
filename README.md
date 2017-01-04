@@ -64,6 +64,42 @@ com.vmware.samltoolkit.SAMLToolkitConf
 
 com.vmware.samltoolkit.SamlSsoResponse
 
+Step 1. New a SSOService object when your web server is started
+
+   SAMLToolkitConf conf = new SAMLToolkitConf();
+   
+   conf.setIdpURL("tenantxxx.vmwareidentity.com");
+   
+   conf.setConsumerURL("http://localhost:8080/SamlSample/consume");
+   
+   conf.setByPassSSLCertValidation(true);
+   
+   SSOService service = new SSOService(conf);
+  
+Step 2. Redirect the login request to vIDM. 
+   
+   String redirectURL = service.getSSOURLRedirect("");
+
+   response.sendRedirect(redirectURL);
+   
+Step 3. Implement your own SAML consumer service like this (can be a Servlet, JSP, or any other):
+   
+	String samlresponse = ((HttpServletRequest)req).getParameter("SAMLResponse");	
+		
+	SAMLSsoResponse ssoResponse = service.decodeSSOResponse(samlresponse);
+		
+	if((ssoResponse != null) && (ssoResponse.isValid()) && (ssoResponse.ssoSucceed())) {
+			   
+		String username = ssoResponse.getNameId();
+			   
+		//TODO: SSO is successful, continue your service with this username
+	}else{
+		
+		//TODO: SSO is failed, show an error page or remind the user to login again
+		
+	}
+
+
 ## Contributing
 
 The vidm-saml-toolkit project team welcomes contributions from the community. If you wish to contribute code and you have not
