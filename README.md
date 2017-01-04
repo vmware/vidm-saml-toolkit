@@ -26,7 +26,7 @@ This Toolkit supports the following 4 functions:
 
 Option 1: Build in Eclipse
 
-1, Import these 3 projects into your workspace: vidmsaml, SamlSample, and SamlToolkit
+1. Import these 3 projects into your workspace: vidmsaml, SamlSample, and SamlToolkit
 
 2. Run -> Run Configurations -> Maven Build, select "vidmsaml" as base directory, use "clean package" as goals. 
 
