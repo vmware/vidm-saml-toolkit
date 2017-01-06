@@ -29,15 +29,11 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.saml.saml2.metadata.SingleLogoutService;
-import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vmware.eucenablement.saml.impl.EndpointGenerator;
-import com.vmware.eucenablement.saml.impl.LogoutRequestBuilder;
 import com.vmware.eucenablement.saml.impl.SAMLSsoResponseImpl;
-import com.vmware.eucenablement.saml.impl.SimpleAuthnRequestBuilder;
+import com.vmware.eucenablement.saml.impl.SAMLUtil;
 import com.vmware.samltoolkit.SAMLSsoResponse;
 import com.vmware.samltoolkit.SAMLToolkitConf;
 
@@ -101,8 +97,7 @@ public class SAMLSsoService {
 			log.error("Cannot generate saml authn request for redirect binding!");
 			return null;
 		}
-		Endpoint endpoint = EndpointGenerator.generateEndpoint(SingleSignOnService.DEFAULT_ELEMENT_NAME,
-				_conf.getSSOTargetURL(SAMLConstants.SAML2_REDIRECT_BINDING_URI), _conf.getConsumerURL(),
+		Endpoint endpoint = SAMLUtil.generateEndpoint(_conf.getSSOTargetURL(SAMLConstants.SAML2_REDIRECT_BINDING_URI), _conf.getConsumerURL(),
 				SAMLConstants.SAML2_REDIRECT_BINDING_URI);
 		if(endpoint == null) {
 			log.error("Cannot generate saml endPoint for redirect binding!");
@@ -121,8 +116,7 @@ public class SAMLSsoService {
 
 		 log.info("SAMLRequest HTTP Post Binding");
 		 Endpoint endpoint =
-		 EndpointGenerator.generateEndpoint(SingleSignOnService.DEFAULT_ELEMENT_NAME,
-		 _conf.getSSOTargetURL(SAMLConstants.SAML2_POST_BINDING_URI),
+		 SAMLUtil.generateEndpoint( _conf.getSSOTargetURL(SAMLConstants.SAML2_POST_BINDING_URI),
 		 _conf.getConsumerURL(), SAMLConstants.SAML2_POST_BINDING_URI);
 		 if(endpoint == null) {
 				log.error("Cannot generate saml endPoint for post binding!");
@@ -155,8 +149,7 @@ public class SAMLSsoService {
 			}
 
 		 Endpoint endpoint =
-		 EndpointGenerator.generateEndpoint(SingleLogoutService.DEFAULT_ELEMENT_NAME,
-				 logoutSrvLocation,_conf.getConsumerURL(), SAMLConstants.SAML2_POST_BINDING_URI);
+				 SAMLUtil.generateEndpoint(	 logoutSrvLocation,_conf.getConsumerURL(), SAMLConstants.SAML2_POST_BINDING_URI);
 		 if(endpoint == null) {
 				log.error("Cannot generate saml logout endPoint for post binding!");
 				return null;
@@ -208,7 +201,7 @@ public class SAMLSsoService {
 			return null;
 		}
 
-		return SimpleAuthnRequestBuilder.create(_conf.getConsumerURL(), _conf.getSSOTargetURL(binding),
+		return SAMLUtil.createAuthRequest(_conf.getConsumerURL(), _conf.getSSOTargetURL(binding),
 				_conf.getIssuerName(), binding);
 
 	}
@@ -220,7 +213,7 @@ public class SAMLSsoService {
 			return null;
 		}
 
-		return LogoutRequestBuilder.genererateLogoutRequest(nameId, sessionIndex, logoutURL, _conf.getIssuerName());
+		return SAMLUtil.genererateLogoutRequest(nameId, sessionIndex, logoutURL, _conf.getIssuerName());
 	}
 
 	private String samlHTTPRedirect(SAMLObject request, String relayState, Endpoint endpoint) {

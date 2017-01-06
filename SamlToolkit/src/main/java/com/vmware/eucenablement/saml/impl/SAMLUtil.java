@@ -12,7 +12,6 @@ package com.vmware.eucenablement.saml.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -20,27 +19,24 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.core.xml.io.Marshaller;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.LogoutRequest;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.SessionIndex;
+import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Element;
 
 public class SAMLUtil {
 	private static Logger log = LoggerFactory.getLogger(SAMLUtil.class);
@@ -54,20 +50,22 @@ public class SAMLUtil {
 		return UUID.randomUUID().toString();
 	}
 
+	private static XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+
 	 /**
      * Generate SAML object according to the element name.
      *
      * @param	name	element name
      * @return 	SAML object; This function will return null if cannot build SAML object
      */
-	public static <T extends XMLObject> T buildSAMLObject(@Nonnull final QName name) {
+	private static <T extends XMLObject> T buildSAMLObject(@Nonnull final QName name) {
 		T object = null;
 		if(name == null) {
 			return null;
 		}
 
 		try {
-			XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+
 			XMLObjectBuilder<T> builder = (XMLObjectBuilder<T>) builderFactory.getBuilder(name);
 			if (builder != null) {
 				object = builder.buildObject(name);
@@ -80,94 +78,8 @@ public class SAMLUtil {
 		return object;
 	}
 
-	 /**
-     * Transfer XMLObject to string content.
-     *
-     * @param	object	XMLObject
-     * @return 	The content of XMLObject
-     */
-	public static String transferSAMLObject2String(final XMLObject object) {
-		Element element = null;
-		String xmlString = null;
-
-		if (object instanceof SignableSAMLObject && ((SignableSAMLObject) object).isSigned()
-				&& object.getDOM() != null) {
-			element = object.getDOM();
-		} else {
-			try {
-				Marshaller out = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(object);
-				out.marshall(object);
-				element = object.getDOM();
-
-			} catch (MarshallingException e) {
-				log.error("Caught MarshallingException", e);
-				// logger.error(e.getMessage(), e);
-			}
-		}
-
-		if (element == null) {
-			return null;
-		}
-
-		try {
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			StreamResult result = new StreamResult(new StringWriter());
-			DOMSource source = new DOMSource(element);
-
-			transformer.transform(source, result);
-			xmlString = result.getWriter().toString();
-		} catch (TransformerConfigurationException e) {
-			log.error("Caught TransformerConfigurationException", e);
-		} catch (TransformerException e) {
-			log.error("Caught TransformerException", e);
-		}
-		return xmlString;
-	}
-
-	 /**
-     * Generate SAML object according to the class name of SAML Object.
-     *
-     * @param	clazz	class name of SAML Object
-     * @return 	SAML object; This function will return null if cannot build SAML object
-     */
-	public static <T> T buildSAMLObject(final Class<T> clazz) {
-		T object = null;
-		try {
-			XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-			QName defaultElementName = (QName) clazz.getDeclaredField("DEFAULT_ELEMENT_NAME").get(null);
-			object = (T) builderFactory.getBuilder(defaultElementName).buildObject(defaultElementName);
-		} catch (IllegalAccessException e) {
-			log.error("Cannot build SAMLObject because IllegalAccessException generated", e);
-		} catch (NoSuchFieldException e) {
-			log.error("Cannot build SAMLObject because NoSuchFieldException generated", e);
-		}
-
-		return object;
-	}
-
-	 /**
-     * Decode base64 message.
-     *
-     * @param	base64Content base64 message content
-     * @return 	SAML object; This function will return null if cannot build SAML object
-     */
-	public static String decodeFromBase64(String base64Content) throws Exception {
-		Base64 base64 = new Base64();
-		byte[] decodedB = base64.decode(base64Content);
-		String decodedResponse = new String(decodedB);
-
-		return decodedResponse;
-	}
 
 
-	 /**
-     * convert key to pem format
-     *
-     */
-	public static String convertKeyToPemFormat(String key) {
-		return formatPEMString(VidmSamlConstants.BEGIN_PRIVATE_FULL, VidmSamlConstants.END_PRIVATE_FULL, key);
-	}
 
 	 /**
      * convert key to pem format
@@ -222,47 +134,8 @@ public class SAMLUtil {
 			return null;
 		}
 		/*
-		 * Wrong key for test cert = "-----BEGIN CERTIFICATE-----\n" +
+		 * Test cert = "-----BEGIN CERTIFICATE-----\n" +
 		 * "MIID7DCCAtSgAwIBAgIFFHYYEzIwDQYJKoZIhvcNAQELBQAwgawxCzAJBgNVBAYT\n"
-		 * +
-		 * "AlVTMRMwEQYDVQQIEwpjYWxpZm9ybmlhMRIwEAYDVQQHEwlQYWxvIEFsdG8xDzAN\n"
-		 * +
-		 * "BgNVBAoTBlZNd2FyZTEaMBgGA1UECxMRSG9yaXpvbi1Xb3Jrc3BhY2UxJDAiBgNV\n"
-		 * +
-		 * "BAMTG0ludGVybmFsIFJvb3QgQ0EgMTQ3NjE4MTMzMTEhMB8GCSqGSIb3DQEJARYS\n"
-		 * +
-		 * "dW5rbm93bkB2bXdhcmUuY29tMB4XDTE1MTAxMjEwMjIxMloXDTQ0MDIyNjEwMjIx\n"
-		 * +
-		 * "MlowgaUxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApjYWxpZm9ybmlhMRIwEAYDVQQH\n"
-		 * +
-		 * "DAlQYWxvIEFsdG8xDzANBgNVBAoMBlZNd2FyZTEaMBgGA1UECwwRSG9yaXpvbi1X\n"
-		 * +
-		 * "b3Jrc3BhY2UxHTAbBgNVBAMMFHZpZG0uc3Rlbmdkb21haW4uZnZ0MSEwHwYJKoZI\n"
-		 * +
-		 * "hvcNAQkBFhJ1bmtub3duQHZtd2FyZS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IB\n"
-		 * +
-		 * "DwAwggEKAoIBAQDyj9UYrlYv/JlsbYlSRTQ/18HIgjWuNcE/V22xs2ZlQZpUXEPK\n"
-		 * +
-		 * "OIiaklqUh0yrIuq1TsszBgQxso774UyM2lAKI00+WM8A0n2JxBxJx68Md99vruG6\n"
-		 * +
-		 * "2mcjgrc0jEGVQoAQTzt0aXtNOmisjTPKxlYNegX/YuYMh78WVbv5zgDAuzzZX4P3\n"
-		 * +
-		 * "LWXwW/aqPQkVZMFvFaeiltEmG2iBdxM9s8ey9utq8dx/6L0mFhatBECPkkeqTZ5N\n"
-		 * +
-		 * "1gwqsXOtkvUSiA0a6olKak1e4dJ4YeqKDljkp5+WMIZbwJWxWLnvzgzkqgX9Aovv\n"
-		 * +
-		 * "v9eP1djB6dvpvEeUMqVVY2EF866HFDr2Vbi1AgMBAAGjGjAYMAkGA1UdEwQCMAAw\n"
-		 * +
-		 * "CwYDVR0PBAQDAgXgMA0GCSqGSIb3DQEBCwUAA4IBAQAy3XSX5ODMwtVBCQDwz7eY\n"
-		 * +
-		 * "zGYWIweNazR54JSI5mGlyx+iynL3E/tCC1idZMq6Xz331nFHVXK2j5FsNzOpUEJK\n"
-		 * +
-		 * "OqsdtovirrGgJ+RqxieGP+vIfAgFhAG+VjhH6UvvLftSvbTp5Kum8KSI8H5k6H4F\n"
-		 * +
-		 * "AQjuqiqao5nji7IO+PLFJ9tEIybGK99riKJOKcUnr+px9fHxrphYOgCSw5o0zl8G\n"
-		 * +
-		 * "dHdO8dmM0WLLKxbm11rzxSmn3lS6dUF6+SVrVUJd4Ln0Ujkt/mxUPdzKRbIi/aVh\n"
-		 * +
 		 * "qNHgsx8lHUoenasijd4sJPnj3YKz2Q9lHjSIOgMK41PSgVymOY2W7y2ANoNNKR0Q\n"
 		 * + "-----END CERTIFICATE-----";
 		 */
@@ -298,5 +171,98 @@ public class SAMLUtil {
 		issuer.setFormat(NameIDType.ENTITY);
 
 		return issuer;
+	}
+
+
+    /**
+     * Generate endpoint based on the input parameters.
+     *
+     * @param service 				Element name of service
+     * @param location 				URI, usually a URL, for the location of the Endpoint
+     * @param responseLocation		The URI responses should be sent to this for this Endpoint
+     * @param binding				The URI identifier for the binding supported by the Endpoint
+     */
+	public static Endpoint generateEndpoint( String location, String responseLocation, String binding) {
+		Endpoint samlEndpoint = SAMLUtil.buildSAMLObject(SingleSignOnService.DEFAULT_ELEMENT_NAME);
+
+		samlEndpoint.setLocation(location);
+		if (binding != null) {
+			samlEndpoint.setBinding(binding);
+		}
+
+		if (StringUtils.isNotEmpty(responseLocation))
+			samlEndpoint.setResponseLocation(responseLocation);
+
+		return samlEndpoint;
+	}
+
+
+	 /**
+    * Generate SLO request
+    *
+    * @param	nameIdValue		user name
+    * @param	sessionIndex	Session index of SSO
+    * @param	logoutURL		the location of SLO
+    * @param	issuerName		request sender
+    * @return 	SAML object; This function will return null if cannot build SAML object
+    */
+	public static LogoutRequest genererateLogoutRequest(String nameIdValue, String sessionIndex, String logoutURL,
+			String issuerName) {
+		LogoutRequest logoutRequest = (LogoutRequest) SAMLUtil.buildSAMLObject(LogoutRequest.DEFAULT_ELEMENT_NAME);
+
+		logoutRequest.setID(SAMLUtil.generateSamlId());
+		logoutRequest.setDestination(logoutURL);
+
+		logoutRequest.setIssueInstant(new DateTime());
+		logoutRequest.setIssuer(SAMLUtil.generateIssuer(issuerName));
+		SessionIndex sessionIndexElement = (SessionIndex) SAMLUtil.buildSAMLObject(SessionIndex.DEFAULT_ELEMENT_NAME);
+		sessionIndexElement.setSessionIndex(sessionIndex);
+		logoutRequest.getSessionIndexes().add(sessionIndexElement);
+
+		NameID nameId = (NameID) SAMLUtil.buildSAMLObject(NameID.DEFAULT_ELEMENT_NAME);
+		nameId.setValue(nameIdValue);
+		logoutRequest.setNameID(nameId);
+
+		return logoutRequest;
+	}
+
+
+	/**
+	 * generate simple saml sso request
+	 *
+	 * @param assertionConsumerServiceURL   consumer URL to handle the SSO response
+	 * @param ssoTargetUrl					SSO service URL on IDP
+	 * @param issuerName					issuer of this application
+	 * @param binding						binding type to communicate with IDP for SSO feature
+	 */
+	public static AuthnRequest createAuthRequest(String assertionConsumerServiceURL, String ssoTargetUrl, String issuerName,
+			String binding) {
+
+		AuthnRequest request = (AuthnRequest) SAMLUtil.buildSAMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME);
+
+		request.setAssertionConsumerServiceURL(assertionConsumerServiceURL);
+		request.setID( SAMLUtil.generateSamlId());
+		request.setIssueInstant(new DateTime());
+		request.setDestination(ssoTargetUrl);
+		request.setIssuer(SAMLUtil.generateIssuer(issuerName));
+
+		// protocol binding
+		request.setProtocolBinding(binding);
+		request.setNameIDPolicy(buildNameIdPolicy());
+		return request;
+	}
+
+
+
+
+	/**
+	 * build name id policy
+	 */
+	private static NameIDPolicy buildNameIdPolicy() {
+		NameIDPolicy nameIDPolicy = SAMLUtil.buildSAMLObject(NameIDPolicy.DEFAULT_ELEMENT_NAME);
+		nameIDPolicy.setAllowCreate(true);
+		nameIDPolicy.setFormat(NameIDType.TRANSIENT);
+
+		return nameIDPolicy;
 	}
 }

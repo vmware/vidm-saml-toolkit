@@ -58,29 +58,29 @@ Access http://localhost:8080/SamlSample with any Internet browser after your Sam
 
 You may need the following Java Classes in "SamlToolkit.jar" to integrate your web application with vIDM:
 
-com.vmware.samltoolkit.SSOService
+    com.vmware.samltoolkit.SSOService
 
-com.vmware.samltoolkit.SAMLToolkitConf
+    com.vmware.samltoolkit.SAMLToolkitConf
 
-com.vmware.samltoolkit.SamlSsoResponse
+    com.vmware.samltoolkit.SamlSsoResponse
 
 Step 1. New a SSOService object when your web server is started
 
-   SAMLToolkitConf conf = new SAMLToolkitConf();
+    SAMLToolkitConf conf = new SAMLToolkitConf();
    
-   conf.setIdpURL("tenantxxx.vmwareidentity.com");
+    conf.setIdpURL("tenantxxx.vmwareidentity.com");
    
-   conf.setConsumerURL("http://localhost:8080/SamlSample/consume");
+    conf.setConsumerURL("http://localhost:8080/SamlSample/consume");
    
-   conf.setByPassSSLCertValidation(true);
+    conf.setByPassSSLCertValidation(true);
    
-   SSOService service = new SSOService(conf);
+    SSOService service = new SSOService(conf);
   
 Step 2. Redirect the login request to vIDM. 
    
-   String redirectURL = service.getSSOURLRedirect("");
+    String redirectURL = service.getSSOURLRedirect("");
 
-   response.sendRedirect(redirectURL);
+    response.sendRedirect(redirectURL);
    
 Step 3. Implement your own SAML consumer service like this (can be a Servlet, JSP, or any other):
    

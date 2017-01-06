@@ -1,5 +1,5 @@
 @echo off
-echo  This should be executed in the same folder with SamlSample-jar-with-dependencies.jar and webapp folder
+echo  This can not be executed in src folder. Please execute it in target folder
 
 set curPath=%~dp0
 @echo Current Folder %cd%
