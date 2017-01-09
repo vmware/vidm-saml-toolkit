@@ -62,7 +62,7 @@ public class SAMLSsoService {
 	public SAMLSsoResponse decodeSAMLResponse(String encodedSAMLResponse) throws Exception {
 		// Just for debug
 		/// String s = request.getParameter("SAMLResponse");
-		log.info("SAML Response is:" + encodedSAMLResponse);
+		log.debug("SAML Response is:" + encodedSAMLResponse);
 
 		SimpleSAMLMessageDecoder decoder = new SimpleSAMLMessageDecoder();
 		decoder.setSAMLResponse(encodedSAMLResponse);

@@ -16,9 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SAMLToolkitConf {
 
-	private String issuerName;
+	private String issuerName = null;
 
-	private String consumerURL;
+	private String consumerURL = null;
 
 	// this map should contain only two bindings for now, one for redirect, one
 	// for post
@@ -28,8 +28,8 @@ public class SAMLToolkitConf {
 	// future
 	private Map<String, String> logoutBindings = new ConcurrentHashMap<String, String>();
 
-	private String certificate;
-	private String idpURL;
+	private String certificate = null;
+	private String idpURL = null;
 
 	private boolean byPassSSLCertValidation = false;
 

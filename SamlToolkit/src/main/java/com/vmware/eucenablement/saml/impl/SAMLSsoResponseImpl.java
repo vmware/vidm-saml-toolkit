@@ -67,7 +67,7 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 			// TODO: define self exception
 			throw new SignatureException("Content is null");
 		}
-		if (responseContent.getAssertions().size() > 0) {
+		if ((responseContent.getAssertions() != null) && (responseContent.getAssertions().size() > 0)) {
 			Assertion assertion = responseContent.getAssertions().get(0);
 			// getname id
 			if (assertion != null) {
@@ -188,16 +188,25 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 			}
 
 			// validate assertion signature
-			for (int i = 0; i < resp.getAssertions().size(); i++) {
-				Assertion assertion = resp.getAssertions().get(i);
-				if (assertion != null && assertion.getSignature() != null) {
-					boolean validateRes = validateSignature(assertion.getSignature());
-					if (validateRes == false) {
-						log.warn("validate assertion failed!");
+			if(resp.getAssertions() != null) {
+				boolean assertionValid = true;
+				for (int i = 0; i < resp.getAssertions().size(); i++) {
+					Assertion assertion = resp.getAssertions().get(i);
+					if (assertion != null && assertion.getSignature() != null) {
+						boolean validateRes = validateSignature(assertion.getSignature());
+						if (validateRes == false) {
+							log.warn("validate assertion failed!");
+							assertionValid = false;
+							break;
+						}
 					}
 				}
+				
+				if(assertionValid == false) {
+					break;
+				}
 			}
-
+			
 			checkResult = true;
 		} while (false);
 

@@ -111,7 +111,7 @@ public class IdpDiscoveryService {
 			};
 
 			if (bypassSSLCertValidation) {
-				log.info("bypass cert validation");
+				log.debug("bypass cert validation");
 				try {
 					SSLContext ctx;
 					ctx = SSLContext.getInstance("TLS");
@@ -140,8 +140,10 @@ public class IdpDiscoveryService {
 			this.idpEntityDescriptor = provider.resolveSingle(criteriaSet);
 		} catch (ResolverException e) {
 			log.error("Cannot resolve single to get entity descriptor", e);
+			return false;
 		} catch (ComponentInitializationException e) {
 			log.error("Caught ComponentInitializationException", e);
+			return false;
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;

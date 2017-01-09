@@ -45,20 +45,21 @@ public class ConsumerServlet implements Servlet{
 		String s = request.getParameter("SAMLResponse");
 
 		HttpSession session = request.getSession();
-		SAMLSsoResponse ssoResponse;
+		SAMLSsoResponse ssoResponse = null;
 		try {
 			ssoResponse = MySSO.getSSOService().decodeSSOResponse(s);
 			if((ssoResponse != null) && (ssoResponse.isValid()) && (ssoResponse.ssoSucceed())) {
 			    session.setAttribute("userName", ssoResponse.getNameId());
 			    response.sendRedirect("userpage.jsp");
 			    return;
+			} else {
+				log.error("Failed to get valid sso response!");
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(),e);
 			throw new ServletException(e);
 		}
 		throw new ServletException("Failed to login-Invalid SSO");
-
 	}
 
 	@Override

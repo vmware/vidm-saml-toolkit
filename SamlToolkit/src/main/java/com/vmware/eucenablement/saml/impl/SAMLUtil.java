@@ -61,6 +61,7 @@ public class SAMLUtil {
 	private static <T extends XMLObject> T buildSAMLObject(@Nonnull final QName name) {
 		T object = null;
 		if(name == null) {
+			log.error("Failed to build SAML Object: QName is null!");
 			return null;
 		}
 
@@ -69,6 +70,8 @@ public class SAMLUtil {
 			XMLObjectBuilder<T> builder = (XMLObjectBuilder<T>) builderFactory.getBuilder(name);
 			if (builder != null) {
 				object = builder.buildObject(name);
+			} else {
+				log.error("XMLObject for " + name.toString() + " is null!");
 			}
 		} catch (Exception e) {
 			log.error("Build SAML Object failed", e);
@@ -131,6 +134,7 @@ public class SAMLUtil {
 
 		// return null if no certificate content
 		if (null == cert) {
+			log.error("The input cert for transfer2X509Certificate is null!");
 			return null;
 		}
 		/*

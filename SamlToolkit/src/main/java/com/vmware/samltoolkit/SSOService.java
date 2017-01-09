@@ -26,11 +26,19 @@ public class SSOService {
 	private SAMLSsoService _service;
 
 	public String getVIDMURL() {
-		return this.config.getIdpURL();
+		if(this.config != null) {
+			return this.config.getIdpURL();
+		} else {
+			return null;
+		}
 	}
 
 	public String getConsumerURL() {
-		return this.config.getConsumerURL();
+		if(this.config != null) {
+			return this.config.getConsumerURL();
+		} else {
+			return null;
+		}
 	}
 
 	public SAMLToolkitConf getSAMLToolkitConf() {
