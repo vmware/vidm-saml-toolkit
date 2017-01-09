@@ -10,8 +10,7 @@ This product may include a number of subcomponents with separate copyright notic
 
 -->
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="sample.MySSO" %>
-<%@ page import="sample.MySSO" %>
+<%@ page import="com.vmware.eucenablement.saml.sample.MySSO" %>
 <html>
 
 	<!-- header -->
@@ -43,7 +42,7 @@ This product may include a number of subcomponents with separate copyright notic
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                 	 <div class="jumbotron" style="color:#000">
-			            <h2>You have logged out from VIDM!</h2>
+			            <h2>You have logged out from vIDM!</h2>
 			        </div>
 			        <div>
 	                	<form action="index.jsp" method="get">

@@ -11,7 +11,7 @@ This product may include a number of subcomponents with separate copyright notic
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="sample.MySSO" %>
+<%@ page import="com.vmware.eucenablement.saml.sample.MySSO" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <!-- header -->
@@ -28,7 +28,7 @@ This product may include a number of subcomponents with separate copyright notic
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">SAML TOOLKIT</h1>
-                        <p class="intro-text">A toolkit to facilitate the VIDM users to have their business application SAML enabled to play with VIDM.</p>
+                        <p class="intro-text">A toolkit to facilitate the vIDM users to have their business application SAML enabled to play with vIDM.</p>
                         			<form action="idpDiscovery.jsp" method="get" style="padding: 2rem;">
 					<div align="middle">
 					<input type=submit value="CONFIGURE" class="btn btn-default btn-lg" title="Configure your vIDM (Identity Provider)">

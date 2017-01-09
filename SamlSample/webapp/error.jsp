@@ -23,7 +23,7 @@ This product may include a number of subcomponents with separate copyright notic
 			<br/>
 			<div style="width: 500px;MARGIN-RIGHT: auto; MARGIN-LEFT: auto; width:600px">
 				<div style="margin:0 auto;left: 35%;padding-right: 0px;text-align: center;font-family: 'Open Sans';font-size: 20px; font-weight:bold;">
-					<div>VIDM Saml Toolkit Sample</div>
+					<div>vIDM Saml Toolkit Sample</div>
 					<br/>
 					<br/>
 					<div>Login failed</div>

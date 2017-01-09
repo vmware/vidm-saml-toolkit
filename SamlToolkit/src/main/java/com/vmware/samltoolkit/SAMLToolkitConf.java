@@ -1,13 +1,13 @@
 /*
  * VMware Identity Manager SAML Toolkit
-
-Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-
-This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
-
-This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
-
-*/
+ * 
+ * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+ * 
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
+ * 
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
+ * 
+ */
 package com.vmware.samltoolkit;
 
 import java.util.Collections;
@@ -20,12 +20,10 @@ public class SAMLToolkitConf {
 
 	private String consumerURL = null;
 
-	// this map should contain only two bindings for now, one for redirect, one
-	// for post
+	//contains only two bindings for now, one for redirect, one for post
 	private Map<String, String> loginBindings = new ConcurrentHashMap<String, String>();
 
-	// this map contain only one binding for redirect, may contain more in the
-	// future
+	// this map contain only one binding for redirect, may contain more in the future
 	private Map<String, String> logoutBindings = new ConcurrentHashMap<String, String>();
 
 	private String certificate = null;
@@ -34,10 +32,7 @@ public class SAMLToolkitConf {
 	private boolean byPassSSLCertValidation = false;
 
 	public String getIssuerName() {
-		if (issuerName == null) {
-			return this.consumerURL;
-		}
-		return issuerName;
+		return issuerName == null ? consumerURL : issuerName;
 	}
 
 	/**
@@ -72,8 +67,7 @@ public class SAMLToolkitConf {
 	}
 
 	/**
-	 * Optional. If not set, the bindings will be retrived
-	 * from IDP metadata
+	 * Optional. If not set, the bindings will be retrived from IDP metadata
 	 *
 	 * @param binding
 	 * @param targetURL
@@ -83,8 +77,7 @@ public class SAMLToolkitConf {
 	}
 
 	/**
-	 * Optional. If not set, the bindings will be retrived
-	 * from IDP metadata
+	 * Optional. If not set, the bindings will be retrived from IDP metadata
 	 *
 	 * @param binding
 	 * @param targetURL
@@ -121,7 +114,7 @@ public class SAMLToolkitConf {
 	 */
 	public void setIdpURL(String idpURL) {
 		// remove "/"
-		if((idpURL != null) && idpURL.endsWith("/")){
+		if ((idpURL != null) && idpURL.endsWith("/")) {
 			this.idpURL = idpURL.substring(0, idpURL.length() - 1);
 		} else {
 			this.idpURL = idpURL;

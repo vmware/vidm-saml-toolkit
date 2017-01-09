@@ -1,13 +1,13 @@
 /*
  * VMware Identity Manager SAML Toolkit
-
-Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-
-This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
-
-This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
-
-*/
+ * 
+ * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+ * 
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
+ * 
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
+ * 
+ */
 package org.opensaml.messaging.decoder;
 
 import java.io.ByteArrayOutputStream;
@@ -47,10 +47,10 @@ import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
- * Implements to encode redirect message and just return the content redirect URI
- * This class will not send redirect message directly
-*/
-public class SAMLRedirectMessageEncoder extends AbstractMessageEncoder {
+ * Implements to encode redirect message and just return the content redirect
+ * URI This class will not send redirect message directly
+ */
+public class SAMLRedirectMessageEncoder extends AbstractMessageEncoder<SAMLObject> {
 
 	private String redirectURL;
 	private static Logger log = LoggerFactory.getLogger(SAMLRedirectMessageEncoder.class);
@@ -121,9 +121,9 @@ public class SAMLRedirectMessageEncoder extends AbstractMessageEncoder {
 		SAMLObject outboundMessage = messageContext.getMessage();
 
 		if (outboundMessage instanceof RequestAbstractType) {
-			queryParams.add(new Pair<>("SAMLRequest", message));
+			queryParams.add(new Pair<String, String>("SAMLRequest", message));
 		} else if (outboundMessage instanceof StatusResponseType) {
-			queryParams.add(new Pair<>("SAMLResponse", message));
+			queryParams.add(new Pair<String, String>("SAMLResponse", message));
 		} else {
 			throw new MessageEncodingException(
 					"SAML message is neither a SAML RequestAbstractType or StatusResponseType");
@@ -131,18 +131,18 @@ public class SAMLRedirectMessageEncoder extends AbstractMessageEncoder {
 
 		String relayState = SAMLBindingSupport.getRelayState(messageContext);
 		if (SAMLBindingSupport.checkRelayState(relayState)) {
-			queryParams.add(new Pair<>("RelayState", relayState));
+			queryParams.add(new Pair<String, String>("RelayState", relayState));
 		}
 
 		SignatureSigningParameters signingParameters = SAMLMessageSecuritySupport
 				.getContextSigningParameters(messageContext);
 		if (signingParameters != null && signingParameters.getSigningCredential() != null) {
 			String sigAlgURI = getSignatureAlgorithmURI(signingParameters);
-			Pair<String, String> sigAlg = new Pair<>("SigAlg", sigAlgURI);
+			Pair<String, String> sigAlg = new Pair<String, String>("SigAlg", sigAlgURI);
 			queryParams.add(sigAlg);
 			String sigMaterial = urlBuilder.buildQueryString();
 
-			queryParams.add(new Pair<>("Signature",
+			queryParams.add(new Pair<String, String>("Signature",
 					generateSignature(signingParameters.getSigningCredential(), sigAlgURI, sigMaterial)));
 		} else {
 			log.debug("No signing credential was supplied, skipping HTTP-Redirect DEFLATE signing");

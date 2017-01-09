@@ -1,13 +1,13 @@
 /*
  * VMware Identity Manager SAML Toolkit
-
-Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-
-This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
-
-This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
-
-*/
+ * 
+ * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+ * 
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
+ * 
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
+ * 
+ */
 package org.opensaml.messaging.decoder;
 
 import java.io.ByteArrayInputStream;
@@ -32,19 +32,21 @@ import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
-*
-* A class that implements AbstractMessageDecoder and just to remove the dependency for httpservlet
-*/
-public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder {
+ *
+ * A simple standalone SAML message decoder.
+ * 
+ */
+public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject> {
 
+	private static Logger log = LoggerFactory.getLogger(SimpleSAMLMessageDecoder.class);
+	
 	private ParserPool parserPool;
+	
+	private String samlresponse;
 
 	public SimpleSAMLMessageDecoder() {
 		parserPool = XMLObjectProviderRegistrySupport.getParserPool();
 	}
-
-	private static Logger log = LoggerFactory.getLogger(SimpleSAMLMessageDecoder.class);
-	private String samlresponse;
 
 	public void setSAMLResponse(String response) {
 		this.samlresponse = response;
@@ -53,7 +55,7 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder {
 	@Override
 	protected void doDecode() throws MessageDecodingException {
 
-		MessageContext<SAMLObject> messageContext = new MessageContext<>();
+		MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
 
 		// TODO: shall we handle relay here?
 
@@ -65,7 +67,6 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder {
 		populateBindingContext(messageContext);
 
 		setMessageContext(messageContext);
-
 	}
 
 	/**

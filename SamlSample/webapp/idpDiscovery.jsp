@@ -22,7 +22,7 @@ This product may include a number of subcomponents with separate copyright notic
 	            <div class="container">
 	                <div class="col-lg-8 col-lg-offset-2">
 	                	<form action="configIDPURI.jsp" method="post">
-	                	<p>Your VIDM ROOT URL:</p> 
+	                	<p>Your vIDM ROOT URL:</p> 
 	                	<br/>
 						<div><input name="vidmidp" type="text" style="width: 300px;color:#fff;background-color:#000;" placeholder="https://yourcompany.vmwareidentity.com" value="https://yourcompany.vmwareidentity.com"></div>
 						<br/>

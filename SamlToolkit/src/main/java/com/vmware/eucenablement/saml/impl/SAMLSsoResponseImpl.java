@@ -1,14 +1,16 @@
 /*
  * VMware Identity Manager SAML Toolkit
-
-Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-
-This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
-
-This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
-
-*/
+ * 
+ * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+ * 
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
+ * 
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
+ * 
+ */
 package com.vmware.eucenablement.saml.impl;
+
+import java.util.List;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -29,32 +31,34 @@ import org.slf4j.LoggerFactory;
 import com.vmware.samltoolkit.SAMLSsoResponse;
 import com.vmware.samltoolkit.SAMLToolkitConf;
 
-
 /**
- * The implementation of SSO response
- * This class will be generated according to the message context of SSO response.
+ * The implementation of SSO response. This class will be generated according to
+ * the message context of SSO response.
  *
  */
 public class SAMLSsoResponseImpl implements SAMLSsoResponse {
+	
 	private static final long serialVersionUID = 4508967938573947130L;
+	
 	private static Logger log = LoggerFactory.getLogger(SAMLSsoResponseImpl.class);
 
-	/**Whether response content is valid SSO response*/
+	/** Whether response content is a valid SSO response */
 	private boolean isValidResponse = false;
 
-	/**SSO login user*/
+	/** SSO login user */
 	private String username = null;
 
-	/**SSO session id*/
+	/** SSO session id */
 	private String sessionid = null;
 
-	/**Login result of SSO*/
+	/** Login result of SSO */
 	private boolean loginSuccess = false;
 
-	/**Configuration of current service provider*/
+	/** Configuration of current service provider */
 	private SAMLToolkitConf _conf;
 
-	public SAMLSsoResponseImpl(MessageContext context, SAMLToolkitConf conf) throws SignatureException {
+	public SAMLSsoResponseImpl(MessageContext<?> context, SAMLToolkitConf conf) throws SignatureException {
+		
 		this._conf = conf;
 		Response responseContent = null;
 		boolean validResult = check(context);
@@ -67,8 +71,11 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 			// TODO: define self exception
 			throw new SignatureException("Content is null");
 		}
-		if ((responseContent.getAssertions() != null) && (responseContent.getAssertions().size() > 0)) {
+		
+		if (responseContent.getAssertions() != null && responseContent.getAssertions().size() > 0) {
+			
 			Assertion assertion = responseContent.getAssertions().get(0);
+			
 			// getname id
 			if (assertion != null) {
 				Subject subject = assertion.getSubject();
@@ -82,23 +89,22 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 
 			// get session id
 
-			if ((assertion != null) && (assertion.getAuthnStatements().size() > 0)) {
+			if (assertion != null && assertion.getAuthnStatements().size() > 0) {
 				AuthnStatement authStatement = assertion.getAuthnStatements().get(0);
 				if (authStatement != null) {
 					sessionid = authStatement.getSessionIndex();
 				}
 			}
-
 		}
 
 		Status st = responseContent.getStatus();
-		if ((st != null) && (st.getStatusCode() != null)) {
+		if (st != null && st.getStatusCode() != null) {
 			if (st.getStatusCode().getValue().compareToIgnoreCase(StatusCode.SUCCESS) == 0) {
 				loginSuccess = true;
 			}
 		}
 
-		this.isValidResponse = validResult && (responseContent != null);
+		this.isValidResponse = validResult && responseContent != null;
 	};
 
 	@Override
@@ -150,66 +156,59 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 		return true;
 	}
 
-	private boolean check(MessageContext context) {
+	private boolean check(MessageContext<?> context) {
+		
 		Object obj = context.getMessage();
-		boolean checkResult = false;
-		do {
-
-			// whether is valid response
-			Response resp = null;
-			if (obj instanceof Response) {
-				resp = (Response) obj;
-			} else {
-				log.error("SAML response format is not valid");
-				break;
+		
+		// whether is valid response
+		Response resp = null;
+		if (!(obj instanceof Response)) {
+			log.error("SAML response format is not valid");
+			return false;
+		}
+		
+		resp = (Response) obj;
+		
+		// validate responseto
+		// In sso, the field should be the UUID of authnrequest
+		if (resp.getInResponseTo() != null) {
+			if (validateInResponseTo(resp.getInResponseTo()) == false) {
+				log.error("ResponseTo id doesn't match the sender.");
+				return false;
 			}
+		}
 
-			// validate responseto
-			// In sso, the field should be the UUID of authnrequest
-			if (resp.getInResponseTo() != null) {
-				if (validateInResponseTo(resp.getInResponseTo()) == false) {
-					log.error("ResponseTo id doesn't match the sender.");
-					break;
-				}
+		// validate signature
+		if (resp.getSignature() != null) {
+			if (validateSignature(resp.getSignature()) == false) {
+				log.error("Failed to validate response signature");
+				return false;
 			}
+		}
 
-			// validate signature
-			if (resp.getSignature() != null) {
-				if (validateSignature(resp.getSignature()) == false) {
-					log.error("Failed to validate response signature");
-					break;
-				}
-			}
+		// validate issuer
+		if (validateIssuer(resp.getIssuer()) == false) {
+			log.error("The result of validating issuer is failure.");
+			return false;
+		}
 
-			// validate issuer
-			if (validateIssuer(resp.getIssuer()) == false) {
-				log.error("The result of validating issuer is failure.");
-				break;
-			}
-
-			// validate assertion signature
-			if(resp.getAssertions() != null) {
-				boolean assertionValid = true;
-				for (int i = 0; i < resp.getAssertions().size(); i++) {
-					Assertion assertion = resp.getAssertions().get(i);
-					if (assertion != null && assertion.getSignature() != null) {
-						boolean validateRes = validateSignature(assertion.getSignature());
-						if (validateRes == false) {
-							log.warn("validate assertion failed!");
-							assertionValid = false;
-							break;
-						}
-					}
-				}
-				
-				if(assertionValid == false) {
-					break;
-				}
-			}
+		// validate assertion signature
+		List<Assertion> assertions = resp.getAssertions();
+		if (assertions == null) {
+			log.error("No assertions");
+			return false;
+		}
 			
-			checkResult = true;
-		} while (false);
+		for (Assertion assertion : resp.getAssertions()) {
+			if (assertion != null && assertion.getSignature() != null) {
+				boolean validateRes = validateSignature(assertion.getSignature());
+				if (validateRes == false) {
+					log.warn("validate assertion failed!");
+					return false;
+				}
+			}
+		}
 
-		return checkResult;
+		return true;
 	}
 }

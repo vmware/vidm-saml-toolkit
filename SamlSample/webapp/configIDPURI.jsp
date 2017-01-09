@@ -11,8 +11,8 @@ This product may include a number of subcomponents with separate copyright notic
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="sample.MySSO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.vmware.eucenablement.saml.sample.MySSO" %>
 <%@ page import="com.vmware.samltoolkit.SSOService"%>
 <%@ page import="com.vmware.samltoolkit.SAMLToolkitConf"%>
 <%@ page import="java.util.Map" %>
@@ -90,7 +90,7 @@ This product may include a number of subcomponents with separate copyright notic
 					<%} else {%>
 						<div class="jumbotron" style="color:#000">
 				            <h2>Cannot fetch data from Idp Service!</h2>
-				            <p>Hints: Bypass certificate validation if vIDM is using self-signed certificate. Check your vIDM URL and VIDM service.</p>
+				            <p>Hints: Bypass certificate validation if vIDM is using self-signed certificate. Check your vIDM URL and vIDM service.</p>
 				         </div>
 				         <div>
 		                	<form action="idpDiscovery.jsp" method="get">

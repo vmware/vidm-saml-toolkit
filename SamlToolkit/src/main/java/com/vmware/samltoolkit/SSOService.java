@@ -1,13 +1,13 @@
 /*
  * VMware Identity Manager SAML Toolkit
-
-Copyright (c) 2016 VMware, Inc. All Rights Reserved.
-
-This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
-
-This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
-
-*/
+ * 
+ * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+ * 
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
+ * 
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
+ * 
+ */
 package com.vmware.samltoolkit;
 
 import java.util.List;
@@ -23,32 +23,22 @@ import com.vmware.eucenablement.saml.service.SAMLSsoService;
 
 public class SSOService {
 
-	private SAMLSsoService _service;
+	private final SAMLSsoService service;
+
+	private final SAMLToolkitConf config;
 
 	public String getVIDMURL() {
-		if(this.config != null) {
-			return this.config.getIdpURL();
-		} else {
-			return null;
-		}
+		return config.getIdpURL();
 	}
 
 	public String getConsumerURL() {
-		if(this.config != null) {
-			return this.config.getConsumerURL();
-		} else {
-			return null;
-		}
+		return config.getConsumerURL();
 	}
 
 	public SAMLToolkitConf getSAMLToolkitConf() {
-		return this.config;
+		return config;
 	}
-
-	private SAMLToolkitConf config;
-
-	private IdpDiscoveryService idpService;
-
+	
 	/**
 	 *
 	 * @param conf
@@ -56,12 +46,12 @@ public class SSOService {
 	 */
 	public SSOService(SAMLToolkitConf conf) throws Exception {
 		this.config = conf;
-		if (config == null || !config.isReady()) {
+		if (config == null || !config.isReady())
 			throw new Exception("Config not correct!!!");
-		}
 
 		if (config.shouldRequestVIDMMetaData()) {
-			idpService = new IdpDiscoveryService(config.getIdpURL(), config.isByPassSSLCertValidation());
+
+			IdpDiscoveryService idpService = new IdpDiscoveryService(config.getIdpURL(), config.isByPassSSLCertValidation());
 
 			IdpMainMetadata metadata = idpService.getMainMetadata();
 			List<IdpSsoMetadata> ssodataList = metadata.getSsoMetadata();
@@ -78,7 +68,7 @@ public class SSOService {
 
 		}
 
-		this._service = new SAMLSsoService(config);
+		this.service = new SAMLSsoService(config);
 
 	}
 
@@ -89,7 +79,7 @@ public class SSOService {
 	 * @throws Exception
 	 */
 	public String getSSOURLRedirect(String relayState) throws Exception {
-		return _service.getSAMLRequestURLRedirect(relayState);
+		return service.getSAMLRequestURLRedirect(relayState);
 	}
 
 	/**
@@ -99,7 +89,7 @@ public class SSOService {
 	 * @throws Exception
 	 */
 	public String getSSOHtmlPost(String relayState) throws Exception {
-		return _service.getSSOHtmlPost(relayState);
+		return service.getSSOHtmlPost(relayState);
 	}
 
 	/**
@@ -111,7 +101,7 @@ public class SSOService {
 	 * @throws Exception
 	 */
 	public String getLogoutURLRedirect() throws Exception {
-		return _service.getSAMLLogoutURLRedirect();
+		return service.getSAMLLogoutURLRedirect();
 	}
 
 	private static Logger log = LoggerFactory.getLogger(SSOService.class);
@@ -127,7 +117,7 @@ public class SSOService {
 	public SAMLSsoResponse decodeSSOResponse(String encodedSAMLResponse) throws Exception {
 		log.info("Receive SAML Response from request");
 		// String s = request.getParameter("SAMLResponse");
-		return _service.decodeSAMLResponse(encodedSAMLResponse);
+		return service.decodeSAMLResponse(encodedSAMLResponse);
 	}
 
 }

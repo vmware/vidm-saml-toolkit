@@ -3,7 +3,7 @@
 
 ## Overview
 
-VIDM SAML Toolkit is a simple Java SDK (software development kit) for web developers who want to implement "Sign In with VMware Identity Manager" for their web applications. 
+vIDM SAML Toolkit is a simple Java SDK (software development kit) for web developers who want to implement "Sign In with VMware Identity Manager" for their web applications. 
 
 It is not a small task for web developers to encode SAML request and decode SAML response without using any SAML library.
 
@@ -26,7 +26,7 @@ This Toolkit supports the following 4 functions:
 
 Option 1: Build in Eclipse
 
-1. Import these 3 projects into your workspace: vidmsaml, SamlSample, and SamlToolkit
+1. Import these 3 projects as existing Maven project into your workspace: vidmsaml, SamlSample, and SamlToolkit
 
 2. Run -> Run Configurations -> Maven Build, select "vidmsaml" as base directory, use "clean package" as goals. 
 
