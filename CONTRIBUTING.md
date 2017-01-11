@@ -6,9 +6,7 @@ The vidm-saml-toolkit project team welcomes contributions from the community. If
 signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any
 questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq).
 
-## Community
 
-## Getting Started
 
 ## Contribution Flow
 
@@ -66,7 +64,6 @@ git push --force-with-lease origin my-new-feature
 Be sure to add a comment to the PR indicating your new changes are ready to review, as GitHub does not generate a
 notification when you git push.
 
-### Code Style
 
 ### Formatting Commit Messages
 
@@ -80,4 +77,3 @@ and commits.
 
 When opening a new issue, try to roughly follow the commit message format conventions above.
 
-## Repository Structure
