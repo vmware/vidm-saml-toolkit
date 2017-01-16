@@ -20,7 +20,8 @@ This Toolkit supports the following 4 functions:
 ### Prerequisites
 
 * A valid vIDM administrator account, so you can add a web application from vIDM adminstration console
-* JDK 1.6 and Maven are required to build this project. The suggested development IDE is Eclipse + Maven plugin. You can choose any other IDE that you like. 
+* JDK 1.6 and Maven are required to build this project. The suggested development IDE is Eclipse + Maven plugin. You can choose any other IDE that you like.
+* Windows 7 platform or above
 
 ### Build
 
@@ -44,7 +45,7 @@ The Sample web server can be started with one of the following options:
 
 Option 1: Use the startup script for Windows OS 
 
-Go to "vidm-saml-toolkit\SamlSample\target" folder, double click "startup.bat"
+Go to "vidm-saml-toolkit\SamlSample\target" folder, double click "start.bat"
 
 Option 2: Debug in Eclipse
 
