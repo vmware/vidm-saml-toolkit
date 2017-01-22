@@ -103,7 +103,8 @@ This product may include a number of subcomponents with separate copyright notic
 				</div>
 			</div>
 		</section>
-		
+		<%if((facade != null) && (conf != null)) {
+					%>   
 		<section id="ConfigVIDM" class="content-section text-center" style="height:100%;width:100%;">
 				       <div class="row row-offcanvas">
 				        <div class="col-xs-12 col-sm-12">
@@ -135,5 +136,6 @@ This product may include a number of subcomponents with separate copyright notic
 				        </div><!--/.col-xs-12.col-sm-12-->
 				      </div>
 		</section>
+		<%} %>
 	</body>
 </html>
