@@ -1,12 +1,12 @@
 /*
  * VMware Identity Manager SAML Toolkit
- * 
+ *
  * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
- * 
- * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
- * 
- * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
- * 
+ *
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+ *
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+ *
  */
 package com.vmware.eucenablement.saml.impl;
 
@@ -37,9 +37,9 @@ import com.vmware.samltoolkit.SAMLToolkitConf;
  *
  */
 public class SAMLSsoResponseImpl implements SAMLSsoResponse {
-	
+
 	private static final long serialVersionUID = 4508967938573947130L;
-	
+
 	private static Logger log = LoggerFactory.getLogger(SAMLSsoResponseImpl.class);
 
 	/** Whether response content is a valid SSO response */
@@ -58,7 +58,7 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 	private SAMLToolkitConf _conf;
 
 	public SAMLSsoResponseImpl(MessageContext<?> context, SAMLToolkitConf conf) throws SignatureException {
-		
+
 		this._conf = conf;
 		Response responseContent = null;
 		boolean validResult = check(context);
@@ -68,14 +68,13 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 		}
 
 		if (responseContent == null || responseContent.getAssertions() == null) {
-			// TODO: define self exception
 			throw new SignatureException("Content is null");
 		}
-		
+
 		if (responseContent.getAssertions() != null && responseContent.getAssertions().size() > 0) {
-			
+
 			Assertion assertion = responseContent.getAssertions().get(0);
-			
+
 			// getname id
 			if (assertion != null) {
 				Subject subject = assertion.getSubject();
@@ -157,18 +156,18 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 	}
 
 	private boolean check(MessageContext<?> context) {
-		
+
 		Object obj = context.getMessage();
-		
+
 		// whether is valid response
 		Response resp = null;
 		if (!(obj instanceof Response)) {
 			log.error("SAML response format is not valid");
 			return false;
 		}
-		
+
 		resp = (Response) obj;
-		
+
 		// validate responseto
 		// In sso, the field should be the UUID of authnrequest
 		if (resp.getInResponseTo() != null) {
@@ -198,7 +197,7 @@ public class SAMLSsoResponseImpl implements SAMLSsoResponse {
 			log.error("No assertions");
 			return false;
 		}
-			
+
 		for (Assertion assertion : resp.getAssertions()) {
 			if (assertion != null && assertion.getSignature() != null) {
 				boolean validateRes = validateSignature(assertion.getSignature());

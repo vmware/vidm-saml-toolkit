@@ -60,8 +60,7 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 	 */
 	@Deprecated
 	public void setSAMLResponse(String response) {
-		this.samlmessage = response;
-		isdeflated = false;
+		this.setSAMLMessage(response);
 	}
 
 	/**

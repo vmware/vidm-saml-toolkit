@@ -172,7 +172,6 @@ public class SAMLUtil {
 			cf = CertificateFactory.getInstance("X.509");
 			x509 = (X509Certificate) cf.generateCertificate(certinputstream);
 		} catch (CertificateException e) {
-			// TODO Auto-generated catch block
 			log.error("Caught CertificateException", e);
 			return null;
 		}

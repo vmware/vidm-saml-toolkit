@@ -30,7 +30,7 @@ public class IDPService {
 	 * @throws Exception
 	 */
 	public IDPService(SAMLIDPConf conf) throws Exception {
-		//TODO
+
 		this.config = conf;
 		this._service = new SAMLIDPService(conf);
 

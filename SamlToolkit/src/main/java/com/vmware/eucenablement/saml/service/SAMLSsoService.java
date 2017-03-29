@@ -58,7 +58,7 @@ public class SAMLSsoService extends AbstractSAMLService{
 		log.debug("SAML Response is:" + encodedSAMLResponse);
 
 		SimpleSAMLMessageDecoder decoder = new SimpleSAMLMessageDecoder();
-		decoder.setSAMLResponse(encodedSAMLResponse);
+		decoder.setSAMLMessage(encodedSAMLResponse);
 		// decoder.setParserPool(parserPool);
 
 		decoder.initialize();
