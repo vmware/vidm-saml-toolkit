@@ -1,12 +1,12 @@
 /*
  * VMware Identity Manager SAML Toolkit
- * 
+ *
  * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
- * 
- * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
- * 
- * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
- * 
+ *
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+ *
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+ *
  */
 package com.vmware.samltoolkit;
 
@@ -21,6 +21,14 @@ import com.vmware.eucenablement.saml.api.IdpSsoMetadata;
 import com.vmware.eucenablement.saml.service.IdpDiscoveryService;
 import com.vmware.eucenablement.saml.service.SAMLSsoService;
 
+/**
+ *
+ * This is the SSO service for vIDM.
+ * vIDM plays the role of identity provider here, and this SSOService should be created and managed by some service provider
+ * Step 1, This SSOService generates SAML request (with service info) to vIDM,
+ * Step 2, This SSO Service decodes SAML response (containing user info) from vIDM
+ *
+ */
 public class SSOService {
 
 	private final SAMLSsoService service;
@@ -38,7 +46,7 @@ public class SSOService {
 	public SAMLToolkitConf getSAMLToolkitConf() {
 		return config;
 	}
-	
+
 	/**
 	 *
 	 * @param conf

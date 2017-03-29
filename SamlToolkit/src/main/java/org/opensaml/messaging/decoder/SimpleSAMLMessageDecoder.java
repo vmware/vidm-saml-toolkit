@@ -1,17 +1,20 @@
 /*
  * VMware Identity Manager SAML Toolkit
- * 
+ *
  * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
- * 
- * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
- * 
- * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
- * 
+ *
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+ *
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+ *
  */
 package org.opensaml.messaging.decoder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -34,22 +37,51 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 /**
  *
  * A simple standalone SAML message decoder.
- * 
+ *
  */
 public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject> {
 
 	private static Logger log = LoggerFactory.getLogger(SimpleSAMLMessageDecoder.class);
-	
+
 	private ParserPool parserPool;
-	
-	private String samlresponse;
+
+	private String samlmessage;
+
+
 
 	public SimpleSAMLMessageDecoder() {
 		parserPool = XMLObjectProviderRegistrySupport.getParserPool();
 	}
 
+	/**
+	 * @deprecated
+	 * @see setSAMLMessage
+	 * @param response
+	 */
+	@Deprecated
 	public void setSAMLResponse(String response) {
-		this.samlresponse = response;
+		this.samlmessage = response;
+		isdeflated = false;
+	}
+
+	/**
+	 *
+	 * @param samlmessage, can be either samlrequest or samlresponse
+	 */
+	public void setSAMLMessage(String samlmessage){
+		this.samlmessage = samlmessage;
+		isdeflated = false;
+	}
+
+	private boolean isdeflated = false;
+
+	/**
+	 *
+	 * @param deflatedSamlmessage
+	 */
+	public void setDefaltedSAMLMessage(String deflatedSamlmessage){
+		setSAMLMessage(deflatedSamlmessage);
+		this.isdeflated = true;
 	}
 
 	@Override
@@ -59,7 +91,10 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 
 		// TODO: shall we handle relay here?
 
-		InputStream base64DecodedMessage = getBase64DecodedMessage(samlresponse);
+		InputStream base64DecodedMessage = getBase64DecodedMessage(samlmessage);
+
+
+
 		SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(base64DecodedMessage);
 		messageContext.setMessage(inboundMessage);
 		log.info("Decoded SAML message");
@@ -81,9 +116,10 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 	 * @throws MessageDecodingException
 	 *             thrown if the message does not contain a base64 encoded SAML
 	 *             message
+	 * @throws DataFormatException
 	 */
 	private InputStream getBase64DecodedMessage(String encodedMessage) throws MessageDecodingException {
-		log.info("Getting Base64 encoded message from ");
+		log.info("Getting Base64 encoded message ");
 
 		if (Strings.isNullOrEmpty(encodedMessage)) {
 			log.error(" Invalid request/response for SAML 2 HTTP POST binding, null message.");
@@ -97,9 +133,25 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 			throw new MessageDecodingException("Unable to Base64 decode SAML message");
 		}
 
-		log.info("Decoded SAML message:\n{}", new String(decodedBytes));
-		return new ByteArrayInputStream(decodedBytes);
+		log.info("Decoded SAML message before deflated:\n{}", new String(decodedBytes));
+	     ByteArrayInputStream bytesIn = new ByteArrayInputStream(decodedBytes);
+		if (this.isdeflated){
+			  try {
+
+		            InflaterInputStream inflater = new InflaterInputStream(bytesIn, new Inflater(true));
+
+		            return inflater;
+		        } catch (Exception e) {
+		            log.error("Unable to Base64 decode and inflate SAML message", e);
+		            throw new MessageDecodingException("Unable to Base64 decode and inflate SAML message", e);
+		        }
+		}
+
+		return bytesIn;
 	}
+
+
+
 
 	private XMLObject unmarshallMessage(InputStream messageStream) throws MessageDecodingException {
 		try {
@@ -107,12 +159,16 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 			return message;
 		} catch (XMLParserException e) {
 			log.error("Error unmarshalling message from input stream", e);
+
 			throw new MessageDecodingException("Error unmarshalling message from input stream", e);
 		} catch (UnmarshallingException e) {
 			log.error("Error unmarshalling message from input stream", e);
 			throw new MessageDecodingException("Error unmarshalling message from input stream", e);
 		}
 	}
+
+
+
 
 	/**
 	 * Populate the context which carries information specific to this binding.

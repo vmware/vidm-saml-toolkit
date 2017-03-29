@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+	AssertionConsumerServiceURL="https://vidm.stengdomain.fvt/SAAS/auth/saml/response"
+	Destination="https://localhost:8443/SamlSample/saml2postlogin"
+	ForceAuthn="false" ID="_350d49f78a158907829eedd5535dc7c4" IssueInstant="2017-03-28T05:27:38.571Z"
+	ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+	ProviderName="vidm.stengdomain.fvt" Version="2.0">
+	<saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">https://vidm.stengdomain.fvt/SAAS/API/1.0/GET/metadata/sp.xml
+	</saml:Issuer>
+	<samlp:NameIDPolicy AllowCreate="false"
+		Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" />
+	<samlp:RequestedAuthnContext>
+		<saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified
+		</saml:AuthnContextClassRef>
+	</samlp:RequestedAuthnContext>
+</samlp:AuthnRequest>

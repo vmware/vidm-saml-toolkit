@@ -1,30 +1,20 @@
 /*
  * VMware Identity Manager SAML Toolkit
- * 
+ *
  * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
- * 
- * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
- * 
- * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
- * 
+ *
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+ *
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+ *
  */
 package com.vmware.eucenablement.saml.service;
 
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.decoder.HTTPPostMessageEncoder;
-import org.opensaml.messaging.decoder.SAMLRedirectMessageEncoder;
 import org.opensaml.messaging.decoder.SimpleSAMLMessageDecoder;
-import org.opensaml.messaging.encoder.MessageEncodingException;
-import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.binding.impl.SAMLOutboundDestinationHandler;
-import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
-import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.LogoutRequest;
@@ -37,13 +27,11 @@ import com.vmware.eucenablement.saml.impl.SAMLUtil;
 import com.vmware.samltoolkit.SAMLSsoResponse;
 import com.vmware.samltoolkit.SAMLToolkitConf;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 /**
  * Core service to handle Single Sign On and Single Log Out.
  *
  */
-public class SAMLSsoService {
+public class SAMLSsoService extends AbstractSAMLService{
 	private static Logger log = LoggerFactory.getLogger(SAMLSsoService.class);
 
 	private final SAMLToolkitConf _conf;
@@ -191,77 +179,6 @@ public class SAMLSsoService {
 		return SAMLUtil.genererateLogoutRequest(nameId, sessionIndex, logoutURL, _conf.getIssuerName());
 	}
 
-	private String samlHTTPRedirect(SAMLObject request, String relayState, Endpoint endpoint) {
 
-		MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
-		messageContext.setMessage(request);
-		if (relayState != null)
-			SAMLBindingSupport.setRelayState(messageContext, relayState);
-		messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getSubcontext(SAMLEndpointContext.class, true)
-				.setEndpoint(endpoint);
-
-		SAMLRedirectMessageEncoder encoder = new SAMLRedirectMessageEncoder();
-		encoder.setMessageContext(messageContext);
-
-		try {
-			encoder.initialize();
-			encoder.encode();
-
-			String url = encoder.getRedirectURL();
-			log.info("Redirect URL:" + url);
-			return url;
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	private String samlHTTPPost(SAMLObject request, String relayState, Endpoint endpoint) {
-		String htmlPostContent = null;
-
-		VelocityEngine velocityEngine = new VelocityEngine();
-		velocityEngine.setProperty(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
-		velocityEngine.setProperty(RuntimeConstants.OUTPUT_ENCODING, "UTF-8");
-		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-		velocityEngine.setProperty("classpath.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-		velocityEngine.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem");
-		velocityEngine.init();
-
-		MessageContext<SAMLObject> messageContext = new MessageContext<SAMLObject>();
-		try {
-			messageContext.setMessage(request);
-			messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-					.getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
-			if (relayState != null) {
-				SAMLBindingSupport.setRelayState(messageContext, relayState);
-			}
-			SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
-			handler.invoke(messageContext);
-		} catch (MessageHandlerException e) {
-			log.error("caught MessageHandlerException: ", e);
-			return htmlPostContent;
-		}
-
-		HTTPPostMessageEncoder encoder = new HTTPPostMessageEncoder();
-		encoder.setMessageContext(messageContext);
-		encoder.setVelocityEngine(velocityEngine);
-
-		try {
-			encoder.initialize();
-			encoder.prepareContext();
-			encoder.encode();
-			htmlPostContent = encoder.getHtmlPostContent();
-		} catch (ComponentInitializationException e) {
-			log.error("caught ComponentInitializationException: ", e);
-		} catch (MessageEncodingException e) {
-			log.error("caught MessageEncodingException: ", e);
-		} catch (Exception e) {
-			log.error("caught MessageEncodingException: ", e);
-		}
-
-		return htmlPostContent;
-	}
 
 }

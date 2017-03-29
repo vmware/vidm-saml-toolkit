@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	cacheDuration="P0Y0M30DT0H0M0.000S"
+	entityID="https://steng.vmwareidentity.asia/SAAS/API/1.0/GET/metadata/idp.xml"
+	validUntil="2026-06-05T15:32:28.000Z">
+	<md:IDPSSODescriptor WantAuthnRequestsSigned="true"
+		protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+		<md:KeyDescriptor use="signing">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIFDzCCAvegAwIBAgIHUv1hSNoTATANBgkqhkiG9w0BAQsFADA/MSAwHgYDVQQDDBdWTXdhcmUgSWRlbnRpdHkgTWFuYWdlcjEOMAwGA1UECgwFU1RFTkcxCzAJBgNVBAYTAlVTMB4XDTE2MDYwNzE1MzIyOFoXDTI2MDYwNTE1MzIyOFowPzEgMB4GA1UEAwwXVk13YXJlIElkZW50aXR5IE1hbmFnZXIxDjAMBgNVBAoMBVNURU5HMQswCQYDVQQGEwJVUzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANqH6ARCWTVNW9oO8DsgrTPIt7Inbrf7abPMMsnvUQRewBmvAaaYHu2w4fQMbOMQ5Cit4bCSJcc6cXFqVYxNN46JdXvpZO6Z1F4+B+X8J1E1ke7i5G0NzQEwv30lawzfit3rHvT0GmL3Lhu0OJsPuQcVZYUvQf5/pR0OU0V4zn8/P1uwpDsfvrHi4lX2zpvWwnds3vs6QCuHcrnQFznkaJziZBECoN13S567y60OkTPA8Ey+LuBZwMUDTVFLrrVS4O4eL4CGev6REihLnxqU1bGBtea6XEteVGQSNv5yRqNJW/2kaLql5irgvqRiZz5LhcdjWV9mAeUGrdr11DUf0i8XuDPoBRLIpKSnC4ZRlRRe777XRNr5jFEWUPfMVfxpnw6twMCIxD9R/obsSJJdzechN49fijCpEiq9u4T2+pgaCIhKmoaIh5np0gvVTpCcpYVe7a4WWGV3+PB8fRI2m8nqnO7Ohtlx/ys4Zu2r6iSbWCxMsBHroaOKAzg7uMuDl5GwtooKhI0KPnr8OCi5OfInxEbZMkjR2wElvUZONuK9y7MFfqQ9Pe8a66lAvuyIYsL1CRp78LvGGWVtmagQkggqz5HhtwjPxdKoxy5obJVxdNH9S/bqmMUol4bLzeRL6TCBFRuf2zL430CZnfcj7pc04895z0vAyiuGJIlIXn3DAgMBAAGjEDAOMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAFmjy9qhPXvnA9fqge0mo2nNkD0uqStEKHemoXA0ANPcWingHuyiXpA5L1jXDANMFogfGR6YFoDEsKPa0ZRfuvVNCuX2neB8YudEfTJNybBClJTFQvVtuqaiL214bDyls+soFhwSkkGFXXZ5xvclfIRTVoB2EFA8z0wNohS8ANvM0UTbXAE/WzHdA8PftpvDVhweSxWd6Wc3IdLQ2jvV32b9+8zYcAuR7KYbe7sj/32oe4qlHHs9p7oExA3XbUasOmwvHcToTrroRkwIWdI/SG6TC0f437g8foBOFJk5WUrMQ19BI0J0RQThty9cw2ZeotWzkuXPChicrgKHwGF8gbiYD1t/AdcNjmU4TfmJnge7vYzdahotD1Ftb70B1vFmETUUN55JyGqhQK9zQ8Z/rjOKNK7w394QOwKchmCGm6MMxFKHIQOieRJkpTMFc5OYt1gvSCQbX/p12X08Z6+izEesdSFGK4kQF5w0iMrIRxhC4ND8tSu6t8vXMTSHVbNH8ed6WABXWTMqQ1kKtw1PJKHNmEa4u0J3kONJU33HVvLlS2cx2ss0cjDQ3zGQAcUQMwS8l23UBbgFHfZ4LS8f/30hq7UtUVhdYIdzw3MhinYQW1T9tX62mIPxHyMm3HTJ2lmJZHby1/604WGzYYiPuDqyWKHRoDH4/b/hhwi/VMDV
+					</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:KeyDescriptor use="encryption">
+			<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+				<ds:X509Data>
+					<ds:X509Certificate>MIIFDzCCAvegAwIBAgIHUv1hSNoTATANBgkqhkiG9w0BAQsFADA/MSAwHgYDVQQDDBdWTXdhcmUgSWRlbnRpdHkgTWFuYWdlcjEOMAwGA1UECgwFU1RFTkcxCzAJBgNVBAYTAlVTMB4XDTE2MDYwNzE1MzIyOFoXDTI2MDYwNTE1MzIyOFowPzEgMB4GA1UEAwwXVk13YXJlIElkZW50aXR5IE1hbmFnZXIxDjAMBgNVBAoMBVNURU5HMQswCQYDVQQGEwJVUzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANqH6ARCWTVNW9oO8DsgrTPIt7Inbrf7abPMMsnvUQRewBmvAaaYHu2w4fQMbOMQ5Cit4bCSJcc6cXFqVYxNN46JdXvpZO6Z1F4+B+X8J1E1ke7i5G0NzQEwv30lawzfit3rHvT0GmL3Lhu0OJsPuQcVZYUvQf5/pR0OU0V4zn8/P1uwpDsfvrHi4lX2zpvWwnds3vs6QCuHcrnQFznkaJziZBECoN13S567y60OkTPA8Ey+LuBZwMUDTVFLrrVS4O4eL4CGev6REihLnxqU1bGBtea6XEteVGQSNv5yRqNJW/2kaLql5irgvqRiZz5LhcdjWV9mAeUGrdr11DUf0i8XuDPoBRLIpKSnC4ZRlRRe777XRNr5jFEWUPfMVfxpnw6twMCIxD9R/obsSJJdzechN49fijCpEiq9u4T2+pgaCIhKmoaIh5np0gvVTpCcpYVe7a4WWGV3+PB8fRI2m8nqnO7Ohtlx/ys4Zu2r6iSbWCxMsBHroaOKAzg7uMuDl5GwtooKhI0KPnr8OCi5OfInxEbZMkjR2wElvUZONuK9y7MFfqQ9Pe8a66lAvuyIYsL1CRp78LvGGWVtmagQkggqz5HhtwjPxdKoxy5obJVxdNH9S/bqmMUol4bLzeRL6TCBFRuf2zL430CZnfcj7pc04895z0vAyiuGJIlIXn3DAgMBAAGjEDAOMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggIBAFmjy9qhPXvnA9fqge0mo2nNkD0uqStEKHemoXA0ANPcWingHuyiXpA5L1jXDANMFogfGR6YFoDEsKPa0ZRfuvVNCuX2neB8YudEfTJNybBClJTFQvVtuqaiL214bDyls+soFhwSkkGFXXZ5xvclfIRTVoB2EFA8z0wNohS8ANvM0UTbXAE/WzHdA8PftpvDVhweSxWd6Wc3IdLQ2jvV32b9+8zYcAuR7KYbe7sj/32oe4qlHHs9p7oExA3XbUasOmwvHcToTrroRkwIWdI/SG6TC0f437g8foBOFJk5WUrMQ19BI0J0RQThty9cw2ZeotWzkuXPChicrgKHwGF8gbiYD1t/AdcNjmU4TfmJnge7vYzdahotD1Ftb70B1vFmETUUN55JyGqhQK9zQ8Z/rjOKNK7w394QOwKchmCGm6MMxFKHIQOieRJkpTMFc5OYt1gvSCQbX/p12X08Z6+izEesdSFGK4kQF5w0iMrIRxhC4ND8tSu6t8vXMTSHVbNH8ed6WABXWTMqQ1kKtw1PJKHNmEa4u0J3kONJU33HVvLlS2cx2ss0cjDQ3zGQAcUQMwS8l23UBbgFHfZ4LS8f/30hq7UtUVhdYIdzw3MhinYQW1T9tX62mIPxHyMm3HTJ2lmJZHby1/604WGzYYiPuDqyWKHRoDH4/b/hhwi/VMDV
+					</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+		</md:KeyDescriptor>
+		<md:ArtifactResolutionService
+			Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+			Location="https://steng.vmwareidentity.asia/SAAS/auth/saml/artifact/resolve"
+			index="0" isDefault="true" />
+		<md:SingleLogoutService
+			Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+			Location="https://steng.vmwareidentity.asia/SAAS/auth/logout"
+			ResponseLocation="https://steng.vmwareidentity.asia/SAAS/auth/logout" />
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+		</md:NameIDFormat>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+		</md:NameIDFormat>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+		</md:NameIDFormat>
+		<md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:x509SubjectName
+		</md:NameIDFormat>
+		<md:SingleSignOnService
+			Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+			Location="https://steng.vmwareidentity.asia/SAAS/auth/federation/sso" />
+		<md:SingleSignOnService
+			Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://steng.vmwareidentity.asia/SAAS/auth/federation/sso" />
+	</md:IDPSSODescriptor>
+	<md:AdditionalMetadataLocation namespace="urn:oasis:names:tc:SAML:2.0:metadata">
+		https://steng.vmwareidentity.asia/SAAS/API/1.0/GET/metadata/sp.xml
+	</md:AdditionalMetadataLocation>
+</md:EntityDescriptor>

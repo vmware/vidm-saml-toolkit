@@ -1,12 +1,12 @@
 /*
  * VMware Identity Manager SAML Toolkit
- * 
+ *
  * Copyright (c) 2016 VMware, Inc. All Rights Reserved.
- * 
- * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License. 
- * 
- * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file. 
- * 
+ *
+ * This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+ *
+ * This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+ *
  */
 package com.vmware.eucenablement.saml.impl;
 
@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -26,20 +27,35 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.SessionIndex;
+import org.opensaml.saml.saml2.core.Status;
+import org.opensaml.saml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vmware.samltookit.idp.SAMLSsoRequest;
+
 public class SAMLUtil {
-	
+
 	private static Logger log = LoggerFactory.getLogger(SAMLUtil.class);
 
 	/**
@@ -72,7 +88,7 @@ public class SAMLUtil {
 
 			@SuppressWarnings("unchecked")
 			XMLObjectBuilder<T> builder = (XMLObjectBuilder<T>) builderFactory.getBuilder(name);
-			
+
 			if (builder != null) {
 				object = builder.buildObject(name);
 			} else {
@@ -267,6 +283,80 @@ public class SAMLUtil {
 		request.setProtocolBinding(binding);
 		request.setNameIDPolicy(buildNameIdPolicy());
 		return request;
+	}
+
+
+	public static Response createAuthResponse(SAMLSsoRequest request) {
+
+		Response response = (Response) SAMLUtil.buildSAMLObject(Response.DEFAULT_ELEMENT_NAME);
+
+		response.setID(SAMLUtil.generateSamlId());
+		response.setInResponseTo(request.getID());
+		response.setIssueInstant(new DateTime());
+
+		response.setDestination("https://vidm.stengdomain.fvt/SAAS/auth/saml/response");
+
+
+		Status st = SAMLUtil.buildSAMLObject(Status.DEFAULT_ELEMENT_NAME);
+		StatusCode stcode= SAMLUtil.buildSAMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
+		stcode.setValue(StatusCode.SUCCESS);
+		st.setStatusCode(stcode);
+
+		response.setStatus(st);
+
+	    Issuer issuer= SAMLUtil.generateIssuer("https://localhost:8443/SamlSample/idp.xml");
+		response.setIssuer(issuer);
+
+		List<Assertion> assertions = response.getAssertions();
+
+
+		Assertion assertion = SAMLUtil.buildSAMLObject(Assertion.DEFAULT_ELEMENT_NAME);
+		 Issuer aissuer= SAMLUtil.generateIssuer("https://localhost:8443/SamlSample/idp.xml");
+		assertion.setIssuer(aissuer);
+
+
+
+		AuthnContext acontext = SAMLUtil.buildSAMLObject(AuthnContext.DEFAULT_ELEMENT_NAME);
+		AuthnContextClassRef classref = SAMLUtil.buildSAMLObject(AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
+		classref.setAuthnContextClassRef("urn:oasis:names:tc:SAML:2.0:ac:classes:Password");
+		acontext.setAuthnContextClassRef(classref);
+		AuthnStatement state = SAMLUtil.buildSAMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
+		state.setAuthnContext(acontext);
+		assertion.getAuthnStatements().add(state);
+
+		Subject subject=  SAMLUtil.buildSAMLObject(Subject.DEFAULT_ELEMENT_NAME);
+		SubjectConfirmation confirm =  SAMLUtil.buildSAMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
+		SubjectConfirmationData data = SAMLUtil.buildSAMLObject(SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
+		data.setRecipient("https://vidm.stengdomain.fvt/SAAS/auth/saml/response");
+		confirm.setSubjectConfirmationData(data);
+
+		subject.getSubjectConfirmations().add(confirm);
+		NameID id =   SAMLUtil.buildSAMLObject(NameID.DEFAULT_ELEMENT_NAME);
+
+		id.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified");
+		id.setValue("steng");
+
+
+
+
+		subject.setNameID(id);
+
+        Conditions cons =  SAMLUtil.buildSAMLObject(Conditions.DEFAULT_ELEMENT_NAME);
+		AudienceRestriction restriction = SAMLUtil.buildSAMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
+		cons.getAudienceRestrictions().add(restriction);
+		Audience aud =  SAMLUtil.buildSAMLObject(Audience.DEFAULT_ELEMENT_NAME);
+		aud.setAudienceURI("https://vidm.stengdomain.fvt/SAAS/API/1.0/GET/metadata/sp.xml");
+		restriction.getAudiences().add(aud);
+
+		assertion.setConditions(cons);
+
+
+		assertion.setSubject(subject);
+
+		assertions.add(assertion);
+
+
+		return response;
 	}
 
 	/**
