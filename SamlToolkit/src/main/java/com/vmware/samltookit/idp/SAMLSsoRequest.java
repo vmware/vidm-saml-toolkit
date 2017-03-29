@@ -11,4 +11,6 @@ public interface SAMLSsoRequest {
 	public String getNameidpolicy();
 
 	public String getID();
+
+	public String getAuthnContextClassRef();
 }

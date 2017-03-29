@@ -16,7 +16,7 @@ This product may include a number of subcomponents with separate copyright notic
 <html lang="en">
 <!-- header -->
 <jsp:include page="headertpl.html"></jsp:include>
-
+<!-- TODO: support both IDP and SP now, we need to add a UI flow for IDP -->
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
     <!-- Navigation -->
     <jsp:include page="navtpl.html"></jsp:include>

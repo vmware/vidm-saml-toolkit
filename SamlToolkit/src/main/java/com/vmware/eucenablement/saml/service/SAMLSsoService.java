@@ -51,6 +51,7 @@ public class SAMLSsoService extends AbstractSAMLService{
 		return _conf;
 	}
 
+	//TODO: refer to how vIDM validates the response, quite a lot of fields to be validated
 	public SAMLSsoResponse decodeSAMLResponse(String encodedSAMLResponse) throws Exception {
 		// Just for debug
 		/// String s = request.getParameter("SAMLResponse");

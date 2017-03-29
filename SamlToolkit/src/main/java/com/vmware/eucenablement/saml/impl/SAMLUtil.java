@@ -285,8 +285,14 @@ public class SAMLUtil {
 		return request;
 	}
 
-
-	public static Response createAuthResponse(SAMLSsoRequest request) {
+/**
+ *
+ * @param request
+ * @param issuerStr like https://localhost:8443/SamlSample/idp.xml
+ * @param userID like "steng"
+ * @return
+ */
+	public static Response createAuthResponse(SAMLSsoRequest request, String issuerStr,  String userID) {
 
 		Response response = (Response) SAMLUtil.buildSAMLObject(Response.DEFAULT_ELEMENT_NAME);
 
@@ -294,7 +300,7 @@ public class SAMLUtil {
 		response.setInResponseTo(request.getID());
 		response.setIssueInstant(new DateTime());
 
-		response.setDestination("https://vidm.stengdomain.fvt/SAAS/auth/saml/response");
+		response.setDestination(request.getConsumer());
 
 
 		Status st = SAMLUtil.buildSAMLObject(Status.DEFAULT_ELEMENT_NAME);
@@ -304,21 +310,21 @@ public class SAMLUtil {
 
 		response.setStatus(st);
 
-	    Issuer issuer= SAMLUtil.generateIssuer("https://localhost:8443/SamlSample/idp.xml");
+	    Issuer issuer= SAMLUtil.generateIssuer(issuerStr);
 		response.setIssuer(issuer);
 
 		List<Assertion> assertions = response.getAssertions();
 
 
 		Assertion assertion = SAMLUtil.buildSAMLObject(Assertion.DEFAULT_ELEMENT_NAME);
-		 Issuer aissuer= SAMLUtil.generateIssuer("https://localhost:8443/SamlSample/idp.xml");
+		 Issuer aissuer= SAMLUtil.generateIssuer(issuerStr);
 		assertion.setIssuer(aissuer);
 
 
 
 		AuthnContext acontext = SAMLUtil.buildSAMLObject(AuthnContext.DEFAULT_ELEMENT_NAME);
 		AuthnContextClassRef classref = SAMLUtil.buildSAMLObject(AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
-		classref.setAuthnContextClassRef("urn:oasis:names:tc:SAML:2.0:ac:classes:Password");
+		classref.setAuthnContextClassRef(request.getAuthnContextClassRef());
 		acontext.setAuthnContextClassRef(classref);
 		AuthnStatement state = SAMLUtil.buildSAMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 		state.setAuthnContext(acontext);
@@ -327,14 +333,14 @@ public class SAMLUtil {
 		Subject subject=  SAMLUtil.buildSAMLObject(Subject.DEFAULT_ELEMENT_NAME);
 		SubjectConfirmation confirm =  SAMLUtil.buildSAMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
 		SubjectConfirmationData data = SAMLUtil.buildSAMLObject(SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
-		data.setRecipient("https://vidm.stengdomain.fvt/SAAS/auth/saml/response");
+		data.setRecipient(request.getConsumer());
 		confirm.setSubjectConfirmationData(data);
 
 		subject.getSubjectConfirmations().add(confirm);
 		NameID id =   SAMLUtil.buildSAMLObject(NameID.DEFAULT_ELEMENT_NAME);
 
-		id.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified");
-		id.setValue("steng");
+		id.setFormat(request.getNameidpolicy());
+		id.setValue(userID);
 
 
 
@@ -345,7 +351,7 @@ public class SAMLUtil {
 		AudienceRestriction restriction = SAMLUtil.buildSAMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
 		cons.getAudienceRestrictions().add(restriction);
 		Audience aud =  SAMLUtil.buildSAMLObject(Audience.DEFAULT_ELEMENT_NAME);
-		aud.setAudienceURI("https://vidm.stengdomain.fvt/SAAS/API/1.0/GET/metadata/sp.xml");
+		aud.setAudienceURI(request.getIssuer());
 		restriction.getAudiences().add(aud);
 
 		assertion.setConditions(cons);

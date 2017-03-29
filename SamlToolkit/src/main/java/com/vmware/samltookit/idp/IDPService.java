@@ -48,8 +48,14 @@ public class IDPService {
 	}
 
 
-	public String getSSOResponse(SAMLSsoRequest request)  {
-		return this._service.getSSOResponse(request);
+	/**
+	 *
+	 * @param request
+	 * @param userID
+	 * @return
+	 */
+	public String getSSOResponseByPostBinding(SAMLSsoRequest request, String userID)  {
+		return this._service.getSSOResponseByPostBinding(request, userID);
 	}
 
 

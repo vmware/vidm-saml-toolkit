@@ -86,7 +86,7 @@ This product may include a number of subcomponents with separate copyright notic
 		<resources>
 			<resource>
 				<includes>
-					<include>*.properties</include>
+					<include>*.properties</include>					
 				</includes>
 				<directory>${project.basedir}/src/main/java</directory>
 				<filtering>true</filtering>
@@ -143,6 +143,9 @@ This product may include a number of subcomponents with separate copyright notic
 								</copy>
 								<copy todir="${project.build.directory}" overwrite="true">
 									<fileset dir="src" includes="start.bat" />
+								</copy>
+								<copy todir="${project.build.directory}" overwrite="true">
+									<fileset dir="src/main/java" includes="sslkeystore" />
 								</copy>
 								
 								<delete dir="${project.build.directory}/lib" includes="apache-jsp-8.*.jar" ></delete>

@@ -1,5 +1,7 @@
 package com.vmware.eucenablement.saml.sample.idp;
 
+import java.io.InputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +15,16 @@ public class MyIDP {
 
 	private static Logger log = LoggerFactory.getLogger(MySSO.class);
 
-	public static IDPService initIDPService() {
+	/**
+	 *
+	 * @param issuer like https://localhost:8443/SamlSample/idp.xml
+	 * @return
+	 */
+	public static IDPService initIDPService(String issuer, InputStream kestoreStream, String keystorepwd) {
 
 
 		try {
-			SAMLIDPConf conf = new SAMLIDPConf();
+			SAMLIDPConf conf = new SAMLIDPConf(issuer, kestoreStream, keystorepwd);
 
 
 			service = new IDPService(conf);

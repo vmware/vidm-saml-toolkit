@@ -4,7 +4,7 @@ echo  This can not be executed in src folder. Please execute it in target folder
 set curPath=%~dp0
 @echo Current Folder %cd%
 @ECHO Setting up classpath
-SET CLASSPATH=lib/*
+SET CLASSPATH=.;lib/*
 goto extlibe
 
 goto :eof

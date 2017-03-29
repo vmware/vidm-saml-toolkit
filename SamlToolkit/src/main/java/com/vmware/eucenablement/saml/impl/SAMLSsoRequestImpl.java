@@ -24,6 +24,7 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 	private String _issuer;
 	private String _nameidpolicy;
 	private String _consumer;
+	private String _authnContextClass;
 
 	private String _id;
 	public SAMLSsoRequestImpl(MessageContext<?> context, SAMLIDPConf conf) throws SignatureException {
@@ -41,6 +42,8 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 			this._nameidpolicy = request.getNameIDPolicy().getFormat();
 			this._id= request.getID();
 			this._consumer = request.getAssertionConsumerServiceURL();
+
+			this._authnContextClass = request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0).getAuthnContextClassRef();
 			this.isValidResponse = true;
 			log.info("request:"+this.toString());
 		}else{
@@ -81,6 +84,12 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 	@Override
 	public String getConsumer() {
 		return _consumer;
+	}
+
+	@Override
+	public String getAuthnContextClassRef() {
+
+		return this._authnContextClass;
 	}
 
 }

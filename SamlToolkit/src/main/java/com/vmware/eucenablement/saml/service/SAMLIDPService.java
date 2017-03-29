@@ -36,6 +36,12 @@ public class SAMLIDPService extends AbstractSAMLService {
 	}
 
 
+	/**
+	 * TODO: refer to vIDM to validate the request, a lot of fields to be validated
+	 * @param samlrequest
+	 * @return
+	 * @throws Exception
+	 */
 	public SAMLSsoRequest decodeSAMLRequest(String samlrequest) throws Exception {
 		log.info("SAML Request is:" + samlrequest);
 
@@ -71,18 +77,18 @@ public class SAMLIDPService extends AbstractSAMLService {
  * NOTICE: call this function only after the authentication has been processed by yourself successfully
  * @throws Exception
  */
-	public String getSSOResponse(SAMLSsoRequest request)  {
+	public String getSSOResponseByPostBinding(SAMLSsoRequest request ,  String userID)  {
 		log.info("Getting SSO Response");
 
 
-       Endpoint endpoint = SAMLUtil.generateEndpoint("https://vidm.stengdomain.fvt/SAAS/auth/saml/response",
-				"https://vidm.stengdomain.fvt/SAAS/auth/saml/response", SAMLConstants.SAML2_POST_BINDING_URI);
+       Endpoint endpoint = SAMLUtil.generateEndpoint(request.getConsumer(),
+				request.getConsumer(), SAMLConstants.SAML2_POST_BINDING_URI);
 		if (endpoint == null) {
 			log.error("Cannot generate saml endPoint for post binding!");
 			return null;
 		}
 
-		Response response = SAMLUtil.createAuthResponse(request);
+		Response response = SAMLUtil.createAuthResponse(request,this._conf.getIssuer(), userID);
 		if (response == null) {
 			log.error("Cannot generate saml authn request for post binding!");
 			return null;

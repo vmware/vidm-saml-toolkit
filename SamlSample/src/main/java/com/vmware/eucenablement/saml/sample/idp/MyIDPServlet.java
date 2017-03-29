@@ -81,7 +81,7 @@ public class MyIDPServlet implements Servlet  {
 				throw new ServletException("Failed to login: Invalid SAML request in session!");
 			}
 
-			String ssoresponse = MyIDP.getIDPService().getSSOResponse(ssoRequest);
+			String ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, user);
 
 			log.info(ssoresponse);
 			response.setContentType("text/html;charset=UTF-8");

@@ -9,8 +9,8 @@
  *
  */
 package com.vmware.eucenablement.saml.sample;
+import java.net.URL;
 import java.security.KeyStoreException;
-import java.util.Enumeration;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -23,7 +23,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.vmware.eucenablement.saml.sample.idp.MyIDP;
 import com.vmware.eucenablement.saml.sample.idp.MyIDPServlet;
-import com.vmware.eucenablement.saml.service.AbstractSAMLService;
+
 
 /**
  * Simple HTTP server for demo purpose.
@@ -42,11 +42,13 @@ public class MyServer {
 
          // Configuring SSL
          SslContextFactory sslContextFactory = new SslContextFactory();
+         URL keystoreurl = MyServer.class.getResource("/sslkeystore");
 
-         String keystorepath = MyServer.class.getResource("sslkeystore").toExternalForm();
+         System.out.println("keystore path:"+ keystoreurl.getPath());
          // Defining keystore path and passwords
-         sslContextFactory.setKeyStorePath(keystorepath);
-         sslContextFactory.setKeyStorePassword("123456");
+         sslContextFactory.setKeyStorePath(keystoreurl.getPath());
+         String keystorepwd = "123456";
+         sslContextFactory.setKeyStorePassword(keystorepwd);
 
          sslContextFactory.setTrustAll(true);
          sslContextFactory.setNeedClientAuth(false);
@@ -55,20 +57,9 @@ public class MyServer {
          ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
          sslConnector.setPort(8443);
 
-         // Setting HTTP and HTTPS connectors
-         // server.setConnectors(new Connector[]{connector, sslConnector});
          server.addConnector(sslConnector);
 
-
-
-		ServerConnector connector = new ServerConnector(server);
-		connector.setPort(8080);
-
-		connector.setReuseAddress(false);
-		server.addConnector(connector);
 		server.setStopAtShutdown(true);
-
-		server.addConnector(connector);
 
 		// Set JSP to use Standard JavaC always
 		System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
@@ -93,15 +84,9 @@ public class MyServer {
 
 			String url = "https://localhost:8443/SamlSample";
 			System.out.println("Open your browser to view the demo: " + url);
-			Enumeration<String> enums = sslContextFactory.getKeyStore().aliases();
-	        while(enums.hasMoreElements()){
-	        	String name = enums.nextElement();
-	        	System.out.println("credential name:"+ name);
-	        	AbstractSAMLService.setPrivateCredential( sslContextFactory.getKeyStore(), name, "123456");
 
-	        }
-
-			MyIDP.initIDPService();
+//https://localhost:8443/SamlSample/idp.xml
+			MyIDP.initIDPService(url + "/idp.xml",keystoreurl.openStream(), keystorepwd);
 			server.join();
 		} catch (Exception e) {
 			e.printStackTrace();
