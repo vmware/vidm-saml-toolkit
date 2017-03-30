@@ -69,6 +69,18 @@ public class SAMLIDPService extends AbstractSAMLService {
 
 	}
 
+
+	public SAMLSsoRequest decodeSAMLRequestWithRelay(String samlrequest, String relay) throws Exception {
+		log.info("SAML Request is:" + samlrequest);
+		SAMLSsoRequest request = this.decodeSAMLRequest(samlrequest);
+
+		request.setRelay(relay);
+
+		return request;
+
+
+	}
+
 /**
  *
  * @param request
@@ -94,7 +106,7 @@ public class SAMLIDPService extends AbstractSAMLService {
 			return null;
 		}
 
-		return samlHTTPPost(response, "", endpoint);
+		return samlHTTPPost(response, request.getRelay(), endpoint);
 	}
 
 

@@ -13,4 +13,8 @@ public interface SAMLSsoRequest {
 	public String getID();
 
 	public String getAuthnContextClassRef();
+
+	public String getRelay();
+
+	public void setRelay(String relay);
 }

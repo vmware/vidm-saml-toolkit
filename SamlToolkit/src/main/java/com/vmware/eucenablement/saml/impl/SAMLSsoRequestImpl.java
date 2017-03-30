@@ -92,4 +92,15 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 		return this._authnContextClass;
 	}
 
+	private String relay;
+
+	public void setRelay(String relay){
+		this.relay = relay;
+	}
+	@Override
+	public String getRelay() {
+		// TODO Auto-generated method stub
+		return relay;
+	}
+
 }

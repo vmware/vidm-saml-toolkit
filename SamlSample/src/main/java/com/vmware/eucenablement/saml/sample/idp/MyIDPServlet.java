@@ -57,7 +57,12 @@ public class MyIDPServlet implements Servlet  {
 			//handle samle request
 			try {
 
+				String relay = request.getParameter("RelayState");
 				SAMLSsoRequest ssoRequest = MyIDP.getIDPService().decodeSAMLRequest(s);
+				if (relay!=null && relay.length()>0){
+					ssoRequest.setRelay(relay);
+				}
+
 
 				if (ssoRequest != null && ssoRequest.isValid() ) {
 					session.setAttribute("request", ssoRequest);

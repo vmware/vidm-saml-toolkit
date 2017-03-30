@@ -48,6 +48,13 @@ public class IDPService {
 	}
 
 
+	public SAMLSsoRequest decodeSAMLRequestWithRelay(String samlrequest, String relay) throws Exception {
+
+		return this._service.decodeSAMLRequest(samlrequest);
+}
+
+
+
 	/**
 	 *
 	 * @param request
