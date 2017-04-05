@@ -19,6 +19,7 @@ This product may include a number of subcomponents with separate copyright notic
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login</title>
 </head>
+
 <jsp:include page="headertpl.html"></jsp:include>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
@@ -54,6 +55,7 @@ This product may include a number of subcomponents with separate copyright notic
 	    </section>
 	
 	
+
 
 </body>
 </html>

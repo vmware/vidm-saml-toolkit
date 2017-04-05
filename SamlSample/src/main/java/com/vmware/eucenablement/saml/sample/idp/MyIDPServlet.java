@@ -77,16 +77,25 @@ public class MyIDPServlet implements Servlet  {
 				throw new ServletException(e);
 			}
 		}else{
+			String ssoresponse = "";
 			//handle the login request
 			//no matter what you input, we regard it successful here
 			String user = request.getParameter("username");
 			log.info("user name is successful "+user);
 			SAMLSsoRequest ssoRequest = (SAMLSsoRequest) session.getAttribute("request");
 			if (ssoRequest==null){
-				throw new ServletException("Failed to login: Invalid SAML request in session!");
-			}
+				//IDP initiated sso, check vidm
+				String vidm = request.getParameter("vidmURL");
+				if (vidm ==null){
+					throw new ServletException("Invalid Access!");
+				}
+				//TODO: relay
+				String relay = "";
+				ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(vidm, user, relay);
+			}else{
+				 ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, user);
 
-			String ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, user);
+			}
 
 			log.info(ssoresponse);
 			response.setContentType("text/html;charset=UTF-8");

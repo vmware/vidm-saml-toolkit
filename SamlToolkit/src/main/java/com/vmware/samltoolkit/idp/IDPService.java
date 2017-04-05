@@ -11,6 +11,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vmware.eucenablement.saml.impl.SAMLSsoRequestImpl;
 import com.vmware.eucenablement.saml.service.SAMLIDPService;
 
 /**
@@ -103,10 +104,24 @@ public class IDPService {
 		
 	}
 
+	/**
+	 *
+	 * @param vidmURL like "https://steng.vmwareidentity.asia"
+	 * @param userID
+	 * @param relay
+	 * @return
+	 */
+	public String getSSOResponseByPostBinding(String vidmURL, String userID,  String relay)  {
+
+		//TODO:
+		SAMLSsoRequest request = new SAMLSsoRequestImpl(vidmURL, "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified", "urn:oasis:names:tc:SAML:2.0:ac:classes:Password", relay);
+		return getSSOResponseByPostBinding(request, userID);
+
+	}
+
+
 
 
 	private static Logger log = LoggerFactory.getLogger(IDPService.class);
-
-
 
 }

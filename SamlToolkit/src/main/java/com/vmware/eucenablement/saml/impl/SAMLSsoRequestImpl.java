@@ -16,7 +16,7 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 	private static Logger log = LoggerFactory.getLogger(SAMLSsoResponseImpl.class);
 
 	/** Whether response content is a valid SSO response */
-	private boolean isValidResponse = false;
+	private boolean isValid = false;
 
 	/** Configuration of current identity provider */
 	private SAMLIDPConf _conf;
@@ -27,6 +27,19 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 	private String _authnContextClass;
 
 	private String _id;
+
+	public SAMLSsoRequestImpl(String vidmURL, String nameidpolicy, String authncontext, String relay){
+		this._issuer = vidmURL + "/SAAS/API/1.0/GET/metadata/sp.xml";
+
+		this._consumer = vidmURL + "/SAAS/auth/saml/response";
+
+		this._nameidpolicy = nameidpolicy;
+		this._authnContextClass = authncontext;
+		this.isValid = true;
+		this.relay=relay;
+		this._id="";
+
+	}
 	public SAMLSsoRequestImpl(MessageContext<?> context, SAMLIDPConf conf) throws SignatureException {
 
 		this._conf = conf;
@@ -44,10 +57,10 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 			this._consumer = request.getAssertionConsumerServiceURL();
 
 			this._authnContextClass = request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0).getAuthnContextClassRef();
-			this.isValidResponse = true;
+			this.isValid = true;
 			log.info("request:"+this.toString());
 		}else{
-			this.isValidResponse = false;
+			this.isValid = false;
 		}
 	};
 
@@ -58,7 +71,7 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 
 	@Override
 	public boolean isValid() {
-		return this.isValidResponse;
+		return this.isValid;
 	}
 
 
@@ -94,6 +107,7 @@ public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 
 	private String relay;
 
+	@Override
 	public void setRelay(String relay){
 		this.relay = relay;
 	}
