@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.vmware.eucenablement.saml.impl.SAMLSsoRequestImpl;
 import com.vmware.eucenablement.saml.impl.SAMLUtil;
-import com.vmware.samltookit.idp.SAMLIDPConf;
-import com.vmware.samltookit.idp.SAMLSsoRequest;
+import com.vmware.samltoolkit.idp.SAMLIDPConf;
+import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 public class SAMLIDPService extends AbstractSAMLService {
 	private static Logger log = LoggerFactory.getLogger(SAMLIDPService.class);

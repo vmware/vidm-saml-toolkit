@@ -29,10 +29,15 @@ This product may include a number of subcomponents with separate copyright notic
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">SAML TOOLKIT</h1>
                         <p class="intro-text">A toolkit to facilitate the vIDM users to have their business application SAML enabled to play with vIDM.</p>
-                        			<form action="idpDiscovery.jsp" method="get" style="padding: 2rem;">
-					<div align="middle">
-					<input type=submit value="CONFIGURE" class="btn btn-default btn-lg" title="Configure your vIDM (Identity Provider)">
-					</div>
+                        <form action="idpDiscovery.jsp" method="get" style="padding: 2rem;">
+							<div align="middle">
+							<input type=submit value="CONFIGURE VIDM AS IDP" class="btn btn-default btn-lg" title="Configure your vIDM (as Identity Provider)">
+							</div>
+						</form>
+						<form action="idp/spDiscovery.jsp" method="get" style="padding: 2rem;">
+							<div align="middle">
+							<input type=submit value="CONFIGURE VIDM AS SP" class="btn btn-default btn-lg" title="Configure your vIDM (as Service Provider)">
+							</div>
 						</form>
                     </div>
                 </div>

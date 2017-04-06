@@ -1,4 +1,12 @@
-package com.vmware.samltookit.idp;
+package com.vmware.samltoolkit.idp;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +52,12 @@ public class IDPService {
 	 */
 	public SAMLSsoRequest decodeSAMLRequest(String samlrequest) throws Exception {
 
-			return this._service.decodeSAMLRequest(samlrequest);
+		SAMLSsoRequest ssoRequest = this._service.decodeSAMLRequest(samlrequest);
+		String issuer = ssoRequest.getIssuer();
+		if(config.isValidSpConfig(issuer))
+			return ssoRequest;
+		return null;
 	}
-
-
-	public SAMLSsoRequest decodeSAMLRequestWithRelay(String samlrequest, String relay) throws Exception {
-
-		return this._service.decodeSAMLRequest(samlrequest);
-}
-
 
 
 	/**
@@ -65,7 +70,38 @@ public class IDPService {
 		return this._service.getSSOResponseByPostBinding(request, userID);
 	}
 
-
+	public String getSpConfigfromUrl(String vidmUrl) {
+		String line;
+		StringBuffer sb = new StringBuffer();
+		BufferedReader br = null;
+		try {
+			URL url = new URL(vidmUrl + "/SAAS/API/1.0/GET/metadata/sp.xml");
+			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			InputStream stream = connection.getInputStream();
+			int responseCode = connection.getResponseCode();
+			System.out.println(responseCode);
+			
+			
+			br = new BufferedReader(new InputStreamReader(stream));
+			while((line = br.readLine()) != null ){
+				sb.append(line);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(br != null) {
+				try {
+					br.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return sb.toString();
+		
+	}
 
 
 

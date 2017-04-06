@@ -1,4 +1,4 @@
-package com.vmware.samltookit.idp;
+package com.vmware.samltoolkit.idp;
 
 public interface SAMLSsoRequest {
 	public boolean isValid();
@@ -13,8 +13,4 @@ public interface SAMLSsoRequest {
 	public String getID();
 
 	public String getAuthnContextClassRef();
-
-	public String getRelay();
-
-	public void setRelay(String relay);
 }

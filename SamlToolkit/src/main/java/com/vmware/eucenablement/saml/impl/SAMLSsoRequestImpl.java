@@ -8,8 +8,8 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vmware.samltookit.idp.SAMLIDPConf;
-import com.vmware.samltookit.idp.SAMLSsoRequest;
+import com.vmware.samltoolkit.idp.SAMLIDPConf;
+import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 
