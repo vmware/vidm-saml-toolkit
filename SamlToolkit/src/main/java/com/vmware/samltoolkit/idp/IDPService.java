@@ -75,6 +75,8 @@ public class IDPService {
 		StringBuffer sb = new StringBuffer();
 		BufferedReader br = null;
 		try {
+			if(!vidmUrl.startsWith("https"))
+				vidmUrl = "https://" + vidmUrl;
 			URL url = new URL(vidmUrl + "/SAAS/API/1.0/GET/metadata/sp.xml");
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
@@ -90,6 +92,7 @@ public class IDPService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			if(br != null) {
 				try {

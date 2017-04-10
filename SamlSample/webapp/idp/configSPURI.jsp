@@ -32,15 +32,16 @@ This product may include a number of subcomponents with separate copyright notic
 			SAMLIDPConf conf = idpService.getSAMLIDPConf();
 			String vidmSp1Url = request.getParameter("vidmSp1");
 			SslUtilities.trustAllCertificates();//Trust all certificate for sample usage. Certificates should always be managed in production environment
-			String spXML1 = idpService.getSpConfigfromUrl(vidmSp1Url);
-			conf.registerSpConfig(spXML1);
+			String spXML = idpService.getSpConfigfromUrl(vidmSp1Url);
+			if(spXML != null)
+				conf.registerSpConfig(spXML);
 		%>
 		
     	<section id="ConfigDone" class="content-section text-center" style="height:100%;width:100%;">
         	<div class="ConfigDone-section">
             	<div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-					<%if((idpService != null) && (idpService != null)) {
+					<%if((spXML !=null) && (idpService != null) && (idpService != null)) {
 					%>         
 						<div class="jumbotron" style="color:#000" style="padding: 2rem;">
 							<p>Congratulations. You are almost ready.</p>
@@ -87,8 +88,8 @@ This product may include a number of subcomponents with separate copyright notic
 						
 					<%} else {%>
 						<div class="jumbotron" style="color:#000">
-				            <h2>Cannot fetch data from Idp Service!</h2>
-				            <p>Hints: Bypass certificate validation if vIDM is using self-signed certificate. Check your vIDM URL and vIDM service.</p>
+				            <h2>Cannot fetch data from SP Service!</h2>
+				            <p>Hints: Check your vIDM URL and vIDM service.</p>
 				         </div>
 				         <div>
 		                	<form action="spDiscovery.jsp" method="get">
