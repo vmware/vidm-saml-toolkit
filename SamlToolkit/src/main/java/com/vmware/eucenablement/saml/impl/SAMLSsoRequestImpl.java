@@ -13,7 +13,7 @@ import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 public class SAMLSsoRequestImpl implements SAMLSsoRequest{
 
-	private static Logger log = LoggerFactory.getLogger(SAMLSsoResponseImpl.class);
+	private static Logger log = LoggerFactory.getLogger(SAMLSsoRequestImpl.class);
 
 	/** Whether response content is a valid SSO response */
 	private boolean isValid = false;
