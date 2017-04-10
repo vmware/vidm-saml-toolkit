@@ -3,7 +3,6 @@ package com.vmware.samltoolkit.idp;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -29,7 +28,7 @@ public class IDPService {
 
 	private SAMLIDPService _service;
 
-	public SAMLIDPConf getSAMLToolkitConf() {
+	public SAMLIDPConf getSAMLIDPConf() {
 		return config;
 	}
 
@@ -82,13 +81,13 @@ public class IDPService {
 			InputStream stream = connection.getInputStream();
 			int responseCode = connection.getResponseCode();
 			System.out.println(responseCode);
-			
-			
+
+
 			br = new BufferedReader(new InputStreamReader(stream));
 			while((line = br.readLine()) != null ){
 				sb.append(line);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -101,7 +100,7 @@ public class IDPService {
 			}
 		}
 		return sb.toString();
-		
+
 	}
 
 	/**
