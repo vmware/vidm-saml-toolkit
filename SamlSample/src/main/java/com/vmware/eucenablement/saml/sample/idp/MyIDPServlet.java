@@ -14,12 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vmware.eucenablement.saml.sample.ConsumerServlet;
 import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 public class MyIDPServlet implements Servlet  {
 
-	private static Logger log = LoggerFactory.getLogger(ConsumerServlet.class);
+	private static Logger log = LoggerFactory.getLogger(MyIDPServlet.class);
 
 	@Override
 	public void destroy() {

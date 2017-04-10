@@ -5,7 +5,6 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vmware.eucenablement.saml.sample.MySSO;
 import com.vmware.samltoolkit.idp.IDPService;
 import com.vmware.samltoolkit.idp.SAMLIDPConf;
 
@@ -13,7 +12,7 @@ public class MyIDP {
 
 	private static IDPService service;
 
-	private static Logger log = LoggerFactory.getLogger(MySSO.class);
+	private static Logger log = LoggerFactory.getLogger(MyIDP.class);
 
 	/**
 	 *
