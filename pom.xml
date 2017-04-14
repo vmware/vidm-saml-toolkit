@@ -9,7 +9,8 @@
 	<version>1.0</version>
 
 	<modules>
-		<module>SamlSample</module>
+		<module>Sample_AuthServer</module>
+		<module>Sample_WebApp</module>
 		<module>SamlToolkit</module>
 	</modules>
 

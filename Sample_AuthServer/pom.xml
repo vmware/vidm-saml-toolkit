@@ -1,0 +1,163 @@
+<!--  
+ VMware Identity Manager SAML Toolkit
+
+Copyright (c) 2016 VMware, Inc. All Rights Reserved.
+
+This product is licensed to you under the BSD-2 license (the "License").  You may not use this product except in compliance with the BSD-2 License.
+
+This product may include a number of subcomponents with separate copyright notices and license terms. Your use of these subcomponents is subject to the terms and conditions of the subcomponent's license, as noted in the LICENSE file.
+
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.vmware.eucenablement</groupId>
+	<artifactId>Sample_AuthApp</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>Sample_AuthApp</name>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>com.vmware</groupId>
+		<artifactId>vidmsaml</artifactId>
+		<version>1.0</version>
+	</parent>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vmware.eucenablement</groupId>
+			<artifactId>SamlToolkit</artifactId>
+			<version>1.0</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+
+<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>9.3.0.M1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>apache-jstl</artifactId>
+			<version>9.4.0.RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>apache-jsp</artifactId>
+			<version>9.4.0.RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>9.4.0.RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>9.4.0.RC1</version>
+		</dependency>
+	</dependencies>
+	<properties>
+		<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
+		<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
+	</properties>
+	<build>
+		<finalName>Sample_AuthApp</finalName>
+		<resources>
+			<resource>
+				<includes>
+					<include>sslkeystore</include>					
+				</includes>
+				<directory>${project.basedir}/src/main/java</directory>
+			</resource>
+		</resources>
+
+
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>Copy Web Content</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${project.build.directory}/webapp" overwrite="true">
+									<fileset dir="webapp" />
+								</copy>
+								<copy todir="${project.build.directory}" overwrite="true">
+									<fileset dir="src" includes="start.bat" />
+								</copy>
+								<copy todir="${project.build.directory}" overwrite="true">
+									<fileset dir="src/main/java" includes="sslkeystore" />
+								</copy>
+								
+								<delete dir="${project.build.directory}/lib" includes="apache-jsp-8.*.jar" ></delete>
+								
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			
+
+		</plugins>
+
+	</build>
+</project>
