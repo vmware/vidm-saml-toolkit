@@ -9,11 +9,19 @@ It is not a small task for web developers to encode SAML request and decode SAML
 
 This toolkit can save developers' effort by providing some easy to use functions. With this toolkit, a web developer can implement SSO function with vIDM, even if he has no knowledge about SAML 2.0. This toolkit is platform independent, since it is written in Java. 
 
-This Toolkit supports the following 4 functions:      
-1, Initialize SSO service with vIDM URL      
-2, Create an authentication request to vIDM      
-3, Process an authentication result from vIDM      
-4, Sign Out
+This toolkit can play two roles: service provider (SP) and identity provider (IDP) when integrating with vIDM.
+
+The toolkit supports following functions when act as SP:
+1. Initialize SSO service with vIDM URL      
+2. Create an authentication request to vIDM      
+3. Process an authentication result from vIDM      
+4. Sign Out
+
+The toolkit supports following functions when act as IDP:
+1. Initialize SSO service with vIDM URL 
+2. Create an authentication request from vIDM      
+3. Process an authentication result to vIDM
+4. Sign Out
 
 ## Try it out
 
@@ -22,12 +30,13 @@ This Toolkit supports the following 4 functions:
 * A valid vIDM administrator account, so you can add a web application from vIDM adminstration console
 * JDK 1.6 and Maven are required to build this project. The suggested development IDE is Eclipse + Maven plugin. You can choose any other IDE that you like.
 * Windows 7 platform or above
+* User can change the sslkeystore to their own keystore file under src/main/java from both the sample projects.
 
 ### Build
 
 Option 1: Build in Eclipse
 
-1. Import these 3 projects as existing Maven project into your workspace: vidmsaml, SamlSample, and SamlToolkit
+1. Import these 4 projects as existing Maven project into your workspace: vidmsaml, Sample_WebApp, Sample_AuthServer, and SamlToolkit
 
 2. Run -> Run Configurations -> Maven Build, select "vidmsaml" as base directory, use "clean package" as goals. 
 
@@ -37,7 +46,11 @@ Execute "mvn clean package" command in "vidmsaml" folder
 
 Once your build is successful, you should get "SamlToolkit-jar-with-dependencies.jar" and "SamlToolkit.jar" in "vidm-saml-toolkit\SamlToolkit\target". 
 
-You also get a Sample web server which guide you to integrate with vIDM server easily in "vidm-saml-toolkit\SamlSample\target".
+You also get 2 sample web servers which guide you to integrate with vIDM server easily in "vidm-saml-toolkit\Sample_WebApp\target" and "vidm-saml-toolkit\Sample_AuthServer\target".
+
+*Sample_WebApp demonstrates the scenario when samltoolkit plays the role of SP and vIDM is IDP.
+
+*Sample_AuthServer demonstrates the scenario when samltoolkit plays the role of IDP and vIDM is SP.
 
 ### Run
 
@@ -45,15 +58,17 @@ The Sample web server can be started with one of the following options:
 
 Option 1: Use the startup script for Windows OS 
 
-Go to "vidm-saml-toolkit\SamlSample\target" folder, double click "start.bat"
+Go to "vidm-saml-toolkit\Sample_WebApp\target" or "vidm-saml-toolkit\Sample_AuthServer\target" folder, double click "start.bat"
 
 Option 2: Debug in Eclipse
 
-Select "MyServer.java" in SamlSample project, Run As -> Java Application.
+Select "MyWebServer.java" in Sample_WebApp project or "MyAuthServer.java" in Sample_AuthApp, Run As -> Java Application.
 
 ### Access
 
-Access http://localhost:8080/SamlSample with any Internet browser after your Sample web server is started.
+Access URL below with any Internet browser after your Sample server is started.
+Sample_WebApp: https://localhost:8443/WebApp
+Sample_AuthApp: https://localhost:8443/MyAuthServer
 
 ## Documentation
 
