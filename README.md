@@ -48,9 +48,9 @@ Once your build is successful, you should get "SamlToolkit-jar-with-dependencies
 
 You also get 2 sample web servers which guide you to integrate with vIDM server easily in "vidm-saml-toolkit\Sample_WebApp\target" and "vidm-saml-toolkit\Sample_AuthServer\target".
 
-*Sample_WebApp demonstrates the scenario when samltoolkit plays the role of SP and vIDM is IDP.
+* Sample_WebApp demonstrates the scenario when samltoolkit plays the role of SP and vIDM is IDP.
 
-*Sample_AuthServer demonstrates the scenario when samltoolkit plays the role of IDP and vIDM is SP.
+* Sample_AuthServer demonstrates the scenario when samltoolkit plays the role of IDP and vIDM is SP.
 
 ### Run
 
@@ -67,8 +67,8 @@ Select "MyWebServer.java" in Sample_WebApp project or "MyAuthServer.java" in Sam
 ### Access
 
 Access URL below with any Internet browser after your Sample server is started.
-Sample_WebApp: https://localhost:8443/WebApp
-Sample_AuthApp: https://localhost:8443/MyAuthServer
+* Sample_WebApp: https://localhost:8443/WebApp
+* Sample_AuthApp: https://localhost:8443/MyAuthServer
 
 ## Documentation
 
