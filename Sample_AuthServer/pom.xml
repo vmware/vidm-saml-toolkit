@@ -13,10 +13,10 @@ This product may include a number of subcomponents with separate copyright notic
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.vmware.eucenablement</groupId>
-	<artifactId>Sample_AuthApp</artifactId>
+	<artifactId>Sample_AuthServer</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Sample_AuthApp</name>
+	<name>Sample_AuthServer</name>
 	<url>http://maven.apache.org</url>
 
 	<parent>
@@ -82,7 +82,7 @@ This product may include a number of subcomponents with separate copyright notic
 		<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
 	</properties>
 	<build>
-		<finalName>Sample_AuthApp</finalName>
+		<finalName>Sample_AuthServer</finalName>
 		<resources>
 			<resource>
 				<includes>

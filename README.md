@@ -3,25 +3,35 @@
 
 ## Overview
 
-vIDM SAML Toolkit is a simple Java SDK (software development kit) for web developers who want to implement "Sign In with VMware Identity Manager" for their web applications. 
+vIDM (VMware Identity Manager) SAML Toolkit is a simple Java SDK (software development kit) for web developers who want to integrate vIDM with their web applications.
 
-It is not a small task for web developers to encode SAML request and decode SAML response without using any SAML library.
+VIDM provides Single-Sign-On (SSO) to SAML (Security Assertion Markup Language) compliant applications, but it is not a small task for web developers to make their applications SAML compliant.
 
-This toolkit can save developers' effort by providing some easy to use functions. With this toolkit, a web developer can implement SSO function with vIDM, even if he has no knowledge about SAML 2.0. This toolkit is platform independent, since it is written in Java. 
+This toolkit can save developers' effort by providing some easy to use functions. With this toolkit, a web developer can implement SSO function with vIDM, even if he has no knowledge about SAML. This toolkit is platform independent, since it is written in Java. 
 
-This toolkit can play two roles: service provider (SP) and identity provider (IDP) when integrating with vIDM.
+vIDM can play two different roles: identity provider (IDP) or service provider (SP).
 
-The toolkit supports following functions when act as SP:
-1. Initialize SSO service with vIDM URL      
-2. Create an authentication request to vIDM      
-3. Process an authentication result from vIDM      
+### Role 1: Use vIDM as IDP
+
+If you use vIDM as IDP, your web application will use vIDM as the SSO server. When user accesses your web application without a valid session, he will be redirected to vIDM for SSO. vIDM will tell your web application the user's ID if the user has been authenticated successfully.
+
+In such case, this toolkit supports the following functions:
+1. Initialize an SSO service with vIDM URL      
+2. Create an SSO request to vIDM      
+3. Process an SSO result from vIDM      
 4. Sign Out
 
-The toolkit supports following functions when act as IDP:
-1. Initialize SSO service with vIDM URL 
-2. Create an authentication request from vIDM      
-3. Process an authentication result to vIDM
+
+### Role 2: Use vIDM as SP
+
+If you use vIDM as SP, your web application should act as an IDP, and vIDM will use your web application as the SSO server. Once a user has logged in your web application, he can access vIDM and the applications managed by vIDM without typing ID/password again.
+
+In such case, this toolkit supports the following functions:
+1. Initialize a local IDP service and configure which vIDM can use this IDP  
+2. Process an SSO request from vIDM     
+3. Create an SSO result to vIDM      
 4. Sign Out
+
 
 ## Try it out
 
@@ -72,6 +82,10 @@ Access URL below with any Internet browser after your Sample server is started.
 
 ## Documentation
 
+### Role 1: Use vIDM as IDP
+
+Refer to the sample project "Sample_WebApp"
+
 You may need the following Java Classes in "SamlToolkit.jar" to integrate your web application with vIDM:
 
     com.vmware.samltoolkit.SSOService
@@ -80,7 +94,7 @@ You may need the following Java Classes in "SamlToolkit.jar" to integrate your w
 
     com.vmware.samltoolkit.SamlSsoResponse
 
-Step 1. New a SSOService object when your web server is started
+Step 1. New an SSOService object when your web server is started
 
     SAMLToolkitConf conf = new SAMLToolkitConf();
    
@@ -116,6 +130,47 @@ Step 3. Implement your own SAML consumer service like this (can be a Servlet, JS
 	}
 
 
+
+### Role 2: Use vIDM as SP
+
+Refer to the sample project Sample_AuthServer (in folder "Sample_AuthServer")
+
+You may need the following Java Classes in "SamlToolkit.jar" to use vIDM as SP, and use your web application as IDP:
+
+    com.vmware.samltoolkit.idp.IDPService
+
+    com.vmware.samltoolkit.idp.SAMLIDPConf
+
+    com.vmware.samltoolkit.idp.SamlSsoRequest
+
+Step 1. New an IDPService object when your web server is started
+
+    SAMLIDPConf conf = new SAMLIDPConf(issuer, kestoreStream, keystorepwd);
+
+	 service = new IDPService(conf);
+  
+Step 2. (Optional) Process the SSO request from vIDM. If necessary, redirect the user to your login page.
+   
+	 String relay = request.getParameter("RelayState");
+	 SAMLSsoRequest ssoRequest = service.decodeSAMLRequest(s);
+	 if (ssoRequest != null && ssoRequest.isValid() ) {
+			session.setAttribute("request", ssoRequest);
+			response.sendRedirect("idpLogin.jsp");
+			return;
+	 }
+   
+Step 3. If the user has logged in, redirect the user back to vIDM with SAMLSsoResponse
+   
+Option 1: If the login is initiated by vIDM and you have received the SSO request, use the request to generate SSO response
+	  
+	 ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, user);
+	 response.getOutputStream().write(ssoresponse.getBytes());
+	  
+Option 2:  You can generate SSO response directly with vIDM URL, and redirect the user to vIDM web page
+	  
+	 ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(vidm, user, relay);
+	 response.getOutputStream().write(ssoresponse.getBytes());	
+	
 ## Contributing
 
 The vidm-saml-toolkit project team welcomes contributions from the community. If you wish to contribute code and you have not
