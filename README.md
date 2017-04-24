@@ -49,6 +49,8 @@ Option 1: Build in Eclipse
 1. Import these 4 projects as existing Maven project into your workspace: vidmsaml, Sample_WebApp, Sample_AuthServer, and SamlToolkit
 
 2. Run -> Run Configurations -> Maven Build, select "vidmsaml" as base directory, use "clean package" as goals. 
+![Maven Build Image Step 1](/img/mvnbuild1.png)
+![Maven Build Image Step 2](/img/mvnbuild2.png)
 
 Option 2: Build with Maven command line tool
 
@@ -73,6 +75,7 @@ Go to "vidm-saml-toolkit\Sample_WebApp\target" or "vidm-saml-toolkit\Sample_Auth
 Option 2: Debug in Eclipse
 
 Select "MyWebServer.java" in Sample_WebApp project or "MyAuthServer.java" in Sample_AuthApp, Run As -> Java Application.
+![Run Server in Eclipse](/img/runserver.png)
 
 ### Access
 
