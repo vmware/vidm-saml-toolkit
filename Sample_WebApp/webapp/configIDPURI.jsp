@@ -57,12 +57,12 @@ This product may include a number of subcomponents with separate copyright notic
 	                    	</div>
 						
 						 <div class="row">
-	            <div class="col-xs-6 col-lg-6">	
+	            <div class="col-xs-12 col-lg-6">	
 		          
 		              <p><a class="btn btn-default btn-lg" target="_new" href="http://pubs.vmware.com/vidm/topic/com.vmware.vidm_workspace-one.doc/GUID-C1A2F5E4-E117-4CD7-A672-C19040527C4B.html" role="button">vIDM Document >>></a></p>
 	          
 	            </div>
-	            <div class="col-xs-6 col-lg-6" >
+	            <div class="col-xs-12 col-lg-6" >
 		             <form action="ssoLogin.jsp" method="post">
 						<p><input type=submit value="Single Sign On >>>" class="btn btn-default btn-lg"></p>
 						</form>
