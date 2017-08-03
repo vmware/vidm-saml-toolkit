@@ -69,10 +69,10 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 	 */
 	public void setSAMLMessage(String samlmessage){
 		this.samlmessage = samlmessage;
-		isdeflated = false;
+//		isdeflated = false;
 	}
 
-	private boolean isdeflated = false;
+//	private boolean isdeflated = false;
 
 	/**
 	 *
@@ -80,7 +80,7 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 	 */
 	public void setDefaltedSAMLMessage(String deflatedSamlmessage){
 		setSAMLMessage(deflatedSamlmessage);
-		this.isdeflated = true;
+//		this.isdeflated = true;
 	}
 
 	@Override
@@ -133,8 +133,8 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 		}
 
 		log.info("Decoded SAML message before deflated:\n{}", new String(decodedBytes));
-	     ByteArrayInputStream bytesIn = new ByteArrayInputStream(decodedBytes);
-		if (this.isdeflated){
+		ByteArrayInputStream bytesIn = new ByteArrayInputStream(decodedBytes);
+		if (shouldDeflated(decodedBytes)){
 			  try {
 
 		            InflaterInputStream inflater = new InflaterInputStream(bytesIn, new Inflater(true));
@@ -149,6 +149,16 @@ public class SimpleSAMLMessageDecoder extends AbstractMessageDecoder<SAMLObject>
 		return bytesIn;
 	}
 
+	private boolean shouldDeflated(byte[] bytes) {
+		try {
+			XMLObjectSupport.unmarshallFromInputStream(this.parserPool,
+					new InflaterInputStream(new ByteArrayInputStream(bytes.clone()), new Inflater(true)));
+			return true;
+		}
+		catch (Exception e){
+			return false;
+		}
+	}
 
 
 

@@ -63,7 +63,7 @@ public class MyWebServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "webapp";
+		String webapp = "Sample_WebApp/webapp";
 		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
 		webAppContext.setResourceBase(webapp);
 		webAppContext.setContextPath("/WebApp");

@@ -26,6 +26,7 @@ public class MyIDP {
 			SAMLIDPConf conf = new SAMLIDPConf(issuer, kestoreStream, keystorepwd);
 
 
+
 			service = new IDPService(conf);
 		} catch (Exception e) {
 			log.error("Error initializing service", e);

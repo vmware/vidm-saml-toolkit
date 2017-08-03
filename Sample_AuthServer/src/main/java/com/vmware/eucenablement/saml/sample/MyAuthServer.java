@@ -23,6 +23,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.vmware.eucenablement.saml.sample.idp.MyIDP;
 import com.vmware.eucenablement.saml.sample.idp.MyIDPServlet;
+import com.vmware.eucenablement.saml.sample.idp.WeChatServlet;
 
 
 /**
@@ -66,7 +67,7 @@ public class MyAuthServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "webapp";
+		String webapp = "Sample_AuthServer/webapp";
 		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
 		webAppContext.setResourceBase(webapp);
 		webAppContext.setContextPath("/MyAuthServer");
@@ -74,7 +75,7 @@ public class MyAuthServer {
 		webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
 		webAppContext.addServlet(MyIDPServlet.class.getCanonicalName(), "/saml2postlogin");
-
+		webAppContext.addServlet(WeChatServlet.class.getCanonicalName(), "/wxLoginAction");
 
 		server.setHandler(webAppContext);
 		try {
