@@ -2,6 +2,9 @@
          pageEncoding="UTF-8"%>
 <%@ page import="com.vmware.eucenablement.saml.sample.idp.MyIDP"%>
 <%@ page import="java.util.*" %>
+<%@ page import="com.vmware.eucenablement.oauth.OAuth" %>
+<%@ page import="com.vmware.eucenablement.saml.sample.idp.WeChatServlet" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,13 +22,12 @@
             <div class="container">
                 <%
                     String header = request.getHeader("User-Agent");
-
                     String openid = request.getParameter("openid");
                     String errmsg = request.getParameter("errmsg");
                     if (errmsg!=null) {
                         // login failed
                         %>
-                            <div><h2>Login Failed!</h2></div>
+                            <div><h2>Oops...</h2></div>
                             <div style="margin-top: 40px"><p><% out.print(errmsg); %></p></div>
                             <div>
                             <button class="btn btn-primary" style="margin-top: -15px"
@@ -40,36 +42,38 @@
                             <div style="margin-top: 40px">
                                 <p>
                                     Your OpenId: <% out.print(openid); %>
-                                    <br />
+<%--                                    <br />
                                     Your Nickname:  <% out.print(request.getParameter("nickname")); %>
                                     <br />
                                     Your Province:  <% out.print(request.getParameter("province")); %>
                                     <br />
                                     Your City:  <% out.print(request.getParameter("city")); %>
                                     <br />
-                                    Your Country:  <% out.print(request.getParameter("country")); %>
+                                    Your Country:  <% out.print(request.getParameter("country")); %>  --%>
                                 </p>
                             </div>
 
                         <%
                     }
                     else if (!header.contains("MicroMessenger")) {
-                    // if(false) {
-                        // 非微信打开，展示二维码
+                        // show qrCode
                         %>
                             <div><h2>WeChat Login</h2></div>
-                            <div style="margin-top: -8px"><img src="img/wxQrcode.png" /></div>
+                            <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
+                                out.print(URLEncoder.encode(request.getRequestURL().toString(),"utf-8"));
+                            %>" /></div>
                             <div style="margin-top: 20px"><p style="font-size: 22px">Use your WeChat to scan the QRCode.</p></div>
 
                         <%
                     }
                     else {
-                        // 是微信打开，进行登录
+                        // login
                         %>
                             <div><h2>WeChat Login</h2></div>
                             <div>
                                 <button class="btn btn-primary" style="margin-top: 30px"
-                                    onclick="window.location='wxLoginAction'">Confirm Login</button>
+                                    onclick="window.location='<%out.print(OAuth.wxOAuthRedirect(WeChatServlet.APP_ID, WeChatServlet.REDIRECT_URL));%>'">
+                                    Confirm Login</button>
                             </div>
                             <div style="margin-top: 30px"><p style="font-size: 22px">Click the button to confirm login with WeChat.</p></div>
                         <%

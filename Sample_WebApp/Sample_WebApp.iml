@@ -12,6 +12,7 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.7" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="module" module-name="SamlToolkit" />
+    <orderEntry type="library" name="Maven: org.json:json:20150729" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-saml-api:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-xmlsec-api:3.2.0" level="project" />
@@ -20,7 +21,6 @@
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-soap-api:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-messaging-api:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-core:3.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.3.6" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-profile-api:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-storage-api:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: net.shibboleth.utilities:java-support:7.2.0" level="project" />
@@ -30,6 +30,7 @@
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-security-impl:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-xmlsec-impl:3.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:opensaml-soap-impl:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.3.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:openws:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: org.opensaml:xmltooling:1.4.4" level="project" />
