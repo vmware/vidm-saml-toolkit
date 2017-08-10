@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.jetty.server.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,15 @@ public class MyIDPServlet implements Servlet  {
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 
-		HttpServletRequest request = (HttpServletRequest) req;
+		Request request = (Request) req;
+
+		// set session
+		String jsessionid=request.getParameter("JSESSIONID");
+		if (jsessionid!=null) {
+			request.setRequestedSessionId(jsessionid);
+			request.setSession(request.getSessionHandler().getHttpSession(jsessionid));
+		}
+
 		HttpServletResponse response = (HttpServletResponse) res;
 		String s = request.getParameter("SAMLRequest");
 		HttpSession session = request.getSession();
@@ -80,6 +89,8 @@ public class MyIDPServlet implements Servlet  {
 			//handle the login request
 			//no matter what you input, we regard it successful here
 			String user = request.getParameter("username");
+			if (user!=null && user.length()>20)
+				user=user.substring(0, 20);
 			log.info("user name is successful "+user);
 			SAMLSsoRequest ssoRequest = (SAMLSsoRequest) session.getAttribute("request");
 			if (ssoRequest==null){

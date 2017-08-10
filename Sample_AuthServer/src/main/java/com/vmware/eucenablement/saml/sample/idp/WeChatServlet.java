@@ -3,6 +3,8 @@ package com.vmware.eucenablement.saml.sample.idp;
 import com.vmware.eucenablement.oauth.OAuth;
 import com.vmware.eucenablement.oauth.OAuthException;
 
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,6 +22,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by chenzhang on 2017-08-03.
@@ -42,8 +45,8 @@ public class WeChatServlet  implements Servlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        Request request = (Request) req;
+        Response response = (Response) res;
 
 /*
         String access_token = request.getParameter("access_token"), openid=request.getParameter("openid");
@@ -73,14 +76,39 @@ public class WeChatServlet  implements Servlet {
 */
 
         String code=request.getParameter("code");
+        String jsessionid=request.getParameter("state");
+        if (jsessionid==null || "".equals(jsessionid))
+            jsessionid=request.getRequestedSessionId();
+        request.setRequestedSessionId(jsessionid);
+        request.setSession(request.getSessionHandler().getHttpSession(jsessionid));
+
+        if ("username".equals(request.getParameter("query"))) {
+            HttpSession session = request.getSession();
+            String username=(String)session.getAttribute("username");
+            if (username!=null) {
+                response.getWriter().write(new JSONObject().put("code", 0).put("username", username).toString());
+            }
+            else {
+                response.getWriter().write(new JSONObject().put("code", -1).toString());
+            }
+            return;
+        }
+
         // get openid
         if (code!=null) {
             try {
                 String openid=OAuth.wxOAuthGetOpenId(APP_ID, APP_SECRET, code);
-                response.sendRedirect("wxLogin.jsp?openid="+openid);
+                // response.sendRedirect("wxLogin.jsp?openid="+openid);
+
+                // save to session
+                HttpSession session = request.getSession();
+                session.setAttribute("username", openid);
+
+                // login with openid
+                response.sendRedirect("saml2postlogin?username="+openid+"&JSESSIONID="+jsessionid);
             }
             catch (OAuthException e) {
-                response.sendRedirect("wxLogin.jsp?errmsg="+e.getMessage());
+                response.sendRedirect("wxLogin.jsp?errmsg="+e.getMessage()+"&JSESSIONID="+jsessionid);
             }
             return;
 

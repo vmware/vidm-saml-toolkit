@@ -10,10 +10,10 @@ import java.net.URLEncoder;
  */
 public class OAuth {
 
-    public static String wxOAuthRedirect(String APP_ID, String redirect_uri) throws IOException {
+    public static String wxOAuthRedirect(String APP_ID, String redirect_uri, String jsessionid) throws IOException {
         return String.format("https://open.weixin.qq.com/connect/oauth2/authorize?" +
-                "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=#wechat_redirect",
-                APP_ID, URLEncoder.encode(redirect_uri, "utf8"));
+                "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=%s#wechat_redirect",
+                APP_ID, URLEncoder.encode(redirect_uri, "utf8"), jsessionid);
     }
 
     public static String wxOAuthGetOpenId(String APP_ID, String APP_SECRET, String code) throws IOException, OAuthException {

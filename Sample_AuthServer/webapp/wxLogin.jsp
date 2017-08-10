@@ -60,10 +60,22 @@
                         %>
                             <div><h2>WeChat Login</h2></div>
                             <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
-                                out.print(URLEncoder.encode(request.getRequestURL().toString(),"utf-8"));
+                                out.print(URLEncoder.encode(request.getRequestURL().toString()
+                                +"?JSESSIONID="+request.getRequestedSessionId(),"utf-8"));
                             %>" /></div>
                             <div style="margin-top: 20px"><p style="font-size: 22px">Use your WeChat to scan the QRCode.</p></div>
-
+                <script type="text/javascript">
+                    function check() {
+                        $.get("wxLoginAction?query=username", function (result) {
+                            if (result.code==0) {
+                                window.location="saml2postlogin?username="+result.username;
+                            }
+                        }, "json");
+                    }
+                    $(document).ready(function () {
+                        setInterval(check, 1500);
+                    });
+                </script>
                         <%
                     }
                     else {
@@ -72,7 +84,11 @@
                             <div><h2>WeChat Login</h2></div>
                             <div>
                                 <button class="btn btn-primary" style="margin-top: 30px"
-                                    onclick="window.location='<%out.print(OAuth.wxOAuthRedirect(WeChatServlet.APP_ID, WeChatServlet.REDIRECT_URL));%>'">
+                                    onclick="window.location='<%
+                                    String jsessionid=request.getParameter("JSESSIONID");
+                                    if (jsessionid==null || "".equals(jsessionid))
+                                        jsessionid=request.getRequestedSessionId();
+                                    out.print(OAuth.wxOAuthRedirect(WeChatServlet.APP_ID, WeChatServlet.REDIRECT_URL, jsessionid));%>'">
                                     Confirm Login</button>
                             </div>
                             <div style="margin-top: 30px"><p style="font-size: 22px">Click the button to confirm login with WeChat.</p></div>
@@ -85,8 +101,5 @@
             </div>
         </div>
     </section>
-
-
-
 </body>
 </html>
