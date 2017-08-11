@@ -124,12 +124,16 @@ public class WeChatServlet  implements Servlet {
 
         // get jsessionid by state
         if (state!=null) {
+
+            // get the browser's session
             String jsessionid=OAuth.decode(state);
-            if (jsessionid==null) {
+            HttpSession session=jsessionid==null?null:request.getSessionHandler().getHttpSession(jsessionid);
+            if (session==null) {
                 response.sendRedirect("wxLogin.jsp?errmsg="+
                     URLEncoder.encode("Invalid qrcode: refresh the qrcode page and re-scan.", "utf-8"));
                 return;
             }
+
             // get openid
             if (code!=null) {
                 try {
@@ -138,8 +142,13 @@ public class WeChatServlet  implements Servlet {
                     // Get the session by jsessionid
                     request.getSessionHandler().getHttpSession(jsessionid).setAttribute("username", openid);
 
-                    // Login success in WeChat
-                    //TODO: FIXME: question by steng: why you need parameter username ? A hacker may send any username, so please use SESSION
+                    // if it's the current session
+                    if (request.getRequestedSessionId().equals(jsessionid)) {
+                        response.sendRedirect("wxLoginAction?action=login");
+                        return;
+                    }
+
+                    // TODO: Login successfully, just tell the user.
                     response.sendRedirect("wxLogin.jsp?openid="+openid);
                 }
                 catch (OAuthException e) {

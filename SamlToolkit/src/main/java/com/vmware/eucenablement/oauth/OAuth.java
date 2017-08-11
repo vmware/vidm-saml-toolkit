@@ -38,14 +38,17 @@ public class OAuth {
 
     }
 
-
-
-
+    /**
+     * Encode jsessionid with current timestamp, to get"state"
+     * @param jsessionid
+     * @return
+     */
     public static String encode(String jsessionid) {
+        // md5 the current timestamp to get keys
         String time=String.valueOf(System.currentTimeMillis()/10000);
         byte[] keys=md5(time.substring(time.length()-6));
 
-        // encode
+        // encode the bytes by keys
         byte[] bytes=jsessionid.getBytes().clone();
         for (int i=0,j=0;i<bytes.length;i++) {
             bytes[i]=(byte)((bytes[i]+keys[j]));
@@ -62,6 +65,7 @@ public class OAuth {
 
         // 3 minutes, 180 seconds
         for (int t=0;t<18;t++) {
+            // get keys
             String time=String.valueOf(currtime-t);
             byte[] keys=md5(time.substring(time.length()-6));
 
