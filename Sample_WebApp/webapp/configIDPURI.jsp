@@ -12,7 +12,7 @@ This product may include a number of subcomponents with separate copyright notic
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.vmware.eucenablement.saml.sample.MySSO" %>
+<%@ page import="MySSO" %>
 <%@ page import="com.vmware.samltoolkit.SSOService"%>
 <%@ page import="com.vmware.samltoolkit.SAMLToolkitConf"%>
 <%@ page import="java.util.Map" %>

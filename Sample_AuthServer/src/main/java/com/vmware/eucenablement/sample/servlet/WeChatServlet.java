@@ -1,10 +1,11 @@
-package com.vmware.eucenablement.saml.sample.idp;
+package com.vmware.eucenablement.sample.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.Servlet;
@@ -13,13 +14,17 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.json.JSONObject;
 
 import com.vmware.eucenablement.oauth.OAuth;
 import com.vmware.eucenablement.oauth.OAuthException;
+import com.vmware.eucenablement.sample.idp.MyIDP;
+import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 /**
  * Created by chenzhang on 2017-08-03.
@@ -73,17 +78,13 @@ public class WeChatServlet  implements Servlet {
 */
 
         String code=request.getParameter("code");
-        String jsessionid=request.getParameter("state");
-        if (jsessionid==null || "".equals(jsessionid))
-            jsessionid=request.getRequestedSessionId();
-        request.setRequestedSessionId(jsessionid);
-        request.setSession(request.getSessionHandler().getHttpSession(jsessionid));
+        String state=request.getParameter("state");
 
-        if ("username".equals(request.getParameter("query"))) {
+        if ("oauth".equals(request.getParameter("query"))) {
             HttpSession session = request.getSession();
             String username=(String)session.getAttribute("username");
             if (username!=null) {
-                response.getWriter().write(new JSONObject().put("code", 0).put("username", username).toString());
+                response.getWriter().write(new JSONObject().put("code", 0).toString());
             }
             else {
                 response.getWriter().write(new JSONObject().put("code", -1).toString());
@@ -91,25 +92,61 @@ public class WeChatServlet  implements Servlet {
             return;
         }
 
-        // get openid
-        if (code!=null) {
-            try {
-                String openid=OAuth.wxOAuthGetOpenId(APP_ID, APP_SECRET, code);
-                // response.sendRedirect("wxLogin.jsp?openid="+openid);
+        if ("login".equals(request.getParameter("action"))) {
 
-                // save to session
-                HttpSession session = request.getSession();
-                session.setAttribute("username", openid);
+            // try to login...
 
-                // login with openid
-                //TODO: FIXME: question by steng: why you need parameter username ? A hacker may send any username, so please use SESSION
-                response.sendRedirect("saml2postlogin?username="+openid+"&JSESSIONID="+jsessionid);
+            HttpSession session = request.getSession();
+            String username=(String)session.getAttribute("username");
+
+            // login failed
+            if (username==null) {
+                response.sendRedirect("wxLogin.jsp?errmsg="+ URLEncoder.encode("You haven't passed the WeChat OAuth!", "utf-8"));
+                return;
             }
-            catch (OAuthException e) {
-                response.sendRedirect("wxLogin.jsp?errmsg="+e.getMessage()+"&JSESSIONID="+jsessionid);
+
+            // oauth success: login
+            SAMLSsoRequest ssoRequest = (SAMLSsoRequest) session.getAttribute("request");
+            if (ssoRequest==null) {
+                // invalid sso: need to set SAML
+                response.sendRedirect("wxLogin.jsp?errmsg="+ URLEncoder.encode("Invalid SSO request: Have you set the vIDM server correctly?", "utf-8"));
+                return;
             }
+
+            // confirm login
+            response.setContentType("text/html;charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            response.getOutputStream().write(MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, username.substring(0, 20)).getBytes());
+            response.getOutputStream().flush();
             return;
 
+        }
+
+        // get jsessionid by state
+        if (state!=null) {
+            String jsessionid=OAuth.decode(state);
+            if (jsessionid==null) {
+                response.sendRedirect("wxLogin.jsp?errmsg="+
+                    URLEncoder.encode("Invalid qrcode: refresh the qrcode page and re-scan.", "utf-8"));
+                return;
+            }
+            // get openid
+            if (code!=null) {
+                try {
+                    String openid=OAuth.wxOAuthGetOpenId(APP_ID, APP_SECRET, code);
+
+                    // Get the session by jsessionid
+                    request.getSessionHandler().getHttpSession(jsessionid).setAttribute("username", openid);
+
+                    // Login success in WeChat
+                    //TODO: FIXME: question by steng: why you need parameter username ? A hacker may send any username, so please use SESSION
+                    response.sendRedirect("wxLogin.jsp?openid="+openid);
+                }
+                catch (OAuthException e) {
+                    response.sendRedirect("wxLogin.jsp?errmsg="+URLEncoder.encode(e.getMessage(),"utf-8"));
+                }
+                return;
+            }
         }
 
         response.sendRedirect("wxLogin.jsp");
@@ -124,29 +161,6 @@ public class WeChatServlet  implements Servlet {
     @Override
     public void destroy() {
 
-    }
-
-
-    private String get(String url) throws IOException {
-        System.out.println("HTTP GET "+url);
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-
-        StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        String line;
-
-        InputStream stream = connection.getInputStream();
-        int responseCode = connection.getResponseCode();
-
-        System.out.println(responseCode);
-
-        br = new BufferedReader(new InputStreamReader(stream));
-        while((line = br.readLine()) != null ){
-            sb.append(line);
-        }
-
-        return sb.toString();
     }
 
 }

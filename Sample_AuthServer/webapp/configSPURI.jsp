@@ -12,8 +12,8 @@ This product may include a number of subcomponents with separate copyright notic
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.vmware.eucenablement.saml.sample.idp.MyIDP" %>
-<%@ page import="com.vmware.eucenablement.saml.sample.idp.SslUtilities" %>
+<%@ page import="com.vmware.eucenablement.sample.idp.MyIDP" %>
+<%@ page import="com.vmware.eucenablement.sample.idp.SslUtilities" %>
 <%@ page import="com.vmware.samltoolkit.idp.IDPService"%>
 <%@ page import="com.vmware.samltoolkit.idp.SAMLIDPConf"%>
 <%@ page import="com.vmware.samltoolkit.SAMLToolkitConf"%>

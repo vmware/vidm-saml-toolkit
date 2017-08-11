@@ -1,4 +1,4 @@
-package com.vmware.eucenablement.saml.sample.idp;
+package com.vmware.eucenablement.sample.idp;
 
 import java.io.InputStream;
 

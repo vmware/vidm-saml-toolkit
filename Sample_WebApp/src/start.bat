@@ -14,5 +14,5 @@ SET CLASSPATH
 IF "%JAVA_HOME%" == "" (
     echo Please install JDK.
 ) ELSE (
-   "%JAVA_HOME%\BIN\java.exe" -classpath "%CLASSPATH%;Sample_WebApp.jar" com.vmware.eucenablement.saml.sample.MyWebServer
+   "%JAVA_HOME%\BIN\java.exe" -classpath "%CLASSPATH%;Sample_WebApp.jar" MyWebServer
 )

@@ -1,4 +1,4 @@
-package com.vmware.eucenablement.saml.sample.idp;
+package com.vmware.eucenablement.sample.servlet;
 
 import java.io.IOException;
 
@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vmware.eucenablement.sample.idp.MyIDP;
 import com.vmware.samltoolkit.idp.SAMLSsoRequest;
 
 public class MyIDPServlet implements Servlet  {
