@@ -7,7 +7,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -51,6 +50,9 @@ public class MyIDPServlet implements Servlet  {
 		Request request = (Request) req;
 
 		// set session
+		  //TODO: FIXME: DON'T use "setRequestedSessionId". Each session should its unified JSESSIONID. If you want to pass a message to the other session, you can use a in-memory global container (Map, Cache, Set, etc.).
+		//This is just a sample. But if you are writing a production, you may consider database or message bus/message queue for multiple servers.
+
 		String jsessionid=request.getParameter("JSESSIONID");
 		if (jsessionid!=null) {
 			request.setRequestedSessionId(jsessionid);
@@ -86,6 +88,10 @@ public class MyIDPServlet implements Servlet  {
 			}
 		}else{
 			String ssoresponse = "";
+            //TODO: FIXME: For We-chat OAuth Sample, please get username from session, DON'T trust username in request.
+			//You might ask why I trust username in my previous Sample_Authserver. Well, what I wrote is a "Auth Server Sample", there should be a password parameter together with the username paramter, and the developer who refers to this Sample should verify username/password pair in this function by himself.
+			//But WeChat OAuth Sample is different, you are writing a OAuth Client Sample. That's why I ask you to write a new Sample, don't change this Sample.
+
 			//handle the login request
 			//no matter what you input, we regard it successful here
 			String user = request.getParameter("username");

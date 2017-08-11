@@ -67,7 +67,7 @@ public class MyAuthServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "Sample_AuthServer/webapp";
+		String webapp = "webapp";
 		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
 		webAppContext.setResourceBase(webapp);
 		webAppContext.setContextPath("/MyAuthServer");

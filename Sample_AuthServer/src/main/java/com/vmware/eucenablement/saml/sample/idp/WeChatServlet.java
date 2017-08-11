@@ -1,18 +1,10 @@
 package com.vmware.eucenablement.saml.sample.idp;
 
-import com.vmware.eucenablement.oauth.OAuth;
-import com.vmware.eucenablement.oauth.OAuthException;
-
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Response;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.Servlet;
@@ -20,9 +12,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
+import org.json.JSONObject;
+
+import com.vmware.eucenablement.oauth.OAuth;
+import com.vmware.eucenablement.oauth.OAuthException;
 
 /**
  * Created by chenzhang on 2017-08-03.
@@ -105,6 +102,7 @@ public class WeChatServlet  implements Servlet {
                 session.setAttribute("username", openid);
 
                 // login with openid
+                //TODO: FIXME: question by steng: why you need parameter username ? A hacker may send any username, so please use SESSION
                 response.sendRedirect("saml2postlogin?username="+openid+"&JSESSIONID="+jsessionid);
             }
             catch (OAuthException e) {
