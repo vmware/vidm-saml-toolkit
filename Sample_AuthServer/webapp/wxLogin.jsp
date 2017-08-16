@@ -2,7 +2,7 @@
          pageEncoding="UTF-8"%>
 <%@ page import="com.vmware.eucenablement.sample.idp.MyIDP"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.vmware.eucenablement.oauth.OAuth" %>
+<%@ page import="com.vmware.eucenablement.oauth.OAuthUtil" %>
 <%@ page import="com.vmware.eucenablement.sample.servlet.WeChatServlet" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.opensaml.xml.signature.Q" %>
@@ -43,14 +43,6 @@
                             <div style="margin-top: 40px">
                                 <p>
                                     Your OpenId: <% out.print(openid); %>
-<%--                                    <br />
-                                    Your Nickname:  <% out.print(request.getParameter("nickname")); %>
-                                    <br />
-                                    Your Province:  <% out.print(request.getParameter("province")); %>
-                                    <br />
-                                    Your City:  <% out.print(request.getParameter("city")); %>
-                                    <br />
-                                    Your Country:  <% out.print(request.getParameter("country")); %>  --%>
                                 </p>
                             </div>
 
@@ -66,7 +58,7 @@
                              -->
                             <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
                                 out.print(request.getRequestURL().toString()
-                                +"?state="+OAuth.encode(request.getRequestedSessionId()));
+                                +"?state="+OAuthUtil.encode(request.getRequestedSessionId()));
                             %>" /></div>
 
                             <div style="margin-top: 20px"><p style="font-size: 22px">Use your WeChat to scan the QRCode.</p></div>
@@ -89,25 +81,9 @@
 
                         String state=request.getParameter("state");
                         if (state==null || "".equals(state))
-                            state=OAuth.encode(request.getRequestedSessionId());
+                            state=OAuthUtil.encode(request.getRequestedSessionId());
 
-                        response.sendRedirect(OAuth.wxOAuthRedirect(WeChatServlet.APP_ID, WeChatServlet.REDIRECT_URL,
-                                state));
-
-                        %>
-                           <%-- <div><h2>WeChat Login</h2></div>
-                            <div>
-                                <button class="btn btn-primary" style="margin-top: 30px"
-                                    onclick="window.location='<%
-                                    String jsessionid=request.getParameter("JSESSIONID");
-                                    if (jsessionid==null || "".equals(jsessionid))
-                                        jsessionid=request.getRequestedSessionId();
-                                    out.print(OAuth.wxOAuthRedirect(WeChatServlet.APP_ID, WeChatServlet.REDIRECT_URL, jsessionid));%>'">
-                                    Confirm Login</button>
-                            </div>
-                            <div style="margin-top: 30px"><p style="font-size: 22px">Click the button to confirm login with WeChat.</p></div>--%>
-                        <%
-
+                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationUrl(state));
 
                     }
                 %>

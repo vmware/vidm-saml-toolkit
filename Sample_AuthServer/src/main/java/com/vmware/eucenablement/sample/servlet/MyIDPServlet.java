@@ -89,9 +89,9 @@ public class MyIDPServlet implements Servlet  {
 			}
 		}else{
 			String ssoresponse = "";
-            //TODO: FIXME: For We-chat OAuth Sample, please get username from session, DON'T trust username in request.
+            //TODO: FIXME: For We-chat OAuthUtil Sample, please get username from session, DON'T trust username in request.
 			//You might ask why I trust username in my previous Sample_Authserver. Well, what I wrote is a "Auth Server Sample", there should be a password parameter together with the username paramter, and the developer who refers to this Sample should verify username/password pair in this function by himself.
-			//But WeChat OAuth Sample is different, you are writing a OAuth Client Sample. That's why I ask you to write a new Sample, don't change this Sample.
+			//But WeChat OAuthUtil Sample is different, you are writing a OAuthUtil Client Sample. That's why I ask you to write a new Sample, don't change this Sample.
 
 			//handle the login request
 			//no matter what you input, we regard it successful here
