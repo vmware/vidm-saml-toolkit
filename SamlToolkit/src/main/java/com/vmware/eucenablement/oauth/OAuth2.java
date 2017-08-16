@@ -1,5 +1,8 @@
 package com.vmware.eucenablement.oauth;
 
+import com.vmware.eucenablement.oauth.util.HttpRequest;
+import com.vmware.eucenablement.oauth.util.OAuthUtil;
+
 import org.json.JSONObject;
 
 import java.io.IOException;

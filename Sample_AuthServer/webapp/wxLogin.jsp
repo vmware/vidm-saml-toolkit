@@ -2,7 +2,7 @@
          pageEncoding="UTF-8"%>
 <%@ page import="com.vmware.eucenablement.sample.idp.MyIDP"%>
 <%@ page import="java.util.*" %>
-<%@ page import="com.vmware.eucenablement.oauth.OAuthUtil" %>
+<%@ page import="com.vmware.eucenablement.oauth.util.OAuthUtil" %>
 <%@ page import="com.vmware.eucenablement.sample.servlet.WeChatServlet" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.opensaml.xml.signature.Q" %>

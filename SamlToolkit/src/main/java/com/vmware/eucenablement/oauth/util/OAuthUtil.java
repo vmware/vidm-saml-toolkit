@@ -1,4 +1,4 @@
-package com.vmware.eucenablement.oauth;
+package com.vmware.eucenablement.oauth.util;
 
 import org.json.JSONObject;
 import org.opensaml.xml.util.Base64;

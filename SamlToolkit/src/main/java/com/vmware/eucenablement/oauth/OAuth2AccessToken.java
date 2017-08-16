@@ -1,5 +1,7 @@
 package com.vmware.eucenablement.oauth;
 
+import com.vmware.eucenablement.oauth.util.OAuthUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 

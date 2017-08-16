@@ -1,11 +1,11 @@
 package com.vmware.eucenablement.oauth.impl;
 
-import com.vmware.eucenablement.oauth.HttpRequest;
+import com.vmware.eucenablement.oauth.util.HttpRequest;
 import com.vmware.eucenablement.oauth.OAuth2;
 import com.vmware.eucenablement.oauth.OAuth2AccessToken;
 import com.vmware.eucenablement.oauth.OAuth2Config;
 import com.vmware.eucenablement.oauth.OAuthException;
-import com.vmware.eucenablement.oauth.OAuthUtil;
+import com.vmware.eucenablement.oauth.util.OAuthUtil;
 
 import org.json.JSONObject;
 

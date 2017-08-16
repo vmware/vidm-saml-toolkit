@@ -16,7 +16,7 @@ import org.eclipse.jetty.server.Response;
 import org.json.JSONObject;
 
 import com.vmware.eucenablement.oauth.OAuth2Config;
-import com.vmware.eucenablement.oauth.OAuthUtil;
+import com.vmware.eucenablement.oauth.util.OAuthUtil;
 import com.vmware.eucenablement.oauth.OAuthException;
 import com.vmware.eucenablement.oauth.impl.WeChatOAuth2Impl;
 import com.vmware.eucenablement.sample.idp.MyIDP;

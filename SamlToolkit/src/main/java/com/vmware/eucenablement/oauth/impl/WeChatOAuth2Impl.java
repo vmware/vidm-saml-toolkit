@@ -4,12 +4,9 @@ import com.vmware.eucenablement.oauth.OAuth2;
 import com.vmware.eucenablement.oauth.OAuth2AccessToken;
 import com.vmware.eucenablement.oauth.OAuth2Config;
 import com.vmware.eucenablement.oauth.OAuthException;
-import com.vmware.eucenablement.oauth.OAuthUtil;
-
-import org.json.JSONObject;
+import com.vmware.eucenablement.oauth.util.OAuthUtil;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
