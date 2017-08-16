@@ -113,6 +113,11 @@ public abstract class OAuth2 {
         if (jsonObject.has("error")) {
             if (jsonObject.has("message"))
                 return jsonObject.getString("message");
+            try {
+                JSONObject error=jsonObject.getJSONObject("error");
+                return error.getString("message");
+            }
+            catch (Exception e) {}
             return jsonObject.getString("error");
         }
         if (jsonObject.has("errmsg"))

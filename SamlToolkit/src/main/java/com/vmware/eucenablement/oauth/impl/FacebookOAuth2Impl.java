@@ -80,16 +80,4 @@ public class FacebookOAuth2Impl extends OAuth2 {
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
-
-    @Override
-    /**
-     * Get error message from JSON response. Return null if no error occurs.
-     * @param jsonObject
-     * @return
-     */
-    protected String getErrorMessageFromResponse(JSONObject jsonObject) {
-        if (!jsonObject.has("error"))
-            return null;
-        return jsonObject.optJSONObject("error").optString("message", null);
-    }
 }
