@@ -72,6 +72,24 @@ public class FacebookOAuth2Impl extends OAuth2 {
 
     @Override
     public String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
-        return null;
+        if (accessToken==null || !accessToken.isValid())
+            throw new OAuthException("Access token is invalid!");
+        StringBuilder builder=new StringBuilder();
+        builder.append(String.format("https://graph.facebook.com/me?access_token=%s",
+                getAccessTokenString()));
+        OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
+        return builder.toString();
+    }
+
+    @Override
+    /**
+     * Get error message from JSON response. Return null if no error occurs.
+     * @param jsonObject
+     * @return
+     */
+    protected String getErrorMessageFromResponse(JSONObject jsonObject) {
+        if (!jsonObject.has("error"))
+            return null;
+        return jsonObject.optJSONObject("error").optString("message", null);
     }
 }
