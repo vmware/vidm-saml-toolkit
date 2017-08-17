@@ -46,23 +46,12 @@ public abstract class OAuth2 {
     /**
      * Get access_token url
      * @param code
-     * @return
-     * @throws OAuthException
-     * @throws IOException
-     */
-    public String getAccessTokenUrl(String code) throws OAuthException, IOException {
-        return getAccessTokenUrl(code, new HashMap<String, String>());
-    }
-
-    /**
-     * Get access_token url
-     * @param code
      * @param additionalParams
      * @return
      * @throws OAuthException
      * @throws IOException
      */
-    public abstract String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException;
+    protected abstract String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException;
 
     /**
      * Require access_token from OAuth Server
@@ -71,8 +60,8 @@ public abstract class OAuth2 {
      * @throws OAuthException
      * @throws IOException
      */
-    public OAuth2AccessToken getAccessToken(String code) throws OAuthException, IOException {
-        return getAccessToken(code, new HashMap<String, String>());
+    public OAuth2AccessToken getAccessTokenFromOAuthServer(String code) throws OAuthException, IOException {
+        return getAccessTokenFromOAuthServer(code, new HashMap<String, String>());
     }
 
     /**
@@ -95,7 +84,7 @@ public abstract class OAuth2 {
      * @throws OAuthException
      * @throws IOException
      */
-    public OAuth2AccessToken getAccessToken(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+    public OAuth2AccessToken getAccessTokenFromOAuthServer(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
         HttpRequest.Method method=getAccessTokenMethod();
         String url=getAccessTokenUrl(code, additionalParams);
 
@@ -106,10 +95,10 @@ public abstract class OAuth2 {
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
 
-        String errmsg=getErrorMessageFromResponse(jsonObject);
+        String errmsg= decodeErrorMessage(jsonObject);
         if (!OAuthUtil.isStringNullOrEmpty(errmsg))
             throw new OAuthException(errmsg);
-        return getAccessTokenFromResponse(jsonObject);
+        return accessToken=decodeAccessToken(jsonObject);
     }
 
     /**
@@ -117,7 +106,7 @@ public abstract class OAuth2 {
      * @param jsonObject
      * @return
      */
-    protected String getErrorMessageFromResponse(JSONObject jsonObject) {
+    protected String decodeErrorMessage(JSONObject jsonObject) {
         if (jsonObject.has("error_description"))
             return jsonObject.getString("error_description");
         if (jsonObject.has("error")) {
@@ -140,7 +129,7 @@ public abstract class OAuth2 {
      * @param jsonObject
      * @return
      */
-    protected OAuth2AccessToken getAccessTokenFromResponse(JSONObject jsonObject) {
+    protected OAuth2AccessToken decodeAccessToken(JSONObject jsonObject) {
         OAuth2AccessToken oAuth2AccessToken=new OAuth2AccessToken();
         oAuth2AccessToken.setAccessToken(jsonObject.optString("access_token", null));
         oAuth2AccessToken.setExpiresIn(jsonObject.optLong("expires_in", 300L));
@@ -152,19 +141,7 @@ public abstract class OAuth2 {
         }
 
         oAuth2AccessToken.setInfos(map);
-        this.accessToken=oAuth2AccessToken;
         return oAuth2AccessToken;
-    }
-
-    /**
-     * Get the refresh_token url
-     * @param refresh_token
-     * @return
-     * @throws OAuthException
-     * @throws IOException
-     */
-    public String getRefreshTokenUrl(String refresh_token) throws OAuthException, IOException {
-        return getRefreshTokenUrl(refresh_token, new HashMap<String, String>());
     }
 
     /**
@@ -175,7 +152,7 @@ public abstract class OAuth2 {
      * @throws OAuthException
      * @throws IOException
      */
-    public abstract String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException;
+    protected abstract String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException;
 
     /**
      * Refresh the access_token
@@ -224,21 +201,17 @@ public abstract class OAuth2 {
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
 
-        String errmsg=getErrorMessageFromResponse(jsonObject);
+        String errmsg= decodeErrorMessage(jsonObject);
         if (!OAuthUtil.isStringNullOrEmpty(errmsg))
             throw new OAuthException(errmsg);
-        OAuth2AccessToken accessToken1 = getAccessTokenFromResponse(jsonObject);
+        OAuth2AccessToken accessToken1 = decodeAccessToken(jsonObject);
         accessToken.setAccessToken(accessToken1.getAccessToken());
         accessToken.setExpiresIn(accessToken1.getExpiresIn());
         accessToken.addInfos(accessToken1.getInfos());
         return accessToken;
     }
 
-    public String getUserInfoUrl() throws OAuthException, IOException {
-        return getUserInfoUrl(new HashMap<String, String>());
-    }
-
-    public abstract String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException;
+    protected abstract String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException;
 
     /**
      * Get user info
@@ -266,7 +239,7 @@ public abstract class OAuth2 {
             request.form(additionalParams);
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
-        String errmsg=getErrorMessageFromResponse(jsonObject);
+        String errmsg=decodeErrorMessage(jsonObject);
         if (!OAuthUtil.isStringNullOrEmpty(errmsg))
             throw new OAuthException(errmsg);
         Map<String, Object> map=new HashMap<>();
@@ -283,35 +256,6 @@ public abstract class OAuth2 {
      */
     public OAuth2AccessToken getAccessToken() {
         return accessToken;
-    }
-
-    /**
-     * Get the access token string from local.
-     * @return
-     */
-    public String getAccessTokenString() {
-        return accessToken==null?null:accessToken.getAccessToken();
-    }
-
-    /**
-     * Get values from access token
-     * @param key
-     * @param <T>
-     * @return
-     */
-    public <T> T getValue(String key) {
-        return accessToken==null?null:(T)accessToken.getValue(key);
-    }
-
-    /**
-     * Get values from access token
-     * @param key
-     * @param defaultValue
-     * @param <T>
-     * @return
-     */
-    public <T> T getValue(String key, String defaultValue) {
-        return accessToken==null?null:(T)accessToken.getValue(key, defaultValue);
     }
 
 }

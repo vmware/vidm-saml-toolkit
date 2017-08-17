@@ -67,7 +67,7 @@ public class WeChatServlet implements Servlet {
         if (state!=null) {
 
             // get the browser's session
-            String jsessionid= OAuthUtil.decode(state);
+            String jsessionid=OAuthUtil.decode(state);
             HttpSession browserSession=jsessionid==null?null:request.getSessionHandler().getHttpSession(jsessionid);
             if (browserSession==null) {
                 response.sendRedirect("wxLogin.jsp?errmsg="+
@@ -78,9 +78,8 @@ public class WeChatServlet implements Servlet {
             // get openid
             if (code!=null) {
                 try {
-                    // String openid= OAuthUtil.wxOAuthGetOpenId(APP_ID, APP_SECRET, code);
-                    weChatOAuth2.getAccessToken(code);
-                    String openid= weChatOAuth2.getOpenId();
+                    weChatOAuth2.getAccessTokenFromOAuthServer(code);
+                    String openid=weChatOAuth2.getOpenId();
 
                     // Get the session by jsessionid
                     browserSession.setAttribute("username", openid);

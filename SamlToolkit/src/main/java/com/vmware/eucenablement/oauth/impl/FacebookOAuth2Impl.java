@@ -46,7 +46,7 @@ public class FacebookOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://graph.facebook.com/v2.10/oauth/access_token?" +
                         "client_id=%s&client_secret=%s&redirect_uri=%s&code=%s",
@@ -65,17 +65,17 @@ public class FacebookOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
         return null;
     }
 
     @Override
-    public String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
         if (accessToken==null || !accessToken.isValid())
             throw new OAuthException("Access token is invalid!");
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://graph.facebook.com/me?access_token=%s",
-                getAccessTokenString()));
+                accessToken.getAccessToken()));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }

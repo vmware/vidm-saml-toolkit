@@ -62,7 +62,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
         if (additionalParams==null)
             throw new OAuthException("Additional Params cannot be null!");
         // post
@@ -90,7 +90,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
         if (additionalParams==null)
             throw new OAuthException("Additional Params cannot be null!");
         // post
@@ -111,8 +111,8 @@ public class GoogleOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public OAuth2AccessToken getAccessToken(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
-        super.getAccessToken(code, additionalParams);
+    public OAuth2AccessToken getAccessTokenFromOAuthServer(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+        super.getAccessTokenFromOAuthServer(code, additionalParams);
 
         // decode "id_token" to user info
         JSONObject jsonObject = accessToken.getValue("id_token");
@@ -125,7 +125,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     @Override
-    public String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
         return null;
     }
 
@@ -136,7 +136,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     public String getUid() {
-        return getValue("sub");
+        return accessToken==null?null:(String)accessToken.getValue("sub");
     }
 
 }

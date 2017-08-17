@@ -48,48 +48,11 @@
 
                         <%
                     }
-
-                    // Redirect to WeChat QrCode generation directly.
-                    /*else {
-                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationQrcodeUrl(state));
-                    }*/
-
-                    else if (!header.contains("MicroMessenger")) {
-                        // show qrCode
-                        %>
-                            <div><h2>WeChat Login</h2></div>
-                            <!-- TODO FIXME  
-                            Why you generate QR code by your self? Why not redirect to wx.qq.com directly?
-                            Look at this https://passport.yhd.com/wechat/login.do
-                             -->
-                            <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
-                                out.print(request.getRequestURL().toString()
-                                +"?state="+OAuthUtil.encode(request.getRequestedSessionId()));
-                            %>" /></div>
-
-                            <div style="margin-top: 20px"><p style="font-size: 22px">Use your WeChat to scan the QRCode.</p></div>
-                <script type="text/javascript">
-                    function check() {
-                        $.get("wxLoginAction?query=oauth", function (result) {
-                            if (result.code==0) {
-                                window.location="wxLoginAction?action=login";
-                            }
-                        }, "json");
-                    }
-                    $(document).ready(function () {
-                        setInterval(check, 1500);
-                    });
-                </script>
-                        <%
-                    }
                     else {
                         // login
 
-                        String state=request.getParameter("state");
-                        if (state==null || "".equals(state))
-                            state=OAuthUtil.encode(request.getRequestedSessionId());
-
-                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationUrl(state));
+                        String state=OAuthUtil.encode(request.getRequestedSessionId());
+                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationQrcodeUrl(state));
 
                     }
                 %>

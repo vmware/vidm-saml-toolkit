@@ -32,8 +32,14 @@ public class WeChatOAuth2Impl extends OAuth2 {
         return builder.toString();
     }
 
+    public String getAuthorizationQrcodeUrl(String state) throws OAuthException, IOException{
+        return String.format("https://open.weixin.qq.com/connect/qrconnect?" +
+                "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=%s#wechat_redirect",
+                oAuth2Config.get_APP_ID(), oAuth2Config.get_REDIRECT_URI_ENCODED(), state);
+    }
+
     @Override
-    public String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code",
                 oAuth2Config.get_APP_ID(), oAuth2Config.get_APP_SECRET(), code));
@@ -42,7 +48,7 @@ public class WeChatOAuth2Impl extends OAuth2 {
     }
 
     @Override
-    public String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=%s",
                 refresh_token));
@@ -51,18 +57,18 @@ public class WeChatOAuth2Impl extends OAuth2 {
     }
 
     @Override
-    public String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
         if (accessToken==null || !accessToken.isValid())
             throw new OAuthException("Access token is invalid!");
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s",
-                getAccessTokenString(), getOpenId()));
+                accessToken.getAccessToken(), getOpenId()));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
 
     public String getOpenId() {
-        return getValue("openid");
+        return accessToken==null?null:(String)accessToken.getValue("openid");
     }
 
     /**

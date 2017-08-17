@@ -46,7 +46,7 @@ public class WeiboOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://api.weibo.com/oauth2/access_token?client_id=%s&client_secret=%s&grant_type=authorization_code&redirect_uri=%s&code=%s",
                 oAuth2Config.get_APP_ID(), oAuth2Config.get_APP_SECRET(), oAuth2Config.get_REDIRECT_URI_ENCODED(), code));
@@ -64,17 +64,17 @@ public class WeiboOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
         return null;
     }
 
     @Override
-    public String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
+    protected String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
         if (accessToken==null || !accessToken.isValid())
             throw new OAuthException("Access token is invalid!");
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://api.weibo.com/2/users/show.json?access_token=%s&uid=%s",
-                getAccessTokenString(), getUid()));
+                accessToken.getAccessToken(), getUid()));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
@@ -84,7 +84,7 @@ public class WeiboOAuth2Impl extends OAuth2 {
      * @return
      */
     public String getUid() {
-        return getValue("uid");
+        return accessToken==null?null:(String)accessToken.getValue("uid");
     }
 
 }
