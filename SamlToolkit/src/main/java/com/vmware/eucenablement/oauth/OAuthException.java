@@ -1,7 +1,8 @@
 package com.vmware.eucenablement.oauth;
 
 /**
- * Created by chenzhang on 2017-08-07.
+ * <p>OAuth2 Exception. It's a RuntimeException, you don't need to handle it.</p>
+ * <p>Created by chenzhang on 2017-08-07.</p>
  */
 public class OAuthException extends RuntimeException {
 

@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by chenzhang on 2017-08-16.
+ * <p>OAuth2 access token class. It contains access_token, refresh_token,
+ * and all information (including user's profile) returned by OAuth server.  </p>
+ * <p>Created by chenzhang on 2017-08-15.</p>
  */
 public class OAuth2AccessToken {
 
@@ -45,6 +47,10 @@ public class OAuth2AccessToken {
         this.extraInfo.putAll(extraInfo);
     }
 
+    /**
+     * Null or timeout?
+     * @return
+     */
     public boolean isValid() {
         return !OAuthUtil.isStringNullOrEmpty(access_token) && System.currentTimeMillis()-timestamp<=1000*expires_in;
     }

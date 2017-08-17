@@ -5,13 +5,12 @@ import com.vmware.eucenablement.oauth.OAuth2Config;
 import com.vmware.eucenablement.oauth.OAuthException;
 import com.vmware.eucenablement.oauth.util.OAuthUtil;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Map;
 
 /**
- * Created by chenzhang on 2017-08-16.
+ * <p>Facebook OAuth2 Implementation.</p>
+ * <p>Created by chenzhang on 2017-08-16.</p>
  */
 public class FacebookOAuth2Impl extends OAuth2 {
 
@@ -32,7 +31,7 @@ public class FacebookOAuth2Impl extends OAuth2 {
     public String getAuthorizationUrl(String state, Map<String, String> additionalParams) throws OAuthException, IOException {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://www.facebook.com/v2.10/dialog/oauth?client_id=%s&state=%s&response_type=code&redirect_uri=%s",
-                oAuth2Config.get_APP_ID(), state, oAuth2Config.get_REDIRECT_URL_ENCODED()));
+                oAuth2Config.get_APP_ID(), state, oAuth2Config.get_REDIRECT_URI_ENCODED()));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
@@ -51,7 +50,7 @@ public class FacebookOAuth2Impl extends OAuth2 {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://graph.facebook.com/v2.10/oauth/access_token?" +
                         "client_id=%s&client_secret=%s&redirect_uri=%s&code=%s",
-                oAuth2Config.get_APP_ID(), oAuth2Config.get_APP_SECRET(), oAuth2Config.get_REDIRECT_URL_ENCODED(), code));
+                oAuth2Config.get_APP_ID(), oAuth2Config.get_APP_SECRET(), oAuth2Config.get_REDIRECT_URI_ENCODED(), code));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }

@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by chenzhang on 2017-08-16.
+ * <p>Google OAuth2 Implementation.</p>
+ * <p>Created by chenzhang on 2017-08-16.</p>
  */
 public class GoogleOAuth2Impl extends OAuth2 {
 
@@ -36,7 +37,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://accounts.google.com/o/oauth2/v2/auth?client_id=%s&state=%s" +
                         "&scope=openid%%20email%%20profile&response_type=code&redirect_uri=%s&access_type=offline",
-                oAuth2Config.get_APP_ID(), state, oAuth2Config.get_REDIRECT_URL_ENCODED()));
+                oAuth2Config.get_APP_ID(), state, oAuth2Config.get_REDIRECT_URI_ENCODED()));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
@@ -51,8 +52,9 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     /**
-     * Get access_token url
-     *
+     * <p>Get access_token url.</p>
+     * <p>As we need to post the request, we have to put all the parameters into
+     * <code>additionalParams</code>, and return the base url.</p>
      * @param code
      * @param additionalParams
      * @return
@@ -67,7 +69,7 @@ public class GoogleOAuth2Impl extends OAuth2 {
         additionalParams.put("code", code);
         additionalParams.put("client_id", oAuth2Config.get_APP_ID());
         additionalParams.put("client_secret", oAuth2Config.get_APP_SECRET());
-        additionalParams.put("redirect_uri", oAuth2Config.get_REDIRECT_URL());
+        additionalParams.put("redirect_uri", oAuth2Config.get_REDIRECT_URI());
         additionalParams.put("grant_type", "authorization_code");
         return "https://www.googleapis.com/oauth2/v4/token";
     }
@@ -77,7 +79,9 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     /**
-     * Google OAuth interface doesn't support refreshing token
+     * <p>Get refresh access_token url.</p>
+     * <p>As we need to post the request, we have to put all the parameters into
+     * <code>additionalParams</code>, and return the base url.</p>
      *
      * @param refresh_token
      * @param additionalParams
@@ -98,7 +102,8 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     /**
-     * Require access_token from OAuth Server
+     * As the user profile is directly returned in
+     * <code>id_token</code>, we may decode them.
      * @param code
      * @param additionalParams
      * @return

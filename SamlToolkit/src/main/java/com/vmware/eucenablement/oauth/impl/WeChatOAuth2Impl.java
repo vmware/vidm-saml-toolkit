@@ -12,7 +12,8 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Created by chenzhang on 2017-08-16.
+ * <p>WeChat OAuth2 Implementation.</p>
+ * <p>Created by chenzhang on 2017-08-15.</p>
  */
 public class WeChatOAuth2Impl extends OAuth2 {
 
@@ -25,7 +26,7 @@ public class WeChatOAuth2Impl extends OAuth2 {
         StringBuilder builder=new StringBuilder();
         builder.append(String.format("https://open.weixin.qq.com/connect/oauth2/authorize?" +
                 "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=%s",
-                oAuth2Config.get_APP_ID(), oAuth2Config.get_REDIRECT_URL_ENCODED(), state));
+                oAuth2Config.get_APP_ID(), oAuth2Config.get_REDIRECT_URI_ENCODED(), state));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         builder.append("#wechat_redirect");
         return builder.toString();
@@ -64,11 +65,26 @@ public class WeChatOAuth2Impl extends OAuth2 {
         return getValue("openid");
     }
 
+    /**
+     * <p>We can get different languages according to the locale. Default is Locale.English.</p>
+     * <p>See {@link #getUserInfo(Locale)}</p>
+     * @return
+     * @throws OAuthException
+     * @throws IOException
+     */
     @Override
     public OAuth2AccessToken getUserInfo() throws OAuthException, IOException {
         return getUserInfo(Locale.ENGLISH);
     }
 
+    /**
+     * <p>Return the user's profile according to the locale.</p>
+     * <p>Frequently used: Locale.English, Locale.SIMPLIFIED_CHINESE, Locale.TRADITIONAL_CHINESE.</p>
+     * @param locale
+     * @return
+     * @throws OAuthException
+     * @throws IOException
+     */
     public OAuth2AccessToken getUserInfo(Locale locale) throws OAuthException, IOException {
         Map<String, String> map=new HashMap<>();
         map.put("lang", locale.toString());

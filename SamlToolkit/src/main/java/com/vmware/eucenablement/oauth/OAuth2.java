@@ -10,7 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by chenzhang on 2017-08-16.
+ * <p>The base class. All OAuth implementations should extend this class.</p>
+ * <p>Created by chenzhang on 2017-08-15.</p>
  */
 public abstract class OAuth2 {
 
@@ -74,6 +75,14 @@ public abstract class OAuth2 {
         return getAccessToken(code, new HashMap<String, String>());
     }
 
+    /**
+     * <p>The method (GET/POST) to require access token from OAuth Server.</p>
+     * <p>If it's a post request, then <code>getAccessTokenUrl(code, additionalParams)</code> must return
+     * the base url, and put all the parameters into <code>additionalParams</code>.</p>
+     * <p>See {@linkplain com.vmware.eucenablement.oauth.impl.GoogleOAuth2Impl#getAccessTokenUrl(String, Map)
+     * GoogleOAuthImpl#getAccessTokenUrl(String, Map)}.</p>
+     * @return
+     */
     protected HttpRequest.Method getAccessTokenMethod() {
         return HttpRequest.Method.GET;
     }
@@ -90,6 +99,7 @@ public abstract class OAuth2 {
         HttpRequest.Method method=getAccessTokenMethod();
         String url=getAccessTokenUrl(code, additionalParams);
 
+        // for post, we put all the parameters into additionalParams.
         HttpRequest request=HttpRequest.http(url, method);
         if (method== HttpRequest.Method.POST)
             request.form(additionalParams);
@@ -177,6 +187,14 @@ public abstract class OAuth2 {
         return refreshAccessToken(new HashMap<String, String>());
     }
 
+    /**
+     * <p>The method (GET/POST) to refresh access token from OAuth Server.</p>
+     * <p>If it's a post request, then <code>getRefreshTokenUrl(refresh_token, additionalParams)</code> must return
+     * the base url, and put all the parameters into <code>additionalParams</code>.</p>
+     * <p>See {@linkplain com.vmware.eucenablement.oauth.impl.GoogleOAuth2Impl#getRefreshTokenUrl(String, Map)
+     * GoogleOAuthImpl#getRefreshTokenUrl(String, Map)}.</p>
+     * @return
+     */
     protected HttpRequest.Method refreshAccessTokenMethod() {
         return HttpRequest.Method.GET;
     }
@@ -199,6 +217,7 @@ public abstract class OAuth2 {
         if (url==null)
             throw new OAuthException("Refreshing token is not supported!");
 
+        // post request: put all the parameters into additionalParams
         HttpRequest request=HttpRequest.http(url, method);
         if (method== HttpRequest.Method.POST)
             request.form(additionalParams);
