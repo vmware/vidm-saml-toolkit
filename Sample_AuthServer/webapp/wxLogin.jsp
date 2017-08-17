@@ -49,7 +49,7 @@
                         <%
                     }
 
-                    // Redirect to WeChat QrCode generation directly.
+                    //########### Redirect to WeChat QrCode generation directly. ###########//
                     /*else {
                         response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationQrcodeUrl(state));
                     }*/
@@ -58,10 +58,6 @@
                         // show qrCode
                         %>
                             <div><h2>WeChat Login</h2></div>
-                            <!-- TODO FIXME  
-                            Why you generate QR code by your self? Why not redirect to wx.qq.com directly?
-                            Look at this https://passport.yhd.com/wechat/login.do
-                             -->
                             <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
                                 out.print(request.getRequestURL().toString()
                                 +"?state="+OAuthUtil.encode(request.getRequestedSessionId()));
