@@ -983,9 +983,10 @@ public class HttpRequest {
     }
 
     /**
-     * Start a 'GET' request to the given URL
+     * Start a HTTP request to the given URL
      *
      * @param url
+     * @param method
      * @return request
      * @throws HttpRequestException
      */
@@ -995,9 +996,10 @@ public class HttpRequest {
     }
 
     /**
-     * Start a 'GET' request to the given URL
+     * Start a HTTP request to the given URL
      *
      * @param url
+     * @param method
      * @return request
      * @throws HttpRequestException
      */
@@ -1006,13 +1008,14 @@ public class HttpRequest {
     }
 
     /**
-     * Start a 'GET' request to the given URL along with the query params
+     * Start a HTTP request to the given URL along with the query params
      *
      * @param baseUrl
      * @param params
      *            The query parameters to include as part of the baseUrl
      * @param encode
      *            true to encode the full URL
+     * @param method
      *
      * @see #append(CharSequence, Map)
      * @see #encode(CharSequence)
