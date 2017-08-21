@@ -130,9 +130,9 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     @Override
-    public OAuth2AccessToken getUserInfo(Map<String, String> additionalParams) throws OAuthException, IOException {
+    public Map<String, Object> getUserInfo(Map<String, String> additionalParams) throws OAuthException, IOException {
         // In google oauth: the user info is returned..
-        return accessToken;
+        return accessToken.getInfos();
     }
 
     public String getUid() {

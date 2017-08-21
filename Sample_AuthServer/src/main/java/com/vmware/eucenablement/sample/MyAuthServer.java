@@ -9,6 +9,7 @@
  *
  */
 package com.vmware.eucenablement.sample;
+import java.io.File;
 import java.net.URL;
 import java.security.KeyStoreException;
 
@@ -67,8 +68,12 @@ public class MyAuthServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "Sample_AuthServer/webapp";
-		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
+		System.out.println(1234567);
+
+		String webapp = "webapp";
+		// String webapp = "Sample_AuthServer/webapp";
+
+		webAppContext.setDescriptor(webapp+"/WEB-INF/web.xml");
 		webAppContext.setResourceBase(webapp);
 		webAppContext.setContextPath("/MyAuthServer");
 		webAppContext.setParentLoaderPriority(true);

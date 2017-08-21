@@ -217,7 +217,7 @@ public abstract class OAuth2 {
      * Get user info
      * @return
      */
-    public OAuth2AccessToken getUserInfo() throws OAuthException, IOException {
+    public Map<String, Object> getUserInfo() throws OAuthException, IOException {
         return getUserInfo(new HashMap<String, String>());
     }
 
@@ -229,7 +229,7 @@ public abstract class OAuth2 {
      * Get user info
      * @return
      */
-    public OAuth2AccessToken getUserInfo(Map<String, String> additionalParams) throws OAuthException, IOException {
+    public Map<String, Object> getUserInfo(Map<String, String> additionalParams) throws OAuthException, IOException {
         String url=getUserInfoUrl(additionalParams);
         if (url==null)
             throw new OAuthException("Userinfo is not supported!");
@@ -246,15 +246,15 @@ public abstract class OAuth2 {
         for (String key: jsonObject.keySet()) {
             map.put(key, jsonObject.opt(key));
         }
-        accessToken.addInfos(map);
-        return accessToken;
+        // accessToken.addInfos(map);
+        return map;
     }
 
     /**
      * Get the access token from local.
      * @return
      */
-    public OAuth2AccessToken getAccessToken() {
+    public OAuth2AccessToken getCurrentAccessToken() {
         return accessToken;
     }
 

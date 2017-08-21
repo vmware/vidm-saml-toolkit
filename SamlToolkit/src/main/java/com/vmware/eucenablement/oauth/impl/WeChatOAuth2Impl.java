@@ -79,7 +79,7 @@ public class WeChatOAuth2Impl extends OAuth2 {
      * @throws IOException
      */
     @Override
-    public OAuth2AccessToken getUserInfo() throws OAuthException, IOException {
+    public Map<String, Object> getUserInfo() throws OAuthException, IOException {
         return getUserInfo(Locale.ENGLISH);
     }
 
@@ -91,7 +91,7 @@ public class WeChatOAuth2Impl extends OAuth2 {
      * @throws OAuthException
      * @throws IOException
      */
-    public OAuth2AccessToken getUserInfo(Locale locale) throws OAuthException, IOException {
+    public Map<String, Object> getUserInfo(Locale locale) throws OAuthException, IOException {
         Map<String, String> map=new HashMap<>();
         map.put("lang", locale.toString());
         return getUserInfo(map);
