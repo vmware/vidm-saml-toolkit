@@ -68,8 +68,6 @@ public class MyAuthServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		System.out.println(1234567);
-
 		String webapp = "webapp";
 		// String webapp = "Sample_AuthServer/webapp";
 
