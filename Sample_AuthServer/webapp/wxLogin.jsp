@@ -44,6 +44,9 @@
                                 <p>
                                     Your OpenId: <% out.print(openid); %>
                                 </p>
+                                <p>
+                                    Your Username: <% out.print(request.getParameter("username")); %>
+                                </p>
                             </div>
 
                         <%

@@ -81,8 +81,16 @@ public class WeChatServlet implements Servlet {
                     weChatOAuth2.getAccessTokenFromOAuthServer(code);
                     String openid=weChatOAuth2.getOpenId();
 
+                    System.out.println("------------------- Login Succeeded! -------------------");
+                    System.out.println("OpenID: "+openid);
+
+                    // TODO: Map the openid to username (according to database or configuration files)
+                    String username="asdf6";
+                    System.out.println("Map this openid to username: "+username);
+                    System.out.println("--------------------------------------------------------");
+
                     // Get the session by jsessionid
-                    browserSession.setAttribute("username", openid);
+                    browserSession.setAttribute("username", username);
 
                     // if it's the current session
                     if (jsessionid.equals(request.getRequestedSessionId())) {
@@ -91,7 +99,7 @@ public class WeChatServlet implements Servlet {
                     }
 
                     // TODO: Login successfully, just tell the user.
-                    response.sendRedirect("wxLogin.jsp?openid="+openid);
+                    response.sendRedirect("wxLogin.jsp?openid="+openid+"&username="+username);
                 }
                 catch (OAuthException e) {
                     response.sendRedirect("wxLogin.jsp?errmsg="+URLEncoder.encode(e.getMessage(),"utf-8"));

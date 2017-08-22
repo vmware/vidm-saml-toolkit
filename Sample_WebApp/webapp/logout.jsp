@@ -10,7 +10,7 @@ This product may include a number of subcomponents with separate copyright notic
 
 -->
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="MySSO" %>
+<%@ page import="com.vmware.eucenablement.sample.MySSO" %>
 <html>
 
 	<!-- header -->
