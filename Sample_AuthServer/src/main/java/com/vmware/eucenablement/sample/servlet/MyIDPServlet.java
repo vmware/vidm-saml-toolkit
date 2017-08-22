@@ -50,16 +50,6 @@ public class MyIDPServlet implements Servlet  {
 
 		Request request = (Request) req;
 
-		// set session
-		  //TODO: FIXME: DON'T use "setRequestedSessionId". Each session should its unified JSESSIONID. If you want to pass a message to the other session, you can use a in-memory global container (Map, Cache, Set, etc.).
-		//This is just a sample. But if you are writing a production, you may consider database or message bus/message queue for multiple servers.
-
-		String jsessionid=request.getParameter("JSESSIONID");
-		if (jsessionid!=null) {
-			request.setRequestedSessionId(jsessionid);
-			request.setSession(request.getSessionHandler().getHttpSession(jsessionid));
-		}
-
 		HttpServletResponse response = (HttpServletResponse) res;
 		String s = request.getParameter("SAMLRequest");
 		HttpSession session = request.getSession();

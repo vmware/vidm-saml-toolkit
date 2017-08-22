@@ -48,9 +48,6 @@ This product may include a number of subcomponents with separate copyright notic
 						    <div class="clearfix bottom-section"style="margin-top: 10px;">
 						        <input type="submit" name="loginFormSubmit" class="btn btn-default btn-lg" value="Sign in">
 						    </div>
-							<div class="clearfix bottom-section" style="margin-top: 20px;">
-							<button type="button" class="btn btn-link" onclick="window.location='wxLogin.jsp'">Login With WeChat >>></button>
-							</div>
 						</form>
 	               </div>
 	            </div>

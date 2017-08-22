@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vmware.eucenablement.oauth.OAuth2Config;
 import com.vmware.eucenablement.oauth.util.OAuthUtil;
@@ -27,9 +29,11 @@ import com.vmware.samltoolkit.idp.SAMLSsoRequest;
  */
 public class WeChatServlet implements Servlet {
 
+    private static Logger log = LoggerFactory.getLogger(WeChatServlet.class);
+
     public static final String APP_ID = "wxd9d651418ab66fdf";
     public static final String APP_SECRET = "5beceb1752824514e2a9bc8c09aa32e0";
-    public static final String REDIRECT_URL = "https://47.93.40.127:8443/MyAuthServer/wxLoginAction";
+    public static final String REDIRECT_PATH = "/MyAuthServer/wxLoginAction";
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
@@ -46,7 +50,13 @@ public class WeChatServlet implements Servlet {
         Request request = (Request) req;
         Response response = (Response) res;
 
-        WeChatOAuth2Impl weChatOAuth2 =getWeChatOAuth(request);
+        WeChatOAuth2Impl weChatOAuth2=getWeChatOAuth(request);
+
+        String samlRequest = request.getParameter("SAMLRequest");
+        if (!OAuthUtil.isStringNullOrEmpty(samlRequest)) {
+            redirectFromVIDM(request, response, samlRequest);
+            return;
+        }
 
         String code=request.getParameter("code");
         String state=request.getParameter("state");
@@ -112,6 +122,31 @@ public class WeChatServlet implements Servlet {
 
     }
 
+    private void redirectFromVIDM(Request request, Response response, String samlRequest) throws ServletException, IOException {
+        try {
+            HttpSession session=request.getSession();
+            String relay = request.getParameter("RelayState");
+            SAMLSsoRequest ssoRequest = MyIDP.getIDPService().decodeSAMLRequest(samlRequest);
+            if (relay!=null && relay.length()>0){
+                ssoRequest.setRelay(relay);
+            }
+
+
+            if (ssoRequest != null && ssoRequest.isValid() ) {
+                session.setAttribute("request", ssoRequest);
+                response.sendRedirect("wxLogin.jsp");
+                return;
+            }
+
+            log.error("Failed to get valid sso response!");
+            throw new ServletException("Failed to login: Invalid SSO");
+        }
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new ServletException(e);
+        }
+    }
+
     private void query(Request request, Response response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username=(String)session.getAttribute("username");
@@ -168,7 +203,9 @@ public class WeChatServlet implements Servlet {
         HttpSession session=req.getSession();
         WeChatOAuth2Impl weChatOAuth2 =(WeChatOAuth2Impl)session.getAttribute("oauth");
         if (weChatOAuth2 ==null) {
-            weChatOAuth2 =new WeChatOAuth2Impl(new OAuth2Config(APP_ID, APP_SECRET, REDIRECT_URL));
+            weChatOAuth2 =new WeChatOAuth2Impl(new OAuth2Config(APP_ID, APP_SECRET,
+                    req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort()+REDIRECT_PATH
+                    ));
             session.setAttribute("oauth", weChatOAuth2);
         }
         return weChatOAuth2;

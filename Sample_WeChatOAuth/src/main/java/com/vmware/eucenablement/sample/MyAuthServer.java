@@ -22,7 +22,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.vmware.eucenablement.sample.idp.MyIDP;
-import com.vmware.eucenablement.sample.servlet.MyIDPServlet;
+import com.vmware.eucenablement.sample.servlet.WeChatServlet;
 
 
 /**
@@ -74,7 +74,7 @@ public class MyAuthServer {
 		webAppContext.setParentLoaderPriority(true);
 		webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
-		webAppContext.addServlet(MyIDPServlet.class.getCanonicalName(), "/saml2postlogin");
+		webAppContext.addServlet(WeChatServlet.class.getCanonicalName(), "/wxLoginAction");
 
 		server.setHandler(webAppContext);
 		try {
@@ -83,7 +83,7 @@ public class MyAuthServer {
 			String url = "https://localhost:8443/MyAuthServer";
 			System.out.println("Open your browser to view the demo: " + url);
 
-			//https://localhost:8443/MyAuthServer/idp.xml
+			// https://127.0.0.1:8443/MyAuthServer/idp.xml
 			MyIDP.initIDPService(url + "/idp.xml",keystoreurl.openStream(), keystorepwd);
 			server.join();
 		} catch (Exception e) {
