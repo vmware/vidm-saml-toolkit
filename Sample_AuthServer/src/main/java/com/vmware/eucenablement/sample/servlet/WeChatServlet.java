@@ -29,7 +29,7 @@ public class WeChatServlet implements Servlet {
 
     public static final String APP_ID = "wxd9d651418ab66fdf";
     public static final String APP_SECRET = "5beceb1752824514e2a9bc8c09aa32e0";
-    public static final String REDIRECT_URL = "https://127.0.0.1:8443/MyAuthServer/wxLoginAction";
+    public static final String REDIRECT_URL = "https://47.93.40.127:8443/MyAuthServer/wxLoginAction";
 
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
