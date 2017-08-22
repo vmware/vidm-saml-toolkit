@@ -53,10 +53,16 @@
                     }
 
                     //########### Redirect to WeChat QrCode generation directly. ###########//
-                    /*else {
-                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationQrcodeUrl(state));
-                    }*/
+                    // If you have the authorization of sns_login, You can jump to WeChat directly
+                    // See https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&id=open1419316505
+/*
+                    else if (true) {
+                        response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationQrcodeUrl(
+                                OAuthUtil.encode(request.getRequestedSessionId())));
+                    }
+*/
 
+                    //########### Generate QRCode by myself. ###########//
                     else if (!header.contains("MicroMessenger")) {
                         // show qrCode
                         %>
@@ -91,6 +97,7 @@
                         response.sendRedirect(WeChatServlet.getWeChatOAuth(request).getAuthorizationUrl(state));
 
                     }
+
                 %>
 
             </div>

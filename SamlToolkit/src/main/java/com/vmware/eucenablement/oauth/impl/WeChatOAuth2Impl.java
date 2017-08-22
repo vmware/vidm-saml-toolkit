@@ -34,7 +34,7 @@ public class WeChatOAuth2Impl extends OAuth2 {
 
     public String getAuthorizationQrcodeUrl(String state) throws OAuthException, IOException{
         return String.format("https://open.weixin.qq.com/connect/qrconnect?" +
-                "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=%s#wechat_redirect",
+                "appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_login&state=%s#wechat_redirect",
                 oAuth2Config.get_APP_ID(), oAuth2Config.get_REDIRECT_URI_ENCODED(), state);
     }
 
