@@ -145,8 +145,12 @@ public class WeChatServlet implements Servlet {
         // confirm login
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        response.getOutputStream().write(MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, username.substring(0, 20)).getBytes());
+        response.getOutputStream().write(MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, username).getBytes());
         response.getOutputStream().flush();
+
+        // Login finished: set username to invalid
+        session.removeAttribute("username");
+
     }
 
     @Override
