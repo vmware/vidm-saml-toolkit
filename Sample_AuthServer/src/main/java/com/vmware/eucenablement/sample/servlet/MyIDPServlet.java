@@ -55,7 +55,7 @@ public class MyIDPServlet implements Servlet  {
 		HttpSession session = request.getSession();
 
 		if (s!=null && s.length()>0){
-			//handle samle request
+			//handle saml request
 			try {
 
 				String relay = request.getParameter("RelayState");
@@ -78,17 +78,15 @@ public class MyIDPServlet implements Servlet  {
 				throw new ServletException(e);
 			}
 		}else{
+			// handle login request
 			String ssoresponse = "";
-            //TODO: FIXME: For We-chat OAuthUtil Sample, please get username from session, DON'T trust username in request.
-			//You might ask why I trust username in my previous Sample_Authserver. Well, what I wrote is a "Auth Server Sample", there should be a password parameter together with the username paramter, and the developer who refers to this Sample should verify username/password pair in this function by himself.
-			//But WeChat OAuthUtil Sample is different, you are writing a OAuthUtil Client Sample. That's why I ask you to write a new Sample, don't change this Sample.
 
-			//handle the login request
-			//no matter what you input, we regard it successful here
+			// TODO: Authorize the user by username & password
+			// Here, we just regard ANY username is valid
 			String user = request.getParameter("username");
-			if (user!=null && user.length()>20)
-				user=user.substring(0, 20);
+			String pass = request.getParameter("password");
 			log.info("user name is successful "+user);
+
 			SAMLSsoRequest ssoRequest = (SAMLSsoRequest) session.getAttribute("request");
 			if (ssoRequest==null){
 				//IDP initiated sso, check vidm

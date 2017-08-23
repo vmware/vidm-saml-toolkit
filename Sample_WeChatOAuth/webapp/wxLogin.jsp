@@ -61,7 +61,6 @@
                                 OAuthUtil.encode(request.getRequestedSessionId())));
                     }
 */
-
                     //########### Generate QRCode by myself. ###########//
                     else if (!header.contains("MicroMessenger")) {
                         // show qrCode

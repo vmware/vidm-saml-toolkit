@@ -63,7 +63,7 @@ yOU3jYtVbYCj9wtVqQgWYOdtP1GDkymC+xEUzPMc6Q==
 
          <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
 
-         <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://localhost:8443/MyAuthServer/saml2postlogin"/>
+         <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://127.0.0.1:8443/MyAuthServer/saml2postlogin"/>
 
     </IDPSSODescriptor>
 

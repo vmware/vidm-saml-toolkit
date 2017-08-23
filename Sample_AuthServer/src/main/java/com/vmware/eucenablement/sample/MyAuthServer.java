@@ -80,7 +80,7 @@ public class MyAuthServer {
 		try {
 			server.start();
 
-			String url = "https://localhost:8443/MyAuthServer";
+			String url = "https://127.0.0.1:8443/MyAuthServer";
 			System.out.println("Open your browser to view the demo: " + url);
 
 			//https://localhost:8443/MyAuthServer/idp.xml
