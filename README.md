@@ -59,9 +59,9 @@ application, and user without authorization will be redirected to vIDM, and vIDM
 you the user's id if the user has been authenticated successfully.
 
 ### Sample_OAuth
-Similar to Sample_AuthServer, [Sample_OAuth](Sample_OAuth/) is a demo of starting
-your web application as an IDP. However, you don't need to the user by yourself, 
-instead, you can send OAuth request to certain OAuth Server (such as WeChat) to verify by OAuth.
+[Sample_OAuth](Sample_OAuth/) is also a demo of starting
+your web application as an IDP. What's different from Sample_AuthServer, you don't need to the user by yourself, 
+instead, you can send OAuth request to OAuth Server (such as WeChat), and verify by OAuth.
 
 ## Try it out
 

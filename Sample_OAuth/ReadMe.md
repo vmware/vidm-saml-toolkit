@@ -75,13 +75,13 @@ or [Facebook](https://developers.facebook.com/docs/facebook-login/manually-build
 you can use your own.  
 
 You can also support your own OAuth Server you want by extending
-[OAuth2](../SamlToolkit/src/main/java/com/vmware/eucenablement/oauth/OAuth2.java) class. 
+[OAuth2](../SamlToolkit/src/main/java/com/vmware/eucenablement/oauth/OAuth2.java#L16) class. 
 
 ## Documentation
 
 If you want to login with WeChat, just do the following:
 
-Step 1. Same as Step 1 in [Sample_AuthServer](../Sample_AuthServer/#Documentation).
+Step 1. Same as Step 1 in [Sample_AuthServer](../Sample_AuthServer/#documentation).
 
 Step 2. Create a WeChatOAuthImpl by your appid and appsecret. Save it to HttpSession.
 ```
@@ -95,15 +95,14 @@ if (weChatOAuth2 == null) {
 return weChatOAuth2;
 ```
 
-Step 3. Same as Step 2 in [Sample_AuthServer](../Sample_AuthServer/#Documentation).
+Step 3. Same as Step 2 in [Sample_AuthServer](../Sample_AuthServer/#documentation).
 
 Step 4. When you need to authorize the user, just display the QRCode, and use your WeChat to scan it.
 * Generate QRCode by myself, and redirect the WeChat Browser to Authorization URL.
     ```
     // For browser, generate the qrcode
-    <img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%
-        out.print(request.getRequestURL().toString() + 
-        "?state="+OAuthUtil.encode(request.getRequestedSessionId()));
+    <img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%=
+                request.getRequestURL().toString() + "?state=" + OAuthUtil.encode(request.getRequestedSessionId())
     %>" />
     
     
@@ -124,7 +123,7 @@ String openid = weChatOAuth2.getOpenId();
 String access_token = weChatOAuth2.getCurrentAccessToken().getAccessToken();
 ```
 
-Step 6. Map the openid to valid vIDM user, and do same as Step 4 in [Sample_AuthServer](../Sample_AuthServer/#Documentation).
+Step 6. Map the openid to valid vIDM user, and do same as Step 4 in [Sample_AuthServer](../Sample_AuthServer/#documentation).
 
 =======================================================
 
@@ -149,5 +148,3 @@ oAuth2.getUserInfo();
 // Decode information you need based on the return message.
 String uid = oAuth2.getCurrentAccessToken().getValue("uid");
 ```
-
-
