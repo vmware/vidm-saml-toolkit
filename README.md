@@ -60,8 +60,8 @@ you the user's id if the user has been authenticated successfully.
 
 ### Sample_OAuth
 [Sample_OAuth](Sample_OAuth/) is also a demo of starting
-your web application as an IDP. What's different from Sample_AuthServer, you don't need to the user by yourself, 
-instead, you can send OAuth request to OAuth Server (such as WeChat), and verify by OAuth.
+your web application as an IDP. What's different from Sample_AuthServer, you don't need to 
+authorize the user by yourself, instead, you can send OAuth request to OAuth Server (such as WeChat), and verify by OAuth.
 
 ## Try it out
 
