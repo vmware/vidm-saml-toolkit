@@ -147,7 +147,7 @@ oAuth2.refreshAccessToken();
 // Get user info from OAuth Server
 oAuth2.getUserInfo();
 // Decode information you need based on the return message.
-String username = oAuth2.getCurrentAccessToken().getValue("username");
+String uid = oAuth2.getCurrentAccessToken().getValue("uid");
 ```
 
 
