@@ -58,8 +58,8 @@ web application as an IDP, config your vIDM, and authorize through your web appl
 application, and user without authorization will be redirected to vIDM, and vIDM will tell
 you the user's id if the user has been authenticated successfully.
 
-### Sample_WeChatOAuth
-Similar to Sample_AuthServer, [Sample_WeChatOAuth](Sample_WeChatOAuth/) is a demo of starting
+### Sample_OAuth
+Similar to Sample_AuthServer, [Sample_OAuth](Sample_OAuth/) is a demo of starting
 your web application as an IDP. However, you don't need to the user by yourself, 
 instead, you can send OAuth request to certain OAuth Server (such as WeChat) to verify by OAuth.
 

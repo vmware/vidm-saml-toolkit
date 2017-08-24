@@ -155,6 +155,24 @@ This product may include a number of subcomponents with separate copyright notic
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.1.1</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>com.vmware.eucenablement.sample.MyWebServer</mainClass>
+							<classpathScope>compile</classpathScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			
 
 		</plugins>

@@ -33,8 +33,6 @@ SAML Metadata.
 
 ### Build & Run
 
-You need Java 1.6+, Maven, and a valid vIDM administrator account to run the sample.  
-
 Be sure you have installed the SamlToolkit by `mvn clean install` on the project base directory.  
 Run the following command to start your web application.
 ```
@@ -50,3 +48,41 @@ to see how it works. You just need to authorize the user in your own way.
 
 If you want to deploy it on web server, please modify the IP Address in [idp.xml](webapp/idp.xml#L66) 
 to the actual IP address, and re-configure the third party IDP on your vIDM.
+
+## Documentation
+
+To use vIDM as SP, you need to do the following:
+
+Step 1. Create a new IDPService when your web server is started.
+```
+SAMLIDPConf conf = new SAMLIDPConf(issuer, kestoreStream, keystorepwd);
+service = new IDPService(conf);
+```
+
+Step 2. (Optional) Process the SSO request from vIDM.
+If necessary, redirect the user to your login page.
+```
+String relay = request.getParameter("RelayState");
+SAMLSsoRequest ssoRequest = service.decodeSAMLRequest(s);
+if (ssoRequest != null && ssoRequest.isValid() ) {
+    session.setAttribute("request", ssoRequest);
+    response.sendRedirect("idpLogin.jsp");
+    return;
+}
+```
+
+Step 3. Verify the user. You may authorize by username/password, or by [OAuth](../Sample_WeChatOAuth),
+or just any ways you like.
+
+Step 4. If the user has logged in, redirect the user back to vIDM with SAMLSsoResponse.
+* If the login is initiated by vIDM and you have received the SSO request,
+use the request to generate SSO response.
+    ```
+    ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(ssoRequest, user);
+    response.getOutputStream().write(ssoresponse.getBytes());
+    ```
+* You can also generate SSO response directly with vIDM URL, and redirect the user to vIDM web page.
+    ```
+    ssoresponse = MyIDP.getIDPService().getSSOResponseByPostBinding(vidm, user, relay);
+    response.getOutputStream().write(ssoresponse.getBytes());	
+    ```

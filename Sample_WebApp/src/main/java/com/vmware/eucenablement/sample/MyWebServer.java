@@ -63,7 +63,7 @@ public class MyWebServer {
 
 		WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "Sample_WebApp/webapp";
+		String webapp = "webapp";
 		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
 		webAppContext.setResourceBase(webapp);
 		webAppContext.setContextPath("/WebApp");
@@ -76,7 +76,7 @@ public class MyWebServer {
 		try {
 			server.start();
 
-			String url = "https://localhost:8443/WebApp";
+			String url = "https://127.0.0.1:8443/WebApp";
 			System.out.println("Open your browser to view the demo: " + url);
 			
 			server.join();

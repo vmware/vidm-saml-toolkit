@@ -10,7 +10,7 @@
 
 	<modules>
 		<module>Sample_AuthServer</module>
-		<module>Sample_WeChatOAuth</module>
+		<module>Sample_OAuth</module>
 		<module>Sample_WebApp</module>
 		<module>SamlToolkit</module>
 	</modules>

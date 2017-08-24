@@ -201,14 +201,15 @@ public class WeChatServlet implements Servlet {
     public static WeChatOAuth2Impl getWeChatOAuth(HttpServletRequest req) {
         if (req==null) return null;
         HttpSession session=req.getSession();
-        WeChatOAuth2Impl weChatOAuth2 =(WeChatOAuth2Impl)session.getAttribute("oauth");
-        if (weChatOAuth2 ==null) {
-            weChatOAuth2 =new WeChatOAuth2Impl(new OAuth2Config(APP_ID, APP_SECRET,
-                    req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort()+REDIRECT_PATH
-                    ));
-            session.setAttribute("oauth", weChatOAuth2);
+        WeChatOAuth2Impl oAuth2 =(WeChatOAuth2Impl)session.getAttribute("oauth");
+        if (oAuth2 ==null) {
+            oAuth2 =new WeChatOAuth2Impl(new OAuth2Config(APP_ID, APP_SECRET,
+                    String.format("%s://%s:%d%s", req.getScheme(),
+                            req.getServerName(), req.getServerPort(), REDIRECT_PATH)
+            ));
+            session.setAttribute("oauth", oAuth2);
         }
-        return weChatOAuth2;
+        return oAuth2;
     }
 
 }

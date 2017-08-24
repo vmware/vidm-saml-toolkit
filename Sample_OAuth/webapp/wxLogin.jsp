@@ -52,7 +52,7 @@
                         <%
                     }
 
-                    //########### Redirect to WeChat QrCode generation directly. ###########//
+                    //########### Redirect to WeChat QRCode generation directly. ###########//
                     // If you have the authorization of sns_login, You can jump to WeChat directly
                     // See https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&id=open1419316505
 /*
