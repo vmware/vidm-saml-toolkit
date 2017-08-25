@@ -18,16 +18,23 @@ vIDM can play two different roles: identity provider (IDP) or service provider (
 
 ### Role 1: Use vIDM as IDP
 
-If you use vIDM as IDP, your web application will use vIDM as the SSO server. When user
-accesses your web application without a valid session, he will be redirected to vIDM for
-SSO. vIDM will tell your web application the user's ID if the user has been authenticated
+If you use vIDM as IDP, your web application will use vIDM as the IDP server. When user
+accesses your web application without a valid session, he will be redirected to vIDM.
+VIDM will tell your web application the user's ID if the user has been authenticated
 successfully.
 
-In such case, this toolkit supports the following functions:
-1. Initialize an SSO service with vIDM URL      
-2. Create an SSO request to vIDM      
-3. Process an SSO result from vIDM      
-4. Login to your webapp successfully
+You can use SSO or OAuth to authorize the user.
+
+* Using SSO  
+1.. Initialize an SSO service with vIDM URL       
+2.. Create an SSO request to vIDM      
+3.. Process an SSO result from vIDM      
+4.. Login to your webapp successfully  
+
+* Using OAuth  
+1.. Redirect the user to VIDM  
+2.. Request access_token and user info by code  
+3.. Login to your webapp successfully
 
 
 ### Role 2: Use vIDM as SP
@@ -47,7 +54,7 @@ In such case, this toolkit supports the following functions:
 
 ## Samples
 
-We provided three samples, to show how the toolkit works.
+We provided four samples, to show how the toolkit works.
 
 ### Sample_AuthServer
 [Sample_AuthServer](Sample_AuthServer/) is a demo of using vIDM as SP. You can start your
