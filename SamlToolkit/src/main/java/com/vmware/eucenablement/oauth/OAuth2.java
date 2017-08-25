@@ -77,6 +77,14 @@ public abstract class OAuth2 {
     }
 
     /**
+     * Add header to request if needed
+     * @param request
+     */
+    protected void addHeader(HttpRequest request) {
+
+    }
+
+    /**
      * Require access_token from OAuth Server
      * @param code
      * @param additionalParams
@@ -90,11 +98,11 @@ public abstract class OAuth2 {
 
         // for post, we put all the parameters into additionalParams.
         HttpRequest request=HttpRequest.http(url, method);
+        addHeader(request);
         if (method== HttpRequest.Method.POST)
             request.form(additionalParams);
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
-
         String errmsg= decodeErrorMessage(jsonObject);
         if (!OAuthUtil.isStringNullOrEmpty(errmsg))
             throw new OAuthException(errmsg);
@@ -176,6 +184,8 @@ public abstract class OAuth2 {
         return HttpRequest.Method.GET;
     }
 
+
+
     /**
      * Refresh the access_token
      * @param additionalParams
@@ -198,6 +208,7 @@ public abstract class OAuth2 {
         HttpRequest request=HttpRequest.http(url, method);
         if (method== HttpRequest.Method.POST)
             request.form(additionalParams);
+        addHeader(request);
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
 
@@ -237,6 +248,7 @@ public abstract class OAuth2 {
         HttpRequest request=HttpRequest.http(url, method);
         if (method==HttpRequest.Method.POST)
             request.form(additionalParams);
+        addHeader(request);
         String response=request.body();
         JSONObject jsonObject=new JSONObject(response);
         String errmsg=decodeErrorMessage(jsonObject);

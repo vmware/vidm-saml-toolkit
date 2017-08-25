@@ -71,7 +71,7 @@ if (ssoRequest != null && ssoRequest.isValid() ) {
 }
 ```
 
-Step 3. Verify the user. You may authorize by username/password, or by [OAuth](../Sample_WeChatOAuth),
+Step 3. Verify the user. You may authorize by username/password, or by [OAuth](../Sample_ServerOAuth),
 or just any ways you like.
 
 Step 4. If the user has logged in, redirect the user back to vIDM with SAMLSsoResponse.

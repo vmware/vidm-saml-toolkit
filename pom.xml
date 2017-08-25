@@ -10,8 +10,9 @@
 
 	<modules>
 		<module>Sample_AuthServer</module>
-		<module>Sample_OAuth</module>
+		<module>Sample_ServerOAuth</module>
 		<module>Sample_WebApp</module>
+		<module>Sample_AppOAuth</module>
 		<module>SamlToolkit</module>
 	</modules>
 

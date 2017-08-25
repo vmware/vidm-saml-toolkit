@@ -1,5 +1,8 @@
 package com.vmware.eucenablement.oauth.util;
 
+import com.vmware.eucenablement.oauth.OAuthException;
+
+import org.json.JSONObject;
 import org.opensaml.xml.util.Base64;
 
 import java.io.IOException;
@@ -97,4 +100,20 @@ public class OAuthUtil {
         return string==null || "".equals(string);
     }
 
+    public static JSONObject decodeJWT(String jwtString) throws OAuthException {
+        String[] strings=jwtString.split("\\.");
+        if (strings.length!=3) throw new OAuthException("Invalid JWT String!");
+        try {
+            String body=strings[1].replace('-','+').replace('_','/');
+            switch (body.length()%4) {
+                case 0: break;
+                case 2: body+="==";break;
+                case 3: body+="=";break;
+            }
+            return new JSONObject(new String(Base64.decode(body)));
+        }
+        catch (Exception e) {
+            throw new OAuthException(e.getMessage());
+        }
+    }
 }

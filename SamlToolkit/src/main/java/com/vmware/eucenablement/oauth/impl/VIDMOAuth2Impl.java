@@ -1,26 +1,37 @@
 package com.vmware.eucenablement.oauth.impl;
 
-import com.vmware.eucenablement.oauth.util.HttpRequest;
 import com.vmware.eucenablement.oauth.OAuth2;
 import com.vmware.eucenablement.oauth.OAuth2AccessToken;
 import com.vmware.eucenablement.oauth.OAuth2Config;
 import com.vmware.eucenablement.oauth.OAuthException;
+import com.vmware.eucenablement.oauth.util.HttpRequest;
 import com.vmware.eucenablement.oauth.util.OAuthUtil;
 
 import org.json.JSONObject;
+import org.opensaml.xml.util.Base64;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Google OAuth2 Implementation.</p>
- * <p>Created by chenzhang on 2017-08-16.</p>
+ * <p>VIDM OAuth2 Implementation.</p>
+ * <p>Created by chenzhang on 2017-08-25.</p>
  */
-public class GoogleOAuth2Impl extends OAuth2 {
+public class VIDMOAuth2Impl extends OAuth2 {
 
-    public GoogleOAuth2Impl(OAuth2Config config) {
+    private String host;
+
+    public VIDMOAuth2Impl(OAuth2Config config) {
         super(config);
+    }
+
+    /**
+     * Set the VIDM Host
+     * @param _host
+     */
+    public void setHost(String _host) {
+        host=_host;
     }
 
     /**
@@ -34,10 +45,11 @@ public class GoogleOAuth2Impl extends OAuth2 {
      */
     @Override
     public String getAuthorizationUrl(String state, Map<String, String> additionalParams) throws OAuthException, IOException {
+        if (host==null) throw new OAuthException("VIDM host is invalid!");
         StringBuilder builder=new StringBuilder();
-        builder.append(String.format("https://accounts.google.com/o/oauth2/v2/auth?client_id=%s&state=%s" +
-                        "&scope=openid%%20email%%20profile&response_type=code&redirect_uri=%s&access_type=offline",
-                oAuth2Config.get_APP_ID(), state, oAuth2Config.get_REDIRECT_URI_ENCODED()));
+        builder.append(String.format("%s/SAAS/auth/oauth2/authorize?response_type=code&client_id=%s&" +
+                "redirect_uri=%s&state=%s&scope=openid+user+email",
+                host, oAuth2Config.get_APP_ID(), oAuth2Config.get_REDIRECT_URI_ENCODED(), state));
         OAuthUtil.additionalParamsToStringBuilder(builder, additionalParams);
         return builder.toString();
     }
@@ -52,9 +64,8 @@ public class GoogleOAuth2Impl extends OAuth2 {
     }
 
     /**
-     * <p>Get access_token url.</p>
-     * <p>As we need to post the request, we have to put all the parameters into
-     * <code>additionalParams</code>, and return the base url.</p>
+     * Get access_token url
+     *
      * @param code
      * @param additionalParams
      * @return
@@ -63,42 +74,19 @@ public class GoogleOAuth2Impl extends OAuth2 {
      */
     @Override
     protected String getAccessTokenUrl(String code, Map<String, String> additionalParams) throws OAuthException, IOException {
+        if (host==null) throw new OAuthException("VIDM host is invalid!");
         if (additionalParams==null)
             throw new OAuthException("Additional Params cannot be null!");
-        // post
-        additionalParams.put("code", code);
-        additionalParams.put("client_id", oAuth2Config.get_APP_ID());
-        additionalParams.put("client_secret", oAuth2Config.get_APP_SECRET());
-        additionalParams.put("redirect_uri", oAuth2Config.get_REDIRECT_URI());
         additionalParams.put("grant_type", "authorization_code");
-        return "https://www.googleapis.com/oauth2/v4/token";
+        additionalParams.put("code", code);
+        additionalParams.put("redirect_uri", oAuth2Config.get_REDIRECT_URI());
+        return host+"/SAAS/auth/oauthtoken";
     }
 
-    protected HttpRequest.Method refreshAccessTokenMethod() {
-        return HttpRequest.Method.POST;
-    }
-
-    /**
-     * <p>Get refresh access_token url.</p>
-     * <p>As we need to post the request, we have to put all the parameters into
-     * <code>additionalParams</code>, and return the base url.</p>
-     *
-     * @param refresh_token
-     * @param additionalParams
-     * @return
-     * @throws OAuthException
-     * @throws IOException
-     */
     @Override
-    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
-        if (additionalParams==null)
-            throw new OAuthException("Additional Params cannot be null!");
-        // post
-        additionalParams.put("client_id", oAuth2Config.get_APP_ID());
-        additionalParams.put("client_secret", oAuth2Config.get_APP_SECRET());
-        additionalParams.put("refresh_token", refresh_token);
-        additionalParams.put("grant_type", "refresh_token");
-        return "https://www.googleapis.com/oauth2/v4/token";
+    protected void addHeader(HttpRequest request) {
+        request.header("Authorization", "Basic "+
+                Base64.encodeBytes((oAuth2Config.get_APP_ID()+":"+oAuth2Config.get_APP_SECRET()).getBytes(), Base64.DONT_BREAK_LINES));
     }
 
     /**
@@ -124,6 +112,29 @@ public class GoogleOAuth2Impl extends OAuth2 {
         return accessToken;
     }
 
+    protected HttpRequest.Method refreshAccessTokenMethod() {
+        return HttpRequest.Method.POST;
+    }
+
+    /**
+     * Get the refresh_token url
+     *
+     * @param refresh_token
+     * @param additionalParams
+     * @return
+     * @throws OAuthException
+     * @throws IOException
+     */
+    @Override
+    protected String getRefreshTokenUrl(String refresh_token, Map<String, String> additionalParams) throws OAuthException, IOException {
+        if (additionalParams==null)
+            throw new OAuthException("Additional Params cannot be null!");
+        // post
+        additionalParams.put("refresh_token", refresh_token);
+        additionalParams.put("grant_type", "refresh_token");
+        return host+"/SAAS/auth/oauthtoken";
+    }
+
     @Override
     protected String getUserInfoUrl(Map<String, String> additionalParams) throws OAuthException, IOException {
         return null;
@@ -131,12 +142,20 @@ public class GoogleOAuth2Impl extends OAuth2 {
 
     @Override
     public Map<String, Object> getUserInfo(Map<String, String> additionalParams) throws OAuthException, IOException {
-        // In google oauth: the user info is returned..
+        // In VIDM oauth: the user info is returned..
         return accessToken.getInfos();
     }
 
-    public String getUid() {
-        return accessToken==null?null:(String)accessToken.getValue("sub");
+    public String getUsername() {
+        String sub=accessToken.getValue("sub");
+        if (sub==null) return null;
+        int index=sub.indexOf('@');
+        if (index==-1) return sub;
+        return sub.substring(0, index);
+    }
+
+    public String getEmail() {
+        return accessToken.getValue("email");
     }
 
 }
