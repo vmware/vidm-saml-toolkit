@@ -11,7 +11,7 @@ This product may include a number of subcomponents with separate copyright notic
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.vmware.eucenablement.saml.sample.idp.MyIDP"%>
+<%@ page import="com.vmware.eucenablement.sample.idp.MyIDP"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -45,7 +45,7 @@ This product may include a number of subcomponents with separate copyright notic
 						        </div>
 						    </div>
 						    <br>
-						    <div class="clearfix bottom-section">
+						    <div class="clearfix bottom-section"style="margin-top: 10px;">
 						        <input type="submit" name="loginFormSubmit" class="btn btn-default btn-lg" value="Sign in">
 						    </div>
 						</form>

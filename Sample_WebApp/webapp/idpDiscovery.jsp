@@ -24,7 +24,7 @@ This product may include a number of subcomponents with separate copyright notic
 	                	<form action="configIDPURI.jsp" method="post">
 	                	<p>Your vIDM ROOT URL:</p> 
 	                	<br/>
-						<div><input name="vidmidp" type="text" style="width: 300px;color:#fff;background-color:#000;" placeholder="https://yourcompany.vmwareidentity.com" value="https://yourcompany.vmwareidentity.com"></div>
+						<div><input name="vidmidp" type="text" style="width: 300px;color:#fff;background-color:#000;" placeholder="https://yourcompany.vmwareidentity.com"></div>
 						<br/>
 						<div><input id="byPassCert" type="checkbox" name="byPassCert" value="true" checked="checked" /> <label for="byPassCert"> Bypass SSL certificate validation for vIDM </label></div>
 						<br/>
