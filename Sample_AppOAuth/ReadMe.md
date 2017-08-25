@@ -70,6 +70,6 @@ Step 3. Get access_token and user info by code. All valid attributes can be seen
 vidmoAuth2.getAccessTokenFromOAuthServer(code);
 // Get username and email
 String username = vidmoAuth2.getUsername(), email = vidmoAuth2.getEmail();
-// Other any information you want
+// Any other information you want
 String given_name = vidmoAuth2.getCurrentAccessToken().getValue("given_name");
 ```
