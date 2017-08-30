@@ -1,78 +1,60 @@
 
-# vidm-saml-toolkit
+# vIDM Integration Toolkit
 
 ## Overview
 
-vIDM (VMware Identity Manager) SAML Toolkit is a simple Java SDK (software development 
-kit) for web developers who want to integrate vIDM with their web applications.
+vIDM (VMware Identity Manager) Integration Toolkit is a simple Java SDK (software development 
+kit) for web developers who want to integrate vIDM with their web services, with either 
+SAML or OAuth protocol.
 
 VIDM provides Single-Sign-On (SSO) to SAML (Security Assertion Markup Language) compliant
 applications, but it is not a small task for web developers to make their applications
-SAML compliant.
+SAML compliant. Many developers prefer OAuth other than SAML.
 
-This toolkit can save developers' effort by providing some easy to use functions. With
-this toolkit, a web developer can implement SSO function with vIDM, even if he has no
-knowledge about SAML. This toolkit is platform independent, since it is written in Java. 
+This toolkit can save developers' effort by providing some easy to use functions, supporting both SAML
+and OAtuh. With this toolkit, a web developer can implement SSO integration with vIDM, even if he has no
+knowledge about SAML/OAuth. This toolkit is platform independent, since it is written in Java. 
 
 vIDM can play two different roles: identity provider (IDP) or service provider (SP).
 
 ### Role 1: Use vIDM as IDP
 
-If you use vIDM as IDP, your web application will use vIDM as the IDP server. When user
-accesses your web application without a valid session, he will be redirected to vIDM.
-VIDM will tell your web application the user's ID if the user has been authenticated
-successfully.
+Your web application can delegate authentication to vIDM. When user accesses your web application without been authenticated, 
+he will be redirected to vIDM first. VIDM will tell your web application the user's ID if the user has been authenticated.
 
-You can use SSO or OAuth to authorize the user.
+You can choose either OAuth or SAML to use vIDM as IDP.
 
-* Using SSO  
-1.. Initialize an SSO service with vIDM URL       
-2.. Create an SSO request to vIDM      
-3.. Process an SSO result from vIDM      
-4.. Login to your webapp successfully  
-
-* Using OAuth  
-1.. Redirect the user to VIDM  
-2.. Request access_token and user info by code  
-3.. Login to your webapp successfully
-
+Please read [Sample_WebApp](Sample_WebApp/) for SAML, and read [Sample_AppOAuth](Sample_AppOAuth/) for OAuth.
 
 ### Role 2: Use vIDM as SP
 
-If you use vIDM as SP, your web application should act as an IDP, and vIDM will use your
-web application as the SSO server. Once a user has logged in your web application, he can
-access vIDM and the applications managed by vIDM without typing ID/password again.
+vIDM can delegate authentication to your web application. In this case, your web application is IDP, vIDM is SP. 
+Once a user has been authenticated by your web application, he can access vIDM without been authenticated again.
 
-In such case, this toolkit supports the following functions:
-1. Initialize a local IDP service and configure which vIDM can use this IDP  
-2. Process an SSO request from vIDM     
-3. Authorize the user in your web application  
-3.1 Authorize the user by username & password  
-3.2 Authorize the user by OAuth
-4. Create an SSO result to vIDM
-5. Login to vIDM successfully
+You can choose either OAuth or SAML to use vIDM as SP.
+
+Please read [Sample_AuthServer](Sample_AuthServer/) for SAML, and read [Sample_ServerOAuth](Sample_ServerOAuth/) for OAuth.
+
 
 ## Samples
 
-We provided four samples, to show how the toolkit works.
+We provide the following four samples, as a quick guide for developers to use this toolkit.
 
 ### Sample_AuthServer
-[Sample_AuthServer](Sample_AuthServer/) is a demo of using vIDM as SP. You can start your
-web application as an IDP, config your vIDM, and authorize through your web application.
+[Sample_AuthServer](Sample_AuthServer/) is a demo of using vIDM as SP with SAML. You can start your
+web application as an IDP, config your vIDM, and authenticate users through your web application by yourself.
 
 ### Sample_WebApp
-[Sample_WebApp](Sample_WebApp/) is a demo of using vIDM as IDP. You can start your web
-application, and user without authorization will be redirected to vIDM, and vIDM will tell
-you the user's id if the user has been authenticated successfully.
+[Sample_WebApp](Sample_WebApp/) is a demo of using vIDM as IDP with SAML. You can start your web
+application as SP, and authenticate users through vIDM.
 
 ### Sample_ServerOAuth
-[Sample_ServerOAuth](Sample_ServerOAuth/) is also a demo of starting
-your web application as an IDP. What's different from Sample_AuthServer, you don't need to 
-authorize the user by yourself, instead, you can send OAuth request to OAuth Server (such as WeChat), and verify by OAuth.
+[Sample_ServerOAuth](Sample_ServerOAuth/) is also a demo of using vIDM as SP, but with OAuth.
+In this sample, vIDM delegates authentication to your web application with SAML, but your web application communicates with some OAuth server with OAuth. In this way, users can login vIDM through any OAuth server, like Google, Facebook, WeChat, Github...... 
 
 ### Sample_AppOAuth
-[Sample_AppOAuth](Sample_AppOAuth/) is also a demo of using vIDM as IDP. What's different from
-Sample_WebApp, you don't need to send SAML request to vIDM, instead, you can use OAuth to authorize the user.
+[Sample_AppOAuth](Sample_AppOAuth/) is also a demo of using vIDM as IDP, but with OAuth. 
+In this sample, your web application can authenticate users through vIDM with OAuth protocol.
 
 ## Try it out
 
@@ -100,10 +82,7 @@ There will be some configuration, just check ReadMe.md in each sample directory 
 
 ## Contributing
 
-The vidm-saml-toolkit project team welcomes contributions from the community. If you wish to contribute code and you have not
-signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any
-questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq). For more detailed information,
-refer to [CONTRIBUTING.md](CONTRIBUTING.md).
+This vIDM Integration Toolkit project team welcomes contributions from the community. If you wish to contribute code and you have not signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq). For more detailed information, refer to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
