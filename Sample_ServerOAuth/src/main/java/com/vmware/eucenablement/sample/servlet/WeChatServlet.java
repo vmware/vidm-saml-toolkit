@@ -1,7 +1,11 @@
 package com.vmware.eucenablement.sample.servlet;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -35,9 +39,25 @@ public class WeChatServlet implements Servlet {
     public static final String APP_SECRET = "5beceb1752824514e2a9bc8c09aa32e0";
     public static final String REDIRECT_PATH = "/MyAuthServer/wxLoginAction";
 
+    private HashMap<String, String> usermap;
+
     @Override
     public void init(ServletConfig servletConfig) throws ServletException {
-
+        usermap=new HashMap<>();
+        try {
+            BufferedReader reader=new BufferedReader(new FileReader("usermap.conf"));
+            String line;
+            while ((line=reader.readLine())!=null) {
+                line=line.trim();
+                if (line.startsWith("#") || !line.contains("=")) continue;
+                int index=line.indexOf('=');
+                String key=line.substring(0, index).trim();
+                String value=line.substring(index+1).trim();
+                usermap.put(key, value);
+            }
+        } catch (Exception e) {
+            usermap.clear();
+        }
     }
 
     @Override
@@ -94,8 +114,13 @@ public class WeChatServlet implements Servlet {
                     System.out.println("------------------- Login Succeeded! -------------------");
                     System.out.println("OpenID: "+openid);
 
+                    String username=openid;
+
                     // TODO: Map the openid to username (according to database or configuration files)
-                    String username="asdf6";
+                    if (usermap.containsKey(openid))
+                        username=usermap.get(openid);
+
+
                     System.out.println("Map this openid to username: "+username);
                     System.out.println("--------------------------------------------------------");
 
