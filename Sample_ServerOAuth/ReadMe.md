@@ -2,7 +2,7 @@
 # Sample_ServerOAuth
 
 Similar to [Sample_AuthServer](../Sample_AuthServer), this is a sample of using vIDM as
-SP and your web application as IDP. However, your web application can verify the user by
+SP and your web application as IDP. However, your web application can authenticate the user by
 OAuth, that is, send OAuth requests to OAuth Server (such as WeChat), and get the user's
 information, then map the uid to vIDM user, to authorize the user.
 
@@ -11,6 +11,8 @@ your own OAuth Server you want by extending
 [OAuth2](../SamlToolkit/src/main/java/com/vmware/eucenablement/oauth/OAuth2.java) class.  
 
 In this sample, we only show you how to login with WeChat.
+
+Refer to [our guide video](https://youtu.be/Zi0u6d225rM) 
 
 ## How to use this sample
 
