@@ -33,6 +33,10 @@ This product may include a number of subcomponents with separate copyright notic
 	                	
 						<br/>
 						<br/>
+						<p>Optional Config: content of sp.xml</p>
+					    <p>If this web server can not connect to vIDM directly, please copy sp.xml here from https://[vidm url]/SAAS/API/1.0/GET/metadata/sp.xml</p>
+						<div id="vidmSpXML"><textarea  name="vidmSpXML" type="text" rows="10" cols="50" style=" width:500px;color:#fff;background-color:#000;"></textarea></div>
+	                	
 						<br/>
 						
 						<div><input type=submit value="NEXT" class="btn btn-default btn-lg"></div>
