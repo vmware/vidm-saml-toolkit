@@ -35,6 +35,8 @@ This product may include a number of subcomponents with separate copyright notic
 			if (spXML == null || spXML.trim().length() == 0){
 				SslUtilities.trustAllCertificates();//Trust all certificate for sample usage. Certificates should always be managed in production environment
 				spXML = idpService.getSpConfigfromUrl(vidmSp1Url);
+			}else{
+				spXML = spXML.trim();
 			}
 			
 			if(spXML != null)
