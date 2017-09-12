@@ -46,13 +46,6 @@ This product may include a number of subcomponents with separate copyright notic
 	        </div>
 	    </section>
     
-	    
-	    <script type="text/javascript">
-	    	<!-- Get default URI -->
-			var issuer = window.location.toString();
-			issuer= issuer.substr(0,issuer.indexOf("/idp/spDiscovery"));
-			window.document.getElementById("issuer").value = issuer;
-			
-		</script>
+	   
 	</body>
 </html>
