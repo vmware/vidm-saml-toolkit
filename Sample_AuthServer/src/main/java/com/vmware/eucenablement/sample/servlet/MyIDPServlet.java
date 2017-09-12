@@ -67,7 +67,7 @@ public class MyIDPServlet implements Servlet  {
 
 				if (ssoRequest != null && ssoRequest.isValid() ) {
 					session.setAttribute("request", ssoRequest);
-					response.sendRedirect("idpLogin.jsp");
+					response.sendRedirect("index.jsp");
 					return;
 				}
 

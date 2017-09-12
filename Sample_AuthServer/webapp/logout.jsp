@@ -10,31 +10,22 @@ This product may include a number of subcomponents with separate copyright notic
 
 -->
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="com.vmware.eucenablement.sample.MySSO" %>
 <html>
 
 	<!-- header -->
 	<jsp:include page="headertpl.html"></jsp:include>
 	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-		<script>
-			function logoutFromIDP(reqURL) {
-				window.open(reqURL,'_blank');
-			}
-		</script>
+
 		<!-- Navigation -->
     	<jsp:include page="navtpl.html"></jsp:include>
 
 		<% 
 			if(session.getAttribute("userName") != null) {
 				//TODO: these should be moved to some jsp after receving logout response from vidm
-		
-				String logoutURL = MySSO.getSSOService().getLogoutURLRedirect();
+				
 				session.removeAttribute("userName");
 				session.invalidate();
-				if(logoutURL != null) {
-					String scriptCall = String.format("<script>logoutFromIDP('%s')</script>", logoutURL);
-					out.println(scriptCall);
-				}
+				
 			}
 		%>
 

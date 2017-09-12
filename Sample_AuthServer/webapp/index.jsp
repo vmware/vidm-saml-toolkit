@@ -10,36 +10,93 @@ This product may include a number of subcomponents with separate copyright notic
 
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="com.vmware.eucenablement.sample.MySSO" %>
+
+<%@ page import="com.vmware.eucenablement.sample.idp.MyIDP" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<!-- header -->
-<jsp:include page="headertpl.html"></jsp:include>
-<!-- TODO: support both IDP and SP now, we need to add a UI flow for IDP -->
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <!-- Navigation -->
-    <jsp:include page="navtpl.html"></jsp:include>
-
-    <!-- Intro Header -->
-    <header class="intro">
-        <div class="intro-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <h1 class="brand-heading">SAML TOOLKIT</h1>
-                        <p class="intro-text">A toolkit to facilitate the vIDM users to have their business application SAML enabled to play with vIDM.</p>
-						<form action="spDiscovery.jsp" method="get" style="padding: 2rem;">
-							<div align="middle">
-								<input type=submit value="CONFIGURE" class="btn btn-default btn-lg" title="Configure your vIDM (as Service Provider)">
-							</div>
+<html>
+	<!-- header -->
+	<jsp:include page="headertpl.html"></jsp:include>
+	<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+		 <!-- Navigation -->
+    	<jsp:include page="navtpl.html"></jsp:include>
+    	<% if (MyIDP.getIDPService()==null || MyIDP.getIDPService().getSAMLIDPConf()==null || !MyIDP.getIDPService().getSAMLIDPConf().isConfigured()){
+    		//if IDP service has not been configured, you must config it first
+    	%>
+    	<section id="idpDiscovery" class="content-section text-center">
+	        <div class="idpDiscovery-section">
+	            <div class="container">
+	                <div class="col-lg-8 col-lg-offset-2">
+	                
+	                <div><h2>Configure VIDM as SP</h2></div>
+	                <br>
+	                <br>
+	                	<form action="configSPURI.jsp" method="post">
+	                	<p>Your vIDM (act as SP1) ROOT URL:</p> 
+	                	<br/>
+	                	
+                		<div id="vidmSp1"><input name="vidmSp1" type="text" style="width: 300px;color:#fff;background-color:#000;" placeholder="https://yourcompany.vmwareidentity.com"></div>
+	                	
+						<br/>
+						<br/>
+						<br/>
+						
+						<div><input type=submit value="NEXT" class="btn btn-default btn-lg"></div>
 						</form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-   
-</body>
+	               </div>
+	            </div>
+	        </div>
+	    </section>
+    
+	    
+	    <script type="text/javascript">
+	    	<!-- Get default URI -->
+			var issuer = window.location.toString();
+			issuer= issuer.substr(0,issuer.indexOf("/idp/spDiscovery"));
+			window.document.getElementById("issuer").value = issuer;
+			
+		</script>
+		
+		<%
+		} else{
+			//idp service has been configured, we just go to login page
+			
+			
+			
+    	%>
+    	
+    	<section id="userLogin" class="content-section text-center">
+	        <div class="idpDiscovery-section">
+	            <div class="container">
+	                <div class="col-lg-8 col-lg-offset-2">
+	                
+	                <div><h2>Login page</h2></div>
+	                <br>
+	                <br>
+	                	<form id="loginForm" class="form-login" action="saml2postlogin" method="POST" autocomplete="off">
+						    <div >
+						        <div >
+						            <input name="username" type="text" style="width: 300px;color:#fff;background-color:#000;" placeholder="username">
+						        </div>
+						    </div>
+						    <br>
+						    <div>
+						        <div >
+						            <input name="password" type="password" style="width: 300px;color:#fff;background-color:#000;" placeholder="password">
+						        </div>
+						    </div>
+						    <br>
+						    <div class="clearfix bottom-section"style="margin-top: 10px;">
+						        <input type="submit" name="loginFormSubmit" class="btn btn-default btn-lg" value="Sign in">
+						    </div>
+						</form>
+	               </div>
+	            </div>
+	        </div>
+	    </section>
+    	
+    	<%
+		}
+    	%>
+	</body>
 </html>
