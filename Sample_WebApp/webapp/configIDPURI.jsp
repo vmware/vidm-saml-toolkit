@@ -109,29 +109,44 @@ This product may include a number of subcomponents with separate copyright notic
 				       <div class="row row-offcanvas">
 				        <div class="col-xs-12 col-sm-12">
 				          <div class="row"> 
-				              <p>Step 1: Add A New Application in: <%= idpDomainURI %></p>
+				              <p>Step 1: Select <b>Web Apps</b> of <b>Catalog</b> at <%= idpDomainURI %></p>
 				              <p><img src="img/step1.png" > </p>
 							
 				          </div><!--/row-->
 				          
 				          
 				          <div class="row">
-				              <p>Step 2: Give A Name</p>
+				              <p>Step 2: New an application</p>
 				              <p><img src="img/step2.png" > </p>
 				           
 				          </div>
 				          
 				          <div class="row">
-				              <p>Step 3: Select "Manual Configuration", Input Consumer: <%=conf.getConsumerURL() %> </p>
-				              <p><img src="img/step3.png" > </p>	            
+				              <p>Step 3: Give application a name</p>
+				              <p><img src="img/step3.png" > </p>
+				           
+				          </div>
+				          
+				          <div class="row">
+				              <p>Step 4: Select "Manual Configuration", Input Consumer: <%=conf.getConsumerURL() %> and fill in blanks properly. </p>
+				              <p><img src="img/step4.png" > </p>	            
 					       
 				          </div>
 				          
+				          <div class="row">
+				              <p>Step 5: <b>Choose Access Policy</b></p>
+				              <p><img src="img/step5.png" > </p>	            
+					       
+				          </div>
 				          
 				          <div class="row">
-				              <p>Step 4: Add Automatic Entitlements</p>
-				              <p><img src="img/step4.png" > </p>	            
-					       
+				              <p>Step 6: Review summary and select <b>Save & Assign</b></p>
+				              <p><img src="img/step6.png" > </p>
+				          </div>
+				          
+				          <div class="row">	
+				              <p>Step 7: Assign users to this application</p>
+				              <p><img src="img/step7.png" > </p>
 				          </div>
 				        </div><!--/.col-xs-12.col-sm-12-->
 				      </div>
