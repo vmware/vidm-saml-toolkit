@@ -18,13 +18,19 @@ You need to configure your vIDM to use this sample.
 
 1. Go to your vIDM administrator console, "Catalog" --> "Application Catalog " --> 
 "Add Application" --> "...create a new one"
-![Create an Application](webapp/img/step2.png)
+![Create a web application](webapp/img/step1.png)
+![New an application](webapp/img/step2.png)
 
 2. Choose "Manual configuration", and fill the blanks. The domain should be the host or
 IP address your web application run on.
-![Choose Manual configuration](webapp/img/step3.png)
+![Give a name](webapp/img/step3.png)
+![Choose Manual configuration](webapp/img/step4.png)
+![Select access policy](webapp/img/step5.png)
+![Review](webapp/img/step6.png)
+
 
 3. Add group/user entitlement, and select "Automatic".
+![Entitle](webapp/img/step7.png)
 
 ### Build & Run
 
