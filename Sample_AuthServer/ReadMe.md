@@ -19,11 +19,11 @@ You need to configure your vIDM to use this sample.
 
 1. Go to your vIDM administrator console, "Identity Manager" --> "Identity Providers"
 --> "Add Identity Provider" --> "Create Third Party IDP".  
-![Create Third Party IDP](webapp/img/idp_config_step2.png)
+![Create Third Party IDP](webapp/img/idp_config_step1.png)
 
 2. Fill the blanks with proper values. Just copy the content of [idp.xml](webapp/idp.xml) to the 
 SAML Metadata.  
-![Fill the blanks](webapp/img/idp_config_step3.png)
+![Fill the blanks](webapp/img/idp_config_step2.png)
 
 3. Configure the polices by "Policies" --> "Edit Default Policy" --> 
 "+". Then edit policy rules with proper values.  
