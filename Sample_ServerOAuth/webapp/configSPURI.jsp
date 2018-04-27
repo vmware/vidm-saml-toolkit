@@ -113,28 +113,27 @@ This product may include a number of subcomponents with separate copyright notic
 		<section id="ConfigVIDM" class="content-section text-center" style="height:100%;width:100%;">
 				       <div class="row row-offcanvas">
 				        <div class="col-xs-12 col-sm-12">
-				          <div class="row"> 
-				              <p>Step 1: Go to "Administration Console" </p>
-				              <p><img src="img/idp_config_step1.png" > </p>
-							
-				          </div><!--/row-->
-				          
-				          
 				          <div class="row">
-				              <p>Step 2: Select "Identity & Access Management" --> "Identity Providers" --> "Add Identity Provider" --> "Create Third Party IDP"</p>
-				              <p><img src="img/idp_config_step2.png" style="width: 1040px;"> </p>
+				              <p>Step 1: Select "Identity & Access Management" --> "Identity Providers" --> "Add Identity Provider" --> "Create Third Party IDP"</p>
+				              <p><img src="img/idp_config_step1.png" style="width: 1040px;"> </p>
 				           
 				          </div>
 				          
 				          <div class="row">
-				              <p>Step 3: Fill in the blanks with proper values. Make sure IdP metadata is parsed properly </p>
-				              <p><img src="img/idp_config_step3.png" style="width: 1040px;"> </p>	            
+				              <p>Step 2: Fill in the blanks with proper values. Make sure IdP metadata is parsed properly </p>
+				              <p><img src="img/idp_config_step2.png" style="width: 1040px;"> </p>	            
 					       
 				          </div>
 				          
 				          
 				          <div class="row">
-				              <p>Step 4: Edit policies with accessing "Policies" --> "Edit Default Policy/Add Policy"</p>
+				              <p>Step 3: Edit policies with accessing "Policies" --> "Edit Default Policy/Add Policy"</p>
+				              <p><img src="img/idp_config_step3.png" style="width: 1040px;"> </p>	            
+					       
+				          </div>
+				          
+				          <div class="row">
+				              <p>Step 4: Continue Editing policies</p>
 				              <p><img src="img/idp_config_step4.png" style="width: 1040px;"> </p>	            
 					       
 				          </div>
@@ -154,6 +153,12 @@ This product may include a number of subcomponents with separate copyright notic
 				          <div class="row">
 				              <p>Step 7: Drag the rule to the first place and save</p>
 				              <p><img src="img/idp_config_step7.png" style="width: 1040px;"> </p>
+				           
+				          </div>
+				          
+				          <div class="row">
+				              <p>Step 8: Review Summay and save policy</p>
+				              <p><img src="img/idp_config_step8.png" style="width: 1040px;"> </p>
 				           
 				          </div>
 				        </div><!--/.col-xs-12.col-sm-12-->
