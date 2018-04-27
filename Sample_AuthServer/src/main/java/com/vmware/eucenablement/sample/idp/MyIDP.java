@@ -24,9 +24,6 @@ public class MyIDP {
 
 		try {
 			SAMLIDPConf conf = new SAMLIDPConf(issuer, kestoreStream, keystorepwd);
-
-
-
 			service = new IDPService(conf);
 		} catch (Exception e) {
 			log.error("Error initializing service", e);
@@ -35,10 +32,7 @@ public class MyIDP {
 		return service;
 	}
 
-
-
 	public static IDPService getIDPService() {
-
 		if (service == null)
 			log.error("IDPService is null!! Please init it again!");
 

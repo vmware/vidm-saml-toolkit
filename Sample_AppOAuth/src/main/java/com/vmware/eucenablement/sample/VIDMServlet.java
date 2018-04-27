@@ -91,6 +91,7 @@ public class VIDMServlet implements Servlet {
 
     public static boolean isValidHost(String host) {
         try {
+        	SslUtilities.trustAllCertificates(); //Trust all certificate in sample. This should be removed in a real production environment.
             return host!=null && HttpRequest.get(host+"/SAAS/API/1.0/GET/metadata/idp.xml").code()==200;
         }
         catch (Exception e) {return false;}
