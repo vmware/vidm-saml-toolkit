@@ -39,14 +39,17 @@ access it. Let's call it `${host}`.
 [WeChatServlet](src/main/java/com/vmware/eucenablement/sample/servlet/WeChatServlet.java#34).
 ![Remembet APPID and APPSecret](webapp/img/wechat_step2.png)
 
-4. Scan the QRCode to follow the test public account.
+5. Scan the QRCode to follow the test public account.
 ![Follow the test public account](webapp/img/wechat_step3.png)
 
-5. Config the redirect URL to `${host}:8443`.
+6. Config the redirect URL to `${host}:8443`.
 ![Config the redirect URL](webapp/img/wechat_step4.png)
 ![Config the redirect URL](webapp/img/wechat_step5.png)
 
-6. Follow the instructions in [Sample_AuthServer](../Sample_AuthServer/#prerequisites) to
+7. Go to [usermap.conf](usermap.conf). Update the WeChat User ID to IDP user map. WeChat user ID could be retrieved as follows:
+![WeChat User ID](webapp/img/weChat_user_id.png)
+
+8. Follow the instructions in [Sample_AuthServer](../Sample_AuthServer/#prerequisites) to
 config your vIDM.
 
 ### Build & Run

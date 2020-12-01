@@ -66,9 +66,9 @@
                         // show qrCode
                         %>
                             <div><h2>WeChat Login</h2></div>
-                            <div style="margin-top: -8px"><img src="http://pan.baidu.com/share/qrcode?w=180&h=180&url=<%=
+                            <div style="margin-top: -8px"><img src="http://api.qrserver.com/v1/create-qr-code/?data=<%=
                                 request.getRequestURL().toString()+"?state="+OAuthUtil.encode(request.getRequestedSessionId())
-                            %>" /></div>
+                            %>&size=180x180" /></div>
 
                             <div style="margin-top: 20px"><p style="font-size: 22px">Use your WeChat to scan the QRCode.</p></div>
                 <script type="text/javascript">
