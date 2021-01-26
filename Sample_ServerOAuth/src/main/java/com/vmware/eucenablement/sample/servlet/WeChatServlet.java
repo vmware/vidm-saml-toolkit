@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.server.session.Session;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +100,7 @@ public class WeChatServlet implements Servlet {
 
             // get the browser's session
             String jsessionid=OAuthUtil.decode(state);
-            HttpSession browserSession=jsessionid==null?null:request.getSessionHandler().getHttpSession(jsessionid);
+            HttpSession browserSession=jsessionid==null?null:getHttpSession(request, jsessionid);
             if (browserSession==null) {
                 response.sendRedirect("wxLogin.jsp?errmsg="+
                     URLEncoder.encode("Invalid qrcode: refresh the qrcode page and re-scan.", "utf-8"));
@@ -145,6 +147,18 @@ public class WeChatServlet implements Servlet {
 
         response.sendRedirect("wxLogin.jsp");
 
+    }
+
+    private HttpSession getHttpSession(Request request, String extendedId) {
+        // Method to handle method permission update for  request.getSessionHandler().getHttpSession(jsessionid);
+        SessionHandler handler = request.getSessionHandler();
+        String id = handler.getSessionIdManager().getId(extendedId);
+        Session session = handler.getSession(id);
+        if (session != null && !session.getExtendedId().equals(extendedId)) {
+            session.setIdChanged(true);
+        }
+
+        return session;
     }
 
     private void redirectFromVIDM(Request request, Response response, String samlRequest) throws ServletException, IOException {
