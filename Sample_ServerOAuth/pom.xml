@@ -67,27 +67,28 @@ This product may include a number of subcomponents with separate copyright notic
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>apache-jstl</artifactId>
-			<version>9.4.41.v20210516</version>
+			<version>${JETTY_VERSION}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>apache-jsp</artifactId>
-			<version>9.4.41.v20210516</version>
+			<version>${JETTY_VERSION}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>9.4.41.v20210516</version>
+			<version>${JETTY_VERSION}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>9.4.41.v20210516</version>
+			<version>${JETTY_VERSION}</version>
 		</dependency>
 	</dependencies>
 	<properties>
 		<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
 		<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
+		<JETTY_VERSION>9.4.43.v20210629</JETTY_VERSION>
 	</properties>
 	<build>
 		<finalName>Sample_ServerOAuth</finalName>
