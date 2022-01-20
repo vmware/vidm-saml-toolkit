@@ -88,7 +88,7 @@ This product may include a number of subcomponents with separate copyright notic
 	<properties>
 		<BUILD_MAJOR>${project.version}</BUILD_MAJOR>
 		<BUILD_MINOR>${maven.build.timestamp}</BUILD_MINOR>
-		<JETTY_VERSION>9.4.43.v20210629</JETTY_VERSION>
+		<JETTY_VERSION>9.4.44.v20210927</JETTY_VERSION>
 	</properties>
 	<build>
 		<finalName>Sample_AuthServer</finalName>
