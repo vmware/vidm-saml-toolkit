@@ -9,6 +9,7 @@
  *
  */
 package com.vmware.eucenablement.sample;
+
 import java.net.URL;
 import java.security.KeyStoreException;
 
@@ -27,68 +28,67 @@ import com.vmware.eucenablement.sample.servlet.WeChatServlet;
 
 /**
  * Simple HTTP server for demo purpose.
- *
  */
 public class MyAuthServer {
 
-	public static void main(String[] args) throws KeyStoreException {
+    public static void main(String[] args) throws KeyStoreException {
 
-		Server server = new Server();
+        Server server = new Server();
 
 
-         // HTTPS configuration
-         HttpConfiguration https = new HttpConfiguration();
-         https.addCustomizer(new SecureRequestCustomizer());
+        // HTTPS configuration
+        HttpConfiguration https = new HttpConfiguration();
+        https.addCustomizer(new SecureRequestCustomizer());
 
-         // Configuring SSL
-         SslContextFactory sslContextFactory = new SslContextFactory();
-         URL keystoreurl = MyAuthServer.class.getResource("/sslkeystore");
+        // Configuring SSL
+        SslContextFactory.Server sslContextFactoryServer = new SslContextFactory.Server();
+        URL keystoreurl = MyAuthServer.class.getResource("/sslkeystore");
 
-         System.out.println("keystore path:"+ keystoreurl.getPath());
-         // Defining keystore path and passwords
-         sslContextFactory.setKeyStorePath(keystoreurl.getPath());
-         String keystorepwd = "123456";
-         sslContextFactory.setKeyStorePassword(keystorepwd);
+        System.out.println("keystore path:" + keystoreurl.getPath());
+        // Defining keystore path and passwords
+        sslContextFactoryServer.setKeyStorePath(keystoreurl.getPath());
+        String keystorepwd = "123456";
+        sslContextFactoryServer.setKeyStorePassword(keystorepwd);
 
-         sslContextFactory.setTrustAll(true);
-         sslContextFactory.setNeedClientAuth(false);
+        sslContextFactoryServer.setTrustAll(true);
+        sslContextFactoryServer.setNeedClientAuth(false);
 
-         // Configuring the connector
-         ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-         sslConnector.setPort(8443);
+        // Configuring the connector
+        ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactoryServer, "http/1.1"), new HttpConnectionFactory(https));
+        sslConnector.setPort(8443);
 
-         server.addConnector(sslConnector);
+        server.addConnector(sslConnector);
 
-		server.setStopAtShutdown(true);
+        server.setStopAtShutdown(true);
 
-		// Set JSP to use Standard JavaC always
-		System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
+        // Set JSP to use Standard JavaC always
+        System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
 
-		WebAppContext webAppContext = new WebAppContext();
+        WebAppContext webAppContext = new WebAppContext();
 
-		String webapp = "webapp";
+        String webapp = "webapp";
 
-		webAppContext.setDescriptor(webapp+"/WEB-INF/web.xml");
-		webAppContext.setResourceBase(webapp);
-		webAppContext.setContextPath("/MyAuthServer");
-		webAppContext.setParentLoaderPriority(true);
-		webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+        webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
+        webAppContext.setResourceBase(webapp);
+        webAppContext.setContextPath("/MyAuthServer");
+        webAppContext.setParentLoaderPriority(true);
+        webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
-		webAppContext.addServlet(WeChatServlet.class.getCanonicalName(), "/wxLoginAction");
+        webAppContext.addServlet(WeChatServlet.class.getCanonicalName(), "/wxLoginAction");
 
-		server.setHandler(webAppContext);
-		try {
-			server.start();
+        server.setHandler(webAppContext);
+        try {
+            server.start();
 
-			String url = "https://127.0.0.1:8443/MyAuthServer";
-			System.out.println("Open your browser to view the demo: " + url);
+            String url = "https://localhost:8443/MyAuthServer";
+            System.out.println("Open your browser to view the demo: " + url);
 
-			// https://127.0.0.1:8443/MyAuthServer/idp.xml
-			MyIDP.initIDPService(url + "/idp.xml",keystoreurl.openStream(), keystorepwd);
-			server.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            // https://127.0.0.1:8443/MyAuthServer/idp.xml
+            MyIDP.initIDPService(url + "/idp.xml", keystoreurl.openStream(), keystorepwd);
+            server.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

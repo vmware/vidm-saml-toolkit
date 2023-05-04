@@ -9,6 +9,7 @@
  *
  */
 package com.vmware.eucenablement.sample;
+
 import java.net.URL;
 import java.security.KeyStoreException;
 
@@ -22,67 +23,65 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 
-
 /**
  * Simple HTTP server for demo purpose.
- *
  */
 public class MyWebServer {
 
-	public static void main(String[] args) throws KeyStoreException {
+    public static void main(String[] args) throws KeyStoreException {
 
-		Server server = new Server();
-		// HTTPS configuration
+        Server server = new Server();
+        // HTTPS configuration
         HttpConfiguration https = new HttpConfiguration();
         https.addCustomizer(new SecureRequestCustomizer());
 
         // Configuring SSL
-        SslContextFactory sslContextFactory = new SslContextFactory();
+        SslContextFactory.Server sslContextFactoryServer = new SslContextFactory.Server();
         URL keystoreurl = MyWebServer.class.getResource("/sslkeystore");
 
-        System.out.println("keystore path:"+ keystoreurl.getPath());
+        System.out.println("keystore path:" + keystoreurl.getPath());
         // Defining keystore path and passwords
-        sslContextFactory.setKeyStorePath(keystoreurl.getPath());
+        sslContextFactoryServer.setKeyStorePath(keystoreurl.getPath());
         String keystorepwd = "123456";
-        sslContextFactory.setKeyStorePassword(keystorepwd);
+        sslContextFactoryServer.setKeyStorePassword(keystorepwd);
 
-        sslContextFactory.setTrustAll(true);
-        sslContextFactory.setNeedClientAuth(false);
+        sslContextFactoryServer.setTrustAll(true);
+        sslContextFactoryServer.setNeedClientAuth(false);
 
         // Configuring the connector
-        ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
+        ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactoryServer, "http/1.1"), new HttpConnectionFactory(https));
         sslConnector.setPort(8443);
 
         server.addConnector(sslConnector);
 
-		
-		server.setStopAtShutdown(true);
 
-		// Set JSP to use Standard JavaC always
-		System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
+        server.setStopAtShutdown(true);
 
-		WebAppContext webAppContext = new WebAppContext();
+        // Set JSP to use Standard JavaC always
+        System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
 
-		String webapp = "webapp";
-		webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
-		webAppContext.setResourceBase(webapp);
-		webAppContext.setContextPath("/WebApp");
-		webAppContext.setParentLoaderPriority(true);
-		webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
+        WebAppContext webAppContext = new WebAppContext();
 
-		webAppContext.addServlet(ConsumerServlet.class.getCanonicalName(), "/consume");
-		
-		server.setHandler(webAppContext);
-		try {
-			server.start();
+        String webapp = "webapp";
+        webAppContext.setDescriptor(webapp + "/WEB-INF/web.xml");
+        webAppContext.setResourceBase(webapp);
+        webAppContext.setContextPath("/WebApp");
+        webAppContext.setParentLoaderPriority(true);
+        webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 
-			String url = "https://127.0.0.1:8443/WebApp";
-			System.out.println("Open your browser to view the demo: " + url);
-			
-			server.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        webAppContext.addServlet(ConsumerServlet.class.getCanonicalName(), "/consume");
+
+        server.setHandler(webAppContext);
+        try {
+            server.start();
+
+            String url = "https://localhost:8443/WebApp";
+            System.out.println("Open your browser to view the demo: " + url);
+
+            server.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
