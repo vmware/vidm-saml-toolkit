@@ -137,7 +137,7 @@ This product may include a number of subcomponents with separate copyright notic
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<copy todir="${project.build.directory}/webapp" overwrite="true">
 									<fileset dir="webapp" />
 								</copy>
@@ -150,7 +150,7 @@ This product may include a number of subcomponents with separate copyright notic
 								
 								<delete dir="${project.build.directory}/lib" includes="apache-jsp-8.*.jar" ></delete>
 								
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>
